@@ -17,9 +17,12 @@ static void drawPlayer(Player& player, bool isUser) {
     // First of all, is the player IN our viewport?
     // TODO: Check its axis-aligned bounding box
     
+    double width = TILE_SIZE * 5.0 / 3.0;
+    double height = TILE_SIZE * 2.0 / 3.0;
     sf::Color color = isUser ? sf::Color(255, 255, 124, 255) : sf::Color(255, 124, 124, 255);
-    sf::Shape box = sf::Shape::Rectangle(0, 0, TILE_SIZE * 5.0 / 3.0, TILE_SIZE * 2.0 / 3.0, color);
-    box.SetCenter(player.position.x * TILE_SIZE, player.position.y * TILE_SIZE);
+    sf::Shape box = sf::Shape::Rectangle(0, 0, width, height, color);
+    box.SetPosition(player.position.x * TILE_SIZE, player.position.y * TILE_SIZE);
+    box.SetCenter(width / 2, height / 2);
     box.SetRotation(player.angle.angle * 360.0 / M_2_PI);
     
     GAME.app->Draw(box);

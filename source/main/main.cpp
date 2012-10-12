@@ -101,7 +101,7 @@ static void processEvents() {
         if (circum < 1.0)
             circum = 1.0;
         
-        angle.angle += movementDistance * M_2_PI / circum;
+        angle.angle -= movementDistance * M_2_PI / circum;
         angle.normalize();
         changedPosition = true;
     }
