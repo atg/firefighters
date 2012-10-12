@@ -1,31 +1,17 @@
 #import <SFML/Window.hpp>
+#import <SFML/Graphics.hpp>
 #import <string>
 #import <set>
+#import <stdio.h>
 
 #import "world/map.hpp"
 #import "render/render.hpp"
 
-// Global game state
-struct Game {
-    bool isClient, isServer;
-    World world;
-    
-    int port;
-    
-    // Client state
-    std::string serverIP;
-    
-    std::set<sf::Key::Code> heldKeys;
-    sf::Window* app;
-    
-    // Server state
-    // ...
-};
-static Game GAME;
-
+#import "main/game.hpp"
+Game GAME;
 
 static void handleKeyEvent(sf::Event& event, bool isKeyUp) {
-    if (isKeyUp)
+    if (!isKeyUp)
         GAME.heldKeys.insert(event.Key.Code);
     else if (GAME.heldKeys.find(event.Key.Code) != GAME.heldKeys.end())
         GAME.heldKeys.erase(event.Key.Code);
@@ -39,6 +25,7 @@ static bool isKeyDown(sf::Key::Code code) {
 static void processEvents() {
     sf::Event event;
     while (GAME.app->GetEvent(event)) {
+        
         // Close window : exit
         if (event.Type == sf::Event::Closed)
             GAME.app->Close();
@@ -49,6 +36,7 @@ static void processEvents() {
         
         // W A S D left right up down, etc
         else if (event.Type == sf::Event::KeyPressed || event.Type == sf::Event::KeyReleased) {
+            printf("event.Key.Code = %d\n", event.Key.Code);
             handleKeyEvent(event, event.Type == sf::Event::KeyReleased);
         }
         
@@ -60,18 +48,20 @@ static void processEvents() {
     
     // Get the mouse X and Y
     int mouseX = GAME.app->GetInput().GetMouseX();
-    int mouseY = GAME.app->GetInput().GetMouseY()
+    int mouseY = GAME.app->GetInput().GetMouseY();
+    GAME.mouseX = mouseX;
+    GAME.mouseY = mouseY;
     
     Vec2<double> viewportPosition = Vec2<double>(0.0, 0.0); // TODO: Moving viewports!
-    Vec2<double> playerPosition = GAME.world.me.position;
-    Vec2<double> mousePosition = viewportPosition + Vec2<double>(mouseX, mouseY);
+    Vec2<double> playerPosition = GAME.world.me->position;
+    Vec2<double> mousePosition = viewportPosition + Vec2<double>(mouseX / (double)TILE_SIZE, mouseY / (double)TILE_SIZE);
     
     // Movement keys
     
     // Basically we re-origin the playerPosition in terms of the mouse position
     // Then we turn that into polar form, and decrease the distance
     // Then we turn add the playerPosition back on to it
-    playerPosition -= mousePosition;
+    playerPosition = playerPosition - mousePosition;
     double distance = playerPosition.distance();
     Angle angle = playerPosition.angle();
     bool changedPosition = false;
@@ -86,10 +76,12 @@ static void processEvents() {
         distance -= movementDistance;
         if (distance < 0.0)
             distance = 0.0;
+        changedPosition = true;
     }
     else if (isKeyDown(sf::Key::Down) || isKeyDown(sf::Key::S)) {
         // We want to move the player AWAY from the mouse cursor
         distance += movementDistance;
+        changedPosition = true;
     }
     else if (isKeyDown(sf::Key::Left) || isKeyDown(sf::Key::A)) {
         // We want to move the player ANTI-CLOCKWISE around the mouse cursor
@@ -98,7 +90,9 @@ static void processEvents() {
         if (circum < 1.0)
             circum = 1.0;
         
-        angle += movementDistance * M_2_PI / circum;
+        angle.angle += movementDistance * M_2_PI / circum;
+        angle.normalize();
+        changedPosition = true;
     }
     else if (isKeyDown(sf::Key::Right) || isKeyDown(sf::Key::D)) {
         // We want to move the player CLOCKWISE around the mouse cursor
@@ -107,17 +101,19 @@ static void processEvents() {
         if (circum < 1.0)
             circum = 1.0;
         
-        angle += movementDistance * M_2_PI / circum;
+        angle.angle += movementDistance * M_2_PI / circum;
+        angle.normalize();
+        changedPosition = true;
     }
     
     if (changedPosition) {
         playerPosition = Vec2<double>::FromPolar(distance, angle);
-        playerPosition += mousePosition;
+        playerPosition = playerPosition + mousePosition;
         
         // Remember to tell the server after moving the player!
-        GAME.world.me.angle = angle;
-        GAME.world.me.position = playerPosition;
-        printf("New Position (%lf, %lf) pointing %lf\n", GAME.world.me.position.x, GAME.world.me.position.y, GAME.world.me.angle);
+        GAME.world.me->angle = angle;
+        GAME.world.me->position = playerPosition;
+        printf("New Position (%lf, %lf) pointing %lf\n", GAME.world.me->position.x, GAME.world.me->position.y, GAME.world.me->angle.angle);
     }
 }
 
@@ -153,14 +149,9 @@ void setUpClient() {
     // TODO
     
     // FOR NOW just create a fake player (remove this when actual players)
-    Player me;
-    me.identifier = 42;
-    me.team = 0;
-    me.cclass = CharacterClass::Flamethrower;
-    me.health = Player::MaxHealth;
-    
-    GAME.world.players.push_back(me);
-    GAME.world.me = &(GAME.world.players.back());
+    Player me(42);
+    GAME.world.players[me.identifier] = me;
+    GAME.world.me = &(GAME.world.players[me.identifier]);
 }
 void connectToServer() {
     // TODO
@@ -172,12 +163,12 @@ int main(int argc, char *argv[]) {
     parseArguments(argc, argv);
     
     // Create the main window
-    sf::Window app(sf::VideoMode(32 * TILE_SIZE, 20 * TILE_SIZE, 32), "Firefighters");
+    sf::RenderWindow app(sf::VideoMode(32 * TILE_SIZE, 20 * TILE_SIZE, 32), "Firefighters");
     GAME.app = &app;
     GAME.app->ShowMouseCursor(false);
     
     // Create a player for us
-    if (isServer) {
+    if (GAME.isServer) {
         setUpServer();
     }
     else {
@@ -196,8 +187,8 @@ int main(int argc, char *argv[]) {
         // Clear color buffer
         glClear(GL_COLOR_BUFFER_BIT);
         
-        // Your drawing here...
-        // render();
+        // Draw everything
+        render();
         
         // Display rendered frame on screen
         app.Display();

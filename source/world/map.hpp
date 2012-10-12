@@ -10,7 +10,7 @@ enum class CharacterClass : uint8_t {
 struct Player {
     
     // Each player needs an identifier so we can refer to them over the wire
-    typedef ID uint16_t;
+    typedef uint16_t ID;
     Player::ID identifier;
     
     // Location
@@ -25,6 +25,14 @@ struct Player {
     uint32_t health; // Use use a big fat int for health. Flamethrowers do little bits of damage, slowly.
     static const uint32_t MaxHealth = (uint32_t)-1;
     bool isAlive() { return health > 0; }
+    
+    Player(Player::ID _identifier=0)
+        : identifier(_identifier),
+          position(),
+          angle(0.0),
+          team(0),
+          cclass(CharacterClass::Flamethrower),
+          health(Player::MaxHealth) { }
 };
 
 struct World {

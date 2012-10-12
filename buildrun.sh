@@ -1,3 +1,3 @@
 bash build.sh
-open build/Firefighters.app
+./build/Firefighters.app/Contents/MacOS/Firefighters
 
