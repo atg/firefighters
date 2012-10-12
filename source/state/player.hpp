@@ -23,6 +23,10 @@ struct Vec2 {
     
     Vec2(T _x, T _y) : x(_x), y(_y) { }
     
+    bool operator < (Vec<T> other) {
+        return x < other.x || y < other.y;
+    }
+    
     Vec2<T> operator + (Vec<T> other) {
         return Vec2<T>(x + other.x, y + other.y);
     }
