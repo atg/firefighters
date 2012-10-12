@@ -1,0 +1,6 @@
+Dirt
+Paving slab
+Grass
+Road
+    Side
+    Lane marker

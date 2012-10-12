@@ -1,32 +1,54 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 
-bool IS_CLIENT, IS_SERVER;
-static void check_if_server(int argc, char *argv[]) {
-    IS_CLIENT = true;
-    IS_SERVER = false;
-    
-    for (int i = 1; i < argc; i++) {
-        if (!strcmp(argv[i], "-s") || !strcmp(argv[i], "--server")) {
-            IS_CLIENT = false;
-            IS_SERVER = true;
+////////////////////////////////////////////////////////////
+// Headers
+////////////////////////////////////////////////////////////
+#include <SFML/Window.hpp>
+
+
+////////////////////////////////////////////////////////////
+/// Entry point of application
+///
+/// \return Application exit code
+///
+////////////////////////////////////////////////////////////
+int main()
+{
+    // Create the main window
+    sf::Window App(sf::VideoMode(640, 480, 32), "SFML Window");
+	
+    // Start game loop
+    while (App.IsOpened())
+    {
+        // Process events
+        sf::Event Event;
+        while (App.GetEvent(Event))
+        {
+            // Close window : exit
+            if (Event.Type == sf::Event::Closed)
+                App.Close();
+			
+            // Escape key : exit
+            if ((Event.Type == sf::Event::KeyPressed) && (Event.Key.Code == sf::Key::Escape))
+                App.Close();
+			
+            // Resize event : adjust viewport
+            if (Event.Type == sf::Event::Resized)
+                glViewport(0, 0, Event.Size.Width, Event.Size.Height);
         }
+		
+        // Set the active window before using OpenGL commands
+        // It's useless here because active window is always the same,
+        // but don't forget it if you use multiple windows or controls
+        App.SetActive();
+		
+        // Clear color buffer
+        glClear(GL_COLOR_BUFFER_BIT);
+		
+        // Your drawing here...
+		
+        // Finally, display rendered frame on screen
+        App.Display();
     }
-}
-
-int main(int argc, char *argv[]) {
-    
-    // Are we a server?
-    check_if_server(argc, argv);
-    
-    // Set up run loop
-    
-    if (IS_CLIENT) {
-        // Set up rendering, keyboard and mouse
-    }
-    
-    // Set up networking
-    
-    return 0;
+	
+    return EXIT_SUCCESS;
 }
