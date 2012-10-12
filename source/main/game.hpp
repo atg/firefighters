@@ -9,6 +9,8 @@ struct Game {
     
     int port;
     
+    sf::Clock clock;
+    
     // Client state
     std::string serverIP;
     

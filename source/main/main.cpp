@@ -69,7 +69,7 @@ static void processEvents() {
     const double walkingSpeed = 4.59; // ft/s
     
     // We should really use some kind of clock instead of having uneven movement speeds
-    double movementDistance = 1.0; // For now we just move one foot
+    double movementDistance = GAME.clock.GetElapsedTime() * walkingSpeed; // For now we just move one foot
     
     if (isKeyDown(sf::Key::Up) || isKeyDown(sf::Key::W)) {
         // We want to move the player TOWARDS the mouse cursor
@@ -159,6 +159,8 @@ void connectToServer() {
 
 int main(int argc, char *argv[]) {
     
+    GAME.clock.Reset();
+    
     // Are we a server?
     parseArguments(argc, argv);
     
@@ -181,6 +183,7 @@ int main(int argc, char *argv[]) {
         
         // Process events
         processEvents();
+        GAME.clock.Reset();
         
         app.SetActive();
         

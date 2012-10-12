@@ -59,7 +59,7 @@ struct Vec2 {
     
     template<class R = double>
     R distance() {
-        return sqrt(double(x * x) + double(y * y));
+        return sqrt(double(x * x + y * y));
     }
     
     // Vector operations
