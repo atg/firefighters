@@ -1,5 +1,6 @@
 #import <SFML/Window.hpp>
 #import <SFML/Graphics.hpp>
+#import <SFML/System/Sleep.hpp>
 #import <string>
 #import <set>
 #import <stdio.h>
@@ -8,6 +9,8 @@
 #import "render/render.hpp"
 
 #import "main/game.hpp"
+#import "net/net.hpp"
+
 Game GAME;
 
 static void handleKeyEvent(sf::Event& event, bool isKeyUp) {
@@ -150,10 +153,10 @@ static void parseArguments(int argc, char *argv[]) {
 }
 
 void setUpServer() {
-    // TODO
+    
+    startNetworking();
 }
 void setUpClient() {
-    // TODO
     
     // FOR NOW just create a fake player (remove this when actual players)
     Player me(42);
@@ -161,15 +164,28 @@ void setUpClient() {
     GAME.world.me = &(GAME.world.players[me.identifier]);
 }
 void connectToServer() {
-    // TODO
+    startNetworking();
 }
 
 int main(int argc, char *argv[]) {
     
+    // TCP 9456, UDP 9457
+    GAME.port = 9456;
     GAME.clock.Reset();
     
     // Are we a server?
     parseArguments(argc, argv);
+    
+    // If this is a server, then we just run the server thread
+    if (GAME.isServer) {
+        setUpServer();
+        
+        while (true) {
+            sf::Sleep(1.0);
+        }
+        
+        return 0;
+    }
     
     // Create the main window
     sf::RenderWindow app(sf::VideoMode(32 * TILE_SIZE, 20 * TILE_SIZE, 32), "Firefighters");
@@ -177,14 +193,9 @@ int main(int argc, char *argv[]) {
     GAME.app->ShowMouseCursor(false);
     
     // Create a player for us
-    if (GAME.isServer) {
-        setUpServer();
-    }
-    else {
-        setUpClient();
-        connectToServer();
-    }
-    
+    setUpClient();
+    connectToServer();
+
     // Set up run loop
     while (app.IsOpened()) {
         
