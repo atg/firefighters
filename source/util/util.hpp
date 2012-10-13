@@ -10,14 +10,18 @@ struct Angle {
     static Angle West() { return Angle(3.0 * M_PI_2); }
     
     void normalize() {
-        if (angle > 0 && angle < M_2_PI)
+        if (angle > - M_PI && angle < M_PI)
             return;
         
-        while (angle < 0 && angle >= - M_2_PI)
-            angle += M_2_PI;
+        // angle = fmod(fmod(angle, M_2_PI) + angle, M_2_PI);
+        // if (angle > M_PI)
+            // angle -= M_2_PI;
         
-        while (angle > M_2_PI && angle <= 2 * M_2_PI)
-            angle -= M_2_PI;
+        while (angle < M_PI)
+            angle += 2.0 * M_PI;
+        
+        while (angle > M_PI)
+            angle -= 2.0 * M_PI;
     }
     
     // Angles are represented as 16-bit ints over the wire

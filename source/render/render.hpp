@@ -23,7 +23,7 @@ static void drawPlayer(Player& player, bool isUser) {
     sf::Shape box = sf::Shape::Rectangle(0, 0, width, height, color);
     box.SetPosition(player.position.x * TILE_SIZE, player.position.y * TILE_SIZE);
     box.SetCenter(width / 2, height / 2);
-    box.SetRotation(player.angle.angle * 360.0 / M_2_PI);
+    box.SetRotation(360.0 - player.angle.angle * 180.0 / M_PI + 90.0);
     
     GAME.app->Draw(box);
 }

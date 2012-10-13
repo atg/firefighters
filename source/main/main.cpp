@@ -66,7 +66,7 @@ static void processEvents() {
     Angle angle = playerPosition.angle();
     bool changedPosition = false;
     
-    const double walkingSpeed = 4.59; // ft/s
+    const double walkingSpeed = 5.0; //4.59; // ft/s
     
     // We should really use some kind of clock instead of having uneven movement speeds
     double movementDistance = GAME.clock.GetElapsedTime() * walkingSpeed; // For now we just move one foot
@@ -83,25 +83,32 @@ static void processEvents() {
         distance += movementDistance;
         changedPosition = true;
     }
-    else if (isKeyDown(sf::Key::Left) || isKeyDown(sf::Key::A)) {
+    
+    if (isKeyDown(sf::Key::Left) || isKeyDown(sf::Key::A)) {
         // We want to move the player ANTI-CLOCKWISE around the mouse cursor
         // Work out the circumference of the circle
-        double circum = M_2_PI * distance;
-        if (circum < 1.0)
-            circum = 1.0;
-        
-        angle.angle += movementDistance * M_2_PI / circum;
+        if (distance < 1.0) {
+            angle.angle += GAME.clock.GetElapsedTime() * 2.0 * M_PI / 1.0;
+        }
+        else {
+            double circum = 2.0 * M_PI * distance;
+            double radians_per_foot = 2.0 * M_PI / circum;
+            angle.angle += movementDistance * radians_per_foot;
+        }
         angle.normalize();
         changedPosition = true;
     }
     else if (isKeyDown(sf::Key::Right) || isKeyDown(sf::Key::D)) {
         // We want to move the player CLOCKWISE around the mouse cursor
         // Work out the circumference of the circle
-        double circum = M_2_PI * distance;
-        if (circum < 1.0)
-            circum = 1.0;
-        
-        angle.angle -= movementDistance * M_2_PI / circum;
+        if (distance < 1.0) {
+            angle.angle -= GAME.clock.GetElapsedTime() * 2.0 * M_PI / 1.0;
+        }
+        else {
+            double circum = 2.0 * M_PI * distance;
+            double radians_per_foot = 2.0 * M_PI / circum;
+            angle.angle -= movementDistance * radians_per_foot;
+        }
         angle.normalize();
         changedPosition = true;
     }
@@ -195,6 +202,8 @@ int main(int argc, char *argv[]) {
         
         // Display rendered frame on screen
         app.Display();
+        
+        //sleep(1);
     }
     
     return 0;
