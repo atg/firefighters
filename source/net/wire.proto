@@ -1,0 +1,24 @@
+// Remember, send state, not differences
+
+// An update from the client to the server, sent over UDP
+message ClientQuickUpdate {
+    required double x = 1;
+    required double y = 2;
+    required double angle = 3;
+    required double velocityX = 4;
+    required double velocityY = 5;
+}
+
+// An update from the server to the clients, sent over UDP
+message ServerQuickUpdate {
+    message PlayerUpdate {
+        required uint32 playerID = 1;
+        required ClientQuickUpdate update = 2;
+    }
+    
+    repeated PlayerUpdate updates = 1;
+}
+
+message ServerPlayerIDHandshake {
+    required uint32 playerID = 1;
+}
