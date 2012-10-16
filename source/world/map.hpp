@@ -2,6 +2,7 @@
 #import "util/util.hpp"
 
 const int TILE_SIZE = 24; // In pixels
+const int CHUNK_SIZE = 100; // Let's say 100 x 100
 
 enum class CharacterClass : uint8_t {
     Flamethrower = 0,
@@ -35,7 +36,33 @@ struct Player {
           health(Player::MaxHealth) { }
 };
 
+struct Tile {
+    enum class Type {
+        Black = 0,
+        Dirt,
+        Tarmac,
+    };
+    
+    enum {
+        Rot0 = 0,
+        Rot90 = 1,
+        Rot180 = 2,
+        Rot270 = 3,
+    };
+    
+    Type type;
+    unsigned rotation : 2;
+    
+    Tile() : type(Tile::Type::Black), rotation(Tile::Rot0) { }
+};
+
+struct Chunk {
+    Tile tiles[CHUNK_SIZE][CHUNK_SIZE];
+};
+
 struct World {
     Player* me; // Client only
     std::map<Player::ID, Player> players;
+    
+    std::map<std::pair<int, int>, Chunk> chunks;
 };

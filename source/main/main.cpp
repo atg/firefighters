@@ -11,6 +11,8 @@
 #import "main/game.hpp"
 #import "net/net.hpp"
 
+#import "net/net_client.hpp"
+
 Game GAME;
 
 static void handleKeyEvent(sf::Event& event, bool isKeyUp) {
@@ -158,10 +160,6 @@ void setUpServer() {
 }
 void setUpClient() {
     
-    // FOR NOW just create a fake player (remove this when actual players)
-    Player me(42);
-    GAME.world.players[me.identifier] = me;
-    GAME.world.me = &(GAME.world.players[me.identifier]);
 }
 void connectToServer() {
     startNetworking();
@@ -172,6 +170,7 @@ int main(int argc, char *argv[]) {
     // TCP 9456, UDP 9457
     GAME.port = 9456;
     GAME.clock.Reset();
+    GAME.clientID = 0;
     
     // Are we a server?
     parseArguments(argc, argv);
@@ -181,6 +180,7 @@ int main(int argc, char *argv[]) {
         setUpServer();
         
         while (true) {
+            mainQueue().popAll();
             sf::Sleep(1.0);
         }
         
@@ -199,6 +199,14 @@ int main(int argc, char *argv[]) {
     // Set up run loop
     while (app.IsOpened()) {
         
+        mainQueue().popAll();
+        
+        if (!GAME.clientID) {
+            glClear(GL_COLOR_BUFFER_BIT);
+            app.Display();
+            continue;
+        }
+        
         // Process events
         processEvents();
         GAME.clock.Reset();
@@ -213,6 +221,10 @@ int main(int argc, char *argv[]) {
         
         // Display rendered frame on screen
         app.Display();
+        
+        // Sync server state
+        clientReceiveGameState();
+        clientSendGameState();
         
         //sleep(1);
     }
