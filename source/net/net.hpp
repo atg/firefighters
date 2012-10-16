@@ -118,12 +118,35 @@ static void sendUDP(DataQueue& q, sf::SocketUDP& socket, sf::IPAddress& ip, int 
         socket.Send(member.packet, ip, port);
     }
 }
-
-static void serverReadPacket(NetworkStateServer& server, sf::Packet& packet, bool isTCP) {
+/*
+0   libsystem_c.dylib             	0x00007fff8d845ee2 memmove$VARIANT$sse3x + 37
+1   hat.Firefighters              	0x0000000106484880 char* std::__copy<true, std::random_access_iterator_tag>::copy<char>(char const*, char const*, char*) + 48
+2   hat.Firefighters              	0x0000000106486189 char* std::__copy_aux<char*, char*>(char*, char*, char*) + 41
+3   hat.Firefighters              	0x0000000106486155 char* std::__copy_normal<false, false>::__copy_n<char*, char*>(char*, char*, char*) + 37
+4   hat.Firefighters              	0x000000010648608d char* std::copy<char*, char*>(char*, char*, char*) + 45
+5   hat.Firefighters              	0x0000000106486125 char* std::__uninitialized_copy_aux<char*, char*>(char*, char*, char*, std::__true_type) + 37
+6   hat.Firefighters              	0x00000001064860f5 char* std::uninitialized_copy<char*, char*>(char*, char*, char*) + 37
+7   hat.Firefighters              	0x00000001064860c5 char* std::__uninitialized_copy_a<char*, char*, char>(char*, char*, char*, std::allocator<char>) + 37
+8   hat.Firefighters              	0x0000000106485d82 std::vector<char, std::allocator<char> >::operator=(std::vector<char, std::allocator<char> > const&) + 754
+9   hat.Firefighters              	0x00000001064924ef std::pair<std::vector<char, std::allocator<char> >, unsigned int>::operator=(std::pair<std::vector<char, std::allocator<char> >, unsigned int> const&) + 47
+10  hat.Firefighters              	0x000000010649238c void InvocationQueue::push<std::pair<std::vector<char, std::allocator<char> >, unsigned int> >(void (*)(std::pair<std::vector<char, std::allocator<char> >, unsigned int>*), std::pair<std::vector<char, std::allocator<char> >, unsigned int>) + 76
+11  hat.Firefighters              	0x0000000106483cc3 _ZL16serverReadPacketR18NetworkStateServerjRN2sf6PacketEb + 355
+12  hat.Firefighters              	0x0000000106482af6 _ZL19serverNetworkThreadPv + 1270
+13  com.sfml.system               	0x000000010691caae sf::Thread::ThreadFunc(void*) + 30
+14  libsystem_c.dylib             	0x00007fff8d86c8bf _pthread_start + 335
+15  libsystem_c.dylib             	0x00007fff8d86fb75 thread_start + 13
+*/
+static void serverReadPacket(NetworkStateServer& server, uint32_t clientID, sf::Packet& packet, bool isTCP) {
     // Do something with the packet...
     static int i;
     printf("%d\tReceived %d bytes\n", i, (int)(packet.GetDataSize()));
     i++;
+    
+    if (!isTCP && clientID > 0) {
+        std::string data = std::string(packet.GetData(), packet.GetDataSize());
+        auto ctx = new std::pair<std::string, uint32_t>(data, clientID);
+        mainQueue().push(game_serverQuickUpdate, ctx);
+    }
 }
 static void clientReadPacket(NetworkStateClient& client, sf::Packet& packet, bool isTCP) {
     
@@ -136,6 +159,13 @@ static void clientReadPacket(NetworkStateClient& client, sf::Packet& packet, boo
         packet >> cid;
         
         mainQueue().push(game_setClientID, cid);
+        return;
+    }
+    
+    if (!isTCP) {
+        const char* start = packet.GetData();
+        const char* end = start + packet.GetDataSize();
+        mainQueue().push(game_clientQuickUpdate, std::vector<char>(start, end));
     }
 }
 
@@ -173,13 +203,27 @@ static void serverNetworkThread(void* userData) {
             unsigned short port = server.port + 1;
             sf::IPAddress address;
             if (server.udpListener.Receive(packet, address, port) == sf::Socket::Done) {
-                serverReadPacket(server, packet, false);
+                printf("Server received UDP packet\n");
+                printf("Given address: %s\n", address.ToString().c_str());
+                printf("num clients: %d\n", (int)server.clients.size());
+                // continue;
+                // uint32_t clientID = 0;
+                for (const NetworkStateServer::ClientState& client : server.clients) {
+                    printf("Testing address: %s\n", client.ip.ToString().c_str());
+                    if (client.ip == address) {
+                        printf("Server on client id %d\n", (int)client.clientID);
+                          
+                        serverReadPacket(server, client.clientID, packet, false);
+                        break;
+                    }
+                }
             }
         }
         
         // TCP
         n = server.tcpSelector.Wait(0.01);
         for (unsigned i = 0; i < n; i++) {
+            
             sf::SocketTCP socket = server.tcpSelector.GetSocketReady(i);
             
             if (socket == server.tcpListener) {
@@ -188,7 +232,7 @@ static void serverNetworkThread(void* userData) {
                 sf::SocketTCP client;
                 server.tcpListener.Accept(client, &address);
                 
-                NetworkStateServer::ClientState* clientState;
+                NetworkStateServer::ClientState* clientState = NULL;
                 for (NetworkStateServer::ClientState& otherClient : server.clients) {
                     if (otherClient.ip == address)
                         clientState = &otherClient;
@@ -211,19 +255,29 @@ static void serverNetworkThread(void* userData) {
                 // Send a PlayerID packet
                 static uint32_t nextClientPlayerID = 2;
                 sf::Packet playerIDPacket;
+                
                 playerIDPacket << nextClientPlayerID;
+                clientState->clientID = nextClientPlayerID;
+                
                 nextClientPlayerID++;
                 client.Send(playerIDPacket);
             }
             else {
                 // It wants us to read from the given socket
                 sf::Packet packet;
-                if (socket.Receive(packet) == sf::Socket::Done) {
+                sf::Socket::Status status = socket.Receive(packet);
+                if (status == sf::Socket::Done) {
                     
                     // Read from the packet!
-                    serverReadPacket(server, packet, true);
+                    uint32_t clientID = 0;
+                    for (const NetworkStateServer::ClientState& client : server.clients) {
+                        if (client.hasTCPSocket && client.tcpSocket == socket) {
+                            serverReadPacket(server, client.clientID, packet, true);
+                            break;
+                        }
+                    }
                 }
-                else {
+                else if (status == sf::Socket::Disconnected || status == sf::Socket::Error) {
                     // Oops, error. Remove the socket.
                     server.tcpSelector.Remove(socket);
                     // remove_if(server.clients.begin(), server.clients.end(), socket);

@@ -28,7 +28,7 @@ struct Game {
 
 extern Game GAME;
 
-void game_setClientID(uint32_t* cid) {
+static void game_setClientID(uint32_t* cid) {
     printf("Got ClientID: %u\n", *cid);
     GAME.clientID = *cid;
     
@@ -37,6 +37,8 @@ void game_setClientID(uint32_t* cid) {
     GAME.world.players[me.identifier] = me;
     GAME.world.me = &(GAME.world.players[me.identifier]);
 }
+void game_clientQuickUpdate(std::vector<char>* packet);
+void game_serverQuickUpdate(std::pair<std::string, uint32_t>** ctx);
 
 struct Invocation {
     void (*function)(void*);

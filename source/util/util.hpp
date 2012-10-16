@@ -66,6 +66,14 @@ struct Vec2 {
         return sqrt(double(x * x + y * y));
     }
     
+    template<class R = double>
+    R distance(Vec2<T> other) {
+        T dx = x - other.x;
+        T dy = y - other.y;
+        return sqrt(double(dx * dx + dy * dy));
+    }
+    
+    
     // Vector operations
     Vec2<T> operator + (Vec2<T> other) {
         return Vec2<T>(x + other.x, y + other.y);

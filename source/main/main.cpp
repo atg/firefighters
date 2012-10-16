@@ -12,6 +12,7 @@
 #import "net/net.hpp"
 
 #import "net/net_client.hpp"
+#import "net/net_server.hpp"
 
 Game GAME;
 
@@ -181,7 +182,8 @@ int main(int argc, char *argv[]) {
         
         while (true) {
             mainQueue().popAll();
-            sf::Sleep(1.0);
+            serverSendGameState();
+            sf::Sleep(0.01);
         }
         
         return 0;
@@ -195,7 +197,9 @@ int main(int argc, char *argv[]) {
     // Create a player for us
     setUpClient();
     connectToServer();
-
+    
+    sf::Clock networkClock;
+    
     // Set up run loop
     while (app.IsOpened()) {
         
@@ -223,8 +227,10 @@ int main(int argc, char *argv[]) {
         app.Display();
         
         // Sync server state
-        clientReceiveGameState();
-        clientSendGameState();
+        if (networkClock.GetElapsedTime() > 0.05) {
+            clientSendGameState();
+            networkClock.Reset();
+        }
         
         //sleep(1);
     }
