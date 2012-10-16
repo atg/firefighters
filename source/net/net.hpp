@@ -185,11 +185,11 @@ static void serverNetworkThread(void* userData) {
     server.tcpSelector.Add(server.tcpListener);
     
     
-    server.udpListener.SetBlocking(false);
     if (!server.udpListener.Bind(server.port + 1)) {
         fprintf(stderr, "Could not bind on UDP port %d\n", server.port + 1);
         abort();
     }
+    server.udpListener.SetBlocking(false);
     
     printf("Server bound to UDP port %d\n", server.port + 1);
     
@@ -202,7 +202,9 @@ static void serverNetworkThread(void* userData) {
             sf::Packet packet;
             unsigned short port = server.port + 1;
             sf::IPAddress address;
-            if (server.udpListener.Receive(packet, address, port) == sf::Socket::Done) {
+            sf::Socket::Status status = server.udpListener.Receive(packet, address, port);
+               printf("SOCKET STATUS: %d\n", status);
+            if (status == sf::Socket::Done) {
                 printf("Server received UDP packet\n");
                 printf("Given address: %s\n", address.ToString().c_str());
                 printf("num clients: %d\n", (int)server.clients.size());

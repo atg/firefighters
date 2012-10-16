@@ -181,6 +181,7 @@ int main(int argc, char *argv[]) {
         setUpServer();
         
         while (true) {
+            printf("Q\n");
             mainQueue().popAll();
             serverSendGameState();
             sf::Sleep(0.01);
@@ -227,7 +228,7 @@ int main(int argc, char *argv[]) {
         app.Display();
         
         // Sync server state
-        if (networkClock.GetElapsedTime() > 0.05) {
+        if (networkClock.GetElapsedTime() > 1.0) {
             clientSendGameState();
             networkClock.Reset();
         }
