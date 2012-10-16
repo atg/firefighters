@@ -121,6 +121,9 @@ static void sendUDP(DataQueue& q, sf::SocketUDP& socket, sf::IPAddress& ip, int 
 
 static void serverReadPacket(NetworkStateServer& server, sf::Packet& packet, bool isTCP) {
     // Do something with the packet...
+    static int i;
+    printf("%d\tReceived %d bytes\n", i, (int)(packet.GetDataSize()));
+    i++;
 }
 static void clientReadPacket(NetworkStateClient& client, sf::Packet& packet, bool isTCP) {
     
