@@ -37,7 +37,7 @@ static void game_setClientID(uint32_t* cid) {
     GAME.world.players[me.identifier] = me;
     GAME.world.me = &(GAME.world.players[me.identifier]);
 }
-void game_clientQuickUpdate(std::vector<char>* packet);
+void game_clientQuickUpdate(std::vector<char>** ctx);
 void game_serverQuickUpdate(std::pair<std::string, uint32_t>** ctx);
 
 struct Invocation {

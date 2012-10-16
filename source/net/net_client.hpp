@@ -5,6 +5,24 @@
 #import <sstream>
 #import <string>
 
+/*
+Thread 0 Crashed:: Dispatch queue: com.apple.main-thread
+0   hat.Firefighters              	0x000000010c216cd4 Angle::normalize() + 20
+1   hat.Firefighters              	0x000000010c210c9e _ZL21clientQuickUpdateFromRK6Player + 94
+2   hat.Firefighters              	0x000000010c20fd67 _ZL19serverSendGameStatev + 695
+3   hat.Firefighters              	0x000000010c20f4d6 main + 150
+4   hat.Firefighters              	0x000000010c1ad2e4 start + 52
+
+Thread 2:
+0   libsystem_kernel.dylib        	0x00007fff98600df2 __select + 10
+1   com.sfml.network              	0x000000010c5ed6ee sf::SelectorBase::Wait(float) + 302
+2   hat.Firefighters              	0x000000010c21fa04 sf::Selector<sf::SocketTCP>::Wait(float) + 84
+3   hat.Firefighters              	0x000000010c211d7c _ZL19serverNetworkThreadPv + 1516
+4   com.sfml.system               	0x000000010c6b4aae sf::Thread::ThreadFunc(void*) + 30
+5   libsystem_c.dylib             	0x00007fff8d86c8bf _pthread_start + 335
+6   libsystem_c.dylib             	0x00007fff8d86fb75 thread_start + 13
+*/
+
 static void clientReceiveGameState(std::vector<char>& data) {
     ServerQuickUpdate u;
     std::istringstream iss(std::string(&data[0], data.size()));
@@ -40,8 +58,9 @@ static void clientReceiveGameState(std::vector<char>& data) {
         // u.set_velocityy(0.0);
     }
 }
-void game_clientQuickUpdate(std::vector<char>* packet) {
-    clientReceiveGameState(*packet);
+void game_clientQuickUpdate(std::vector<char>** ctx) {
+    clientReceiveGameState(**ctx);
+    delete *ctx;
 }
 
 static ClientQuickUpdate clientQuickUpdateFrom(const Player& player) {
@@ -50,8 +69,9 @@ static ClientQuickUpdate clientQuickUpdateFrom(const Player& player) {
     u.set_x(player.position.x);
     u.set_y(player.position.y);
     
-    GAME.world.me->angle.normalize();
-    u.set_angle(player.angle.angle);
+    Angle a = player.angle;
+    a.normalize();
+    u.set_angle(a.angle);
     
     // TODO: Smooth movement
     u.set_velocityx(0.0);

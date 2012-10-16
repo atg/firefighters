@@ -165,7 +165,7 @@ static void clientReadPacket(NetworkStateClient& client, sf::Packet& packet, boo
     if (!isTCP) {
         const char* start = packet.GetData();
         const char* end = start + packet.GetDataSize();
-        mainQueue().push(game_clientQuickUpdate, std::vector<char>(start, end));
+        mainQueue().push(game_clientQuickUpdate, new std::vector<char>(start, end));
     }
 }
 
