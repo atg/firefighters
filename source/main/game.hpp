@@ -28,38 +28,38 @@ struct Game {
 
 extern Game GAME;
 
-static void game_setClientID(uint32_t* cid) {
-    printf("Got ClientID: %u\n", *cid);
-    GAME.clientID = *cid;
+static void game_setClientID(void* ctx) {
+    uint32_t cid = *(uint32_t*)ctx;
+    delete (uint32_t*)ctx;
+    
+    printf("Got ClientID: %u\n", cid);
+    GAME.clientID = cid;
     
     // Create the player
     Player me(GAME.clientID);
     GAME.world.players[me.identifier] = me;
     GAME.world.me = &(GAME.world.players[me.identifier]);
 }
-void game_clientQuickUpdate(std::vector<char>** ctx);
-void game_serverQuickUpdate(std::pair<std::string, uint32_t>** ctx);
+void game_clientQuickUpdate(void* ctx);
+void game_serverQuickUpdate(void* ctx);
 
 struct Invocation {
     void (*function)(void*);
     void* context;
+    
     Invocation(void (*_function)(void*), void* _context) : function(_function), context(_context) { }
+    
     void invoke() {
         function(context);
-        if (context)
-            free(context);
     }
 };
 struct InvocationQueue {
     sf::Mutex mutex;
     std::queue<Invocation> q;
 
-    template<typename T>
-    void push(void (*function)(T*), T arg) {
+    void push(void (*function)(void*), void* arg) {
         sf::Lock lock(mutex);
-        T* x = (T*)malloc(sizeof(T));
-        *x = arg;
-        q.push(Invocation((void (*)(void*))function, (void*)x));
+        q.push(Invocation(function, arg));
     }
     void popAll() {
         sf::Lock lock(mutex);

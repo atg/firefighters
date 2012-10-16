@@ -58,9 +58,10 @@ static void clientReceiveGameState(std::vector<char>& data) {
         // u.set_velocityy(0.0);
     }
 }
-void game_clientQuickUpdate(std::vector<char>** ctx) {
-    clientReceiveGameState(**ctx);
-    delete *ctx;
+void game_clientQuickUpdate(void* ctx) {
+    auto arg = (std::vector<char>*)ctx;
+    clientReceiveGameState(*arg);
+    delete arg;
 }
 
 static ClientQuickUpdate clientQuickUpdateFrom(const Player& player) {

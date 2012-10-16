@@ -33,10 +33,11 @@ static void serverReceiveGameState(std::string data, uint32_t clientID) {
     // u.set_velocityx(0.0);
     // u.set_velocityy(0.0);
 }
-void game_serverQuickUpdate(std::pair<std::string, uint32_t>** ctx) {
+void game_serverQuickUpdate(void* ctx) {
+    auto arg = (std::pair<std::string, uint32_t>*)ctx;
     printf("Receive game state\n");
-    serverReceiveGameState((*ctx)->first, (*ctx)->second);
-    delete *ctx;
+    serverReceiveGameState(arg->first, arg->second);
+    delete arg;
 }
 static sf::Packet messageToPacket(const google::protobuf::Message* msg) {
     

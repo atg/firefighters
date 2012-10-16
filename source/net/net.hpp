@@ -158,14 +158,16 @@ static void clientReadPacket(NetworkStateClient& client, sf::Packet& packet, boo
         uint32_t cid;
         packet >> cid;
         
-        mainQueue().push(game_setClientID, cid);
+        auto ctx = new uint32_t(cid);
+        mainQueue().push(game_setClientID, ctx);
         return;
     }
     
     if (!isTCP) {
         const char* start = packet.GetData();
         const char* end = start + packet.GetDataSize();
-        mainQueue().push(game_clientQuickUpdate, new std::vector<char>(start, end));
+        auto ctx = new std::vector<char>(start, end);
+        mainQueue().push(game_clientQuickUpdate, ctx);
     }
 }
 
