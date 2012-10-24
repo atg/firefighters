@@ -60,7 +60,7 @@ static void processEvents() {
     
     Vec2<double> viewportPosition = Vec2<double>(0.0, 0.0); // TODO: Moving viewports!
     Vec2<double> playerPosition = GAME.world.me->position;
-    Vec2<double> mousePosition = viewportPosition + Vec2<double>(mouseX / (double)TILE_SIZE, mouseY / (double)TILE_SIZE);
+    Vec2<double> mousePosition = viewportPosition + Vec2<double>(mouseX, mouseY);
     
     // Movement keys
     
@@ -72,7 +72,7 @@ static void processEvents() {
     Angle angle = playerPosition.angle();
     bool changedPosition = false;
     
-    const double walkingSpeed = 5.0; //4.59; // ft/s
+    const double walkingSpeed = 4.59; //4.59; // ft/s
     
     // We should really use some kind of clock instead of having uneven movement speeds
     double movementDistance = GAME.clock.GetElapsedTime() * walkingSpeed; // For now we just move one foot

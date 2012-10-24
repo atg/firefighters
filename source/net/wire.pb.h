@@ -25,6 +25,8 @@
 #include <google/protobuf/generated_message_reflection.h>
 // @@protoc_insertion_point(includes)
 
+namespace wire {
+
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_wire_2eproto();
 void protobuf_AssignDesc_wire_2eproto();
@@ -33,7 +35,9 @@ void protobuf_ShutdownFile_wire_2eproto();
 class ClientQuickUpdate;
 class ServerQuickUpdate;
 class ServerQuickUpdate_PlayerUpdate;
-class ServerPlayerIDHandshake;
+class Chunk;
+class Object;
+class Map;
 
 // ===================================================================
 
@@ -91,42 +95,42 @@ class ClientQuickUpdate : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required double x = 1;
+  // required sint32 x = 1;
   inline bool has_x() const;
   inline void clear_x();
   static const int kXFieldNumber = 1;
-  inline double x() const;
-  inline void set_x(double value);
+  inline ::google::protobuf::int32 x() const;
+  inline void set_x(::google::protobuf::int32 value);
   
-  // required double y = 2;
+  // required sint32 y = 2;
   inline bool has_y() const;
   inline void clear_y();
   static const int kYFieldNumber = 2;
-  inline double y() const;
-  inline void set_y(double value);
+  inline ::google::protobuf::int32 y() const;
+  inline void set_y(::google::protobuf::int32 value);
   
-  // required double angle = 3;
+  // required sint32 angle = 3;
   inline bool has_angle() const;
   inline void clear_angle();
   static const int kAngleFieldNumber = 3;
-  inline double angle() const;
-  inline void set_angle(double value);
+  inline ::google::protobuf::int32 angle() const;
+  inline void set_angle(::google::protobuf::int32 value);
   
-  // required double velocityX = 4;
+  // required float velocityX = 5;
   inline bool has_velocityx() const;
   inline void clear_velocityx();
-  static const int kVelocityXFieldNumber = 4;
-  inline double velocityx() const;
-  inline void set_velocityx(double value);
+  static const int kVelocityXFieldNumber = 5;
+  inline float velocityx() const;
+  inline void set_velocityx(float value);
   
-  // required double velocityY = 5;
+  // required float velocityY = 6;
   inline bool has_velocityy() const;
   inline void clear_velocityy();
-  static const int kVelocityYFieldNumber = 5;
-  inline double velocityy() const;
-  inline void set_velocityy(double value);
+  static const int kVelocityYFieldNumber = 6;
+  inline float velocityy() const;
+  inline void set_velocityy(float value);
   
-  // @@protoc_insertion_point(class_scope:ClientQuickUpdate)
+  // @@protoc_insertion_point(class_scope:wire.ClientQuickUpdate)
  private:
   inline void set_has_x();
   inline void clear_has_x();
@@ -141,11 +145,11 @@ class ClientQuickUpdate : public ::google::protobuf::Message {
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  double x_;
-  double y_;
-  double angle_;
-  double velocityx_;
-  double velocityy_;
+  ::google::protobuf::int32 x_;
+  ::google::protobuf::int32 y_;
+  ::google::protobuf::int32 angle_;
+  float velocityx_;
+  float velocityy_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
@@ -220,15 +224,15 @@ class ServerQuickUpdate_PlayerUpdate : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 playerid() const;
   inline void set_playerid(::google::protobuf::uint32 value);
   
-  // required .ClientQuickUpdate update = 2;
+  // required .wire.ClientQuickUpdate update = 2;
   inline bool has_update() const;
   inline void clear_update();
   static const int kUpdateFieldNumber = 2;
-  inline const ::ClientQuickUpdate& update() const;
-  inline ::ClientQuickUpdate* mutable_update();
-  inline ::ClientQuickUpdate* release_update();
+  inline const ::wire::ClientQuickUpdate& update() const;
+  inline ::wire::ClientQuickUpdate* mutable_update();
+  inline ::wire::ClientQuickUpdate* release_update();
   
-  // @@protoc_insertion_point(class_scope:ServerQuickUpdate.PlayerUpdate)
+  // @@protoc_insertion_point(class_scope:wire.ServerQuickUpdate.PlayerUpdate)
  private:
   inline void set_has_playerid();
   inline void clear_has_playerid();
@@ -237,7 +241,7 @@ class ServerQuickUpdate_PlayerUpdate : public ::google::protobuf::Message {
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  ::ClientQuickUpdate* update_;
+  ::wire::ClientQuickUpdate* update_;
   ::google::protobuf::uint32 playerid_;
   
   mutable int _cached_size_;
@@ -308,24 +312,24 @@ class ServerQuickUpdate : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // repeated .ServerQuickUpdate.PlayerUpdate updates = 1;
+  // repeated .wire.ServerQuickUpdate.PlayerUpdate updates = 1;
   inline int updates_size() const;
   inline void clear_updates();
   static const int kUpdatesFieldNumber = 1;
-  inline const ::ServerQuickUpdate_PlayerUpdate& updates(int index) const;
-  inline ::ServerQuickUpdate_PlayerUpdate* mutable_updates(int index);
-  inline ::ServerQuickUpdate_PlayerUpdate* add_updates();
-  inline const ::google::protobuf::RepeatedPtrField< ::ServerQuickUpdate_PlayerUpdate >&
+  inline const ::wire::ServerQuickUpdate_PlayerUpdate& updates(int index) const;
+  inline ::wire::ServerQuickUpdate_PlayerUpdate* mutable_updates(int index);
+  inline ::wire::ServerQuickUpdate_PlayerUpdate* add_updates();
+  inline const ::google::protobuf::RepeatedPtrField< ::wire::ServerQuickUpdate_PlayerUpdate >&
       updates() const;
-  inline ::google::protobuf::RepeatedPtrField< ::ServerQuickUpdate_PlayerUpdate >*
+  inline ::google::protobuf::RepeatedPtrField< ::wire::ServerQuickUpdate_PlayerUpdate >*
       mutable_updates();
   
-  // @@protoc_insertion_point(class_scope:ServerQuickUpdate)
+  // @@protoc_insertion_point(class_scope:wire.ServerQuickUpdate)
  private:
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  ::google::protobuf::RepeatedPtrField< ::ServerQuickUpdate_PlayerUpdate > updates_;
+  ::google::protobuf::RepeatedPtrField< ::wire::ServerQuickUpdate_PlayerUpdate > updates_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
@@ -339,14 +343,14 @@ class ServerQuickUpdate : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class ServerPlayerIDHandshake : public ::google::protobuf::Message {
+class Chunk : public ::google::protobuf::Message {
  public:
-  ServerPlayerIDHandshake();
-  virtual ~ServerPlayerIDHandshake();
+  Chunk();
+  virtual ~Chunk();
   
-  ServerPlayerIDHandshake(const ServerPlayerIDHandshake& from);
+  Chunk(const Chunk& from);
   
-  inline ServerPlayerIDHandshake& operator=(const ServerPlayerIDHandshake& from) {
+  inline Chunk& operator=(const Chunk& from) {
     CopyFrom(from);
     return *this;
   }
@@ -360,17 +364,17 @@ class ServerPlayerIDHandshake : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ServerPlayerIDHandshake& default_instance();
+  static const Chunk& default_instance();
   
-  void Swap(ServerPlayerIDHandshake* other);
+  void Swap(Chunk* other);
   
   // implements Message ----------------------------------------------
   
-  ServerPlayerIDHandshake* New() const;
+  Chunk* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const ServerPlayerIDHandshake& from);
-  void MergeFrom(const ServerPlayerIDHandshake& from);
+  void CopyFrom(const Chunk& from);
+  void MergeFrom(const Chunk& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -393,31 +397,269 @@ class ServerPlayerIDHandshake : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required uint32 playerID = 1;
-  inline bool has_playerid() const;
-  inline void clear_playerid();
-  static const int kPlayerIDFieldNumber = 1;
-  inline ::google::protobuf::uint32 playerid() const;
-  inline void set_playerid(::google::protobuf::uint32 value);
+  // required sint32 x = 1;
+  inline bool has_x() const;
+  inline void clear_x();
+  static const int kXFieldNumber = 1;
+  inline ::google::protobuf::int32 x() const;
+  inline void set_x(::google::protobuf::int32 value);
   
-  // @@protoc_insertion_point(class_scope:ServerPlayerIDHandshake)
+  // required sint32 y = 2;
+  inline bool has_y() const;
+  inline void clear_y();
+  static const int kYFieldNumber = 2;
+  inline ::google::protobuf::int32 y() const;
+  inline void set_y(::google::protobuf::int32 value);
+  
+  // optional bytes tiles = 3;
+  inline bool has_tiles() const;
+  inline void clear_tiles();
+  static const int kTilesFieldNumber = 3;
+  inline const ::std::string& tiles() const;
+  inline void set_tiles(const ::std::string& value);
+  inline void set_tiles(const char* value);
+  inline void set_tiles(const void* value, size_t size);
+  inline ::std::string* mutable_tiles();
+  inline ::std::string* release_tiles();
+  
+  // optional bytes metadata = 4;
+  inline bool has_metadata() const;
+  inline void clear_metadata();
+  static const int kMetadataFieldNumber = 4;
+  inline const ::std::string& metadata() const;
+  inline void set_metadata(const ::std::string& value);
+  inline void set_metadata(const char* value);
+  inline void set_metadata(const void* value, size_t size);
+  inline ::std::string* mutable_metadata();
+  inline ::std::string* release_metadata();
+  
+  // @@protoc_insertion_point(class_scope:wire.Chunk)
  private:
-  inline void set_has_playerid();
-  inline void clear_has_playerid();
+  inline void set_has_x();
+  inline void clear_has_x();
+  inline void set_has_y();
+  inline void clear_has_y();
+  inline void set_has_tiles();
+  inline void clear_has_tiles();
+  inline void set_has_metadata();
+  inline void clear_has_metadata();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  ::google::protobuf::uint32 playerid_;
+  ::google::protobuf::int32 x_;
+  ::google::protobuf::int32 y_;
+  ::std::string* tiles_;
+  ::std::string* metadata_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_wire_2eproto();
   friend void protobuf_AssignDesc_wire_2eproto();
   friend void protobuf_ShutdownFile_wire_2eproto();
   
   void InitAsDefaultInstance();
-  static ServerPlayerIDHandshake* default_instance_;
+  static Chunk* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Object : public ::google::protobuf::Message {
+ public:
+  Object();
+  virtual ~Object();
+  
+  Object(const Object& from);
+  
+  inline Object& operator=(const Object& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Object& default_instance();
+  
+  void Swap(Object* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Object* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Object& from);
+  void MergeFrom(const Object& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required sint32 x = 1;
+  inline bool has_x() const;
+  inline void clear_x();
+  static const int kXFieldNumber = 1;
+  inline ::google::protobuf::int32 x() const;
+  inline void set_x(::google::protobuf::int32 value);
+  
+  // required sint32 y = 2;
+  inline bool has_y() const;
+  inline void clear_y();
+  static const int kYFieldNumber = 2;
+  inline ::google::protobuf::int32 y() const;
+  inline void set_y(::google::protobuf::int32 value);
+  
+  // required sint32 angle = 3;
+  inline bool has_angle() const;
+  inline void clear_angle();
+  static const int kAngleFieldNumber = 3;
+  inline ::google::protobuf::int32 angle() const;
+  inline void set_angle(::google::protobuf::int32 value);
+  
+  // @@protoc_insertion_point(class_scope:wire.Object)
+ private:
+  inline void set_has_x();
+  inline void clear_has_x();
+  inline void set_has_y();
+  inline void clear_has_y();
+  inline void set_has_angle();
+  inline void clear_has_angle();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::google::protobuf::int32 x_;
+  ::google::protobuf::int32 y_;
+  ::google::protobuf::int32 angle_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_wire_2eproto();
+  friend void protobuf_AssignDesc_wire_2eproto();
+  friend void protobuf_ShutdownFile_wire_2eproto();
+  
+  void InitAsDefaultInstance();
+  static Object* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Map : public ::google::protobuf::Message {
+ public:
+  Map();
+  virtual ~Map();
+  
+  Map(const Map& from);
+  
+  inline Map& operator=(const Map& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Map& default_instance();
+  
+  void Swap(Map* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Map* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Map& from);
+  void MergeFrom(const Map& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // repeated .wire.Chunk chunks = 1;
+  inline int chunks_size() const;
+  inline void clear_chunks();
+  static const int kChunksFieldNumber = 1;
+  inline const ::wire::Chunk& chunks(int index) const;
+  inline ::wire::Chunk* mutable_chunks(int index);
+  inline ::wire::Chunk* add_chunks();
+  inline const ::google::protobuf::RepeatedPtrField< ::wire::Chunk >&
+      chunks() const;
+  inline ::google::protobuf::RepeatedPtrField< ::wire::Chunk >*
+      mutable_chunks();
+  
+  // repeated .wire.Object objects = 2;
+  inline int objects_size() const;
+  inline void clear_objects();
+  static const int kObjectsFieldNumber = 2;
+  inline const ::wire::Object& objects(int index) const;
+  inline ::wire::Object* mutable_objects(int index);
+  inline ::wire::Object* add_objects();
+  inline const ::google::protobuf::RepeatedPtrField< ::wire::Object >&
+      objects() const;
+  inline ::google::protobuf::RepeatedPtrField< ::wire::Object >*
+      mutable_objects();
+  
+  // @@protoc_insertion_point(class_scope:wire.Map)
+ private:
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::google::protobuf::RepeatedPtrField< ::wire::Chunk > chunks_;
+  ::google::protobuf::RepeatedPtrField< ::wire::Object > objects_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_wire_2eproto();
+  friend void protobuf_AssignDesc_wire_2eproto();
+  friend void protobuf_ShutdownFile_wire_2eproto();
+  
+  void InitAsDefaultInstance();
+  static Map* default_instance_;
 };
 // ===================================================================
 
@@ -426,7 +668,7 @@ class ServerPlayerIDHandshake : public ::google::protobuf::Message {
 
 // ClientQuickUpdate
 
-// required double x = 1;
+// required sint32 x = 1;
 inline bool ClientQuickUpdate::has_x() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -440,15 +682,15 @@ inline void ClientQuickUpdate::clear_x() {
   x_ = 0;
   clear_has_x();
 }
-inline double ClientQuickUpdate::x() const {
+inline ::google::protobuf::int32 ClientQuickUpdate::x() const {
   return x_;
 }
-inline void ClientQuickUpdate::set_x(double value) {
+inline void ClientQuickUpdate::set_x(::google::protobuf::int32 value) {
   set_has_x();
   x_ = value;
 }
 
-// required double y = 2;
+// required sint32 y = 2;
 inline bool ClientQuickUpdate::has_y() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -462,15 +704,15 @@ inline void ClientQuickUpdate::clear_y() {
   y_ = 0;
   clear_has_y();
 }
-inline double ClientQuickUpdate::y() const {
+inline ::google::protobuf::int32 ClientQuickUpdate::y() const {
   return y_;
 }
-inline void ClientQuickUpdate::set_y(double value) {
+inline void ClientQuickUpdate::set_y(::google::protobuf::int32 value) {
   set_has_y();
   y_ = value;
 }
 
-// required double angle = 3;
+// required sint32 angle = 3;
 inline bool ClientQuickUpdate::has_angle() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -484,15 +726,15 @@ inline void ClientQuickUpdate::clear_angle() {
   angle_ = 0;
   clear_has_angle();
 }
-inline double ClientQuickUpdate::angle() const {
+inline ::google::protobuf::int32 ClientQuickUpdate::angle() const {
   return angle_;
 }
-inline void ClientQuickUpdate::set_angle(double value) {
+inline void ClientQuickUpdate::set_angle(::google::protobuf::int32 value) {
   set_has_angle();
   angle_ = value;
 }
 
-// required double velocityX = 4;
+// required float velocityX = 5;
 inline bool ClientQuickUpdate::has_velocityx() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
@@ -506,15 +748,15 @@ inline void ClientQuickUpdate::clear_velocityx() {
   velocityx_ = 0;
   clear_has_velocityx();
 }
-inline double ClientQuickUpdate::velocityx() const {
+inline float ClientQuickUpdate::velocityx() const {
   return velocityx_;
 }
-inline void ClientQuickUpdate::set_velocityx(double value) {
+inline void ClientQuickUpdate::set_velocityx(float value) {
   set_has_velocityx();
   velocityx_ = value;
 }
 
-// required double velocityY = 5;
+// required float velocityY = 6;
 inline bool ClientQuickUpdate::has_velocityy() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
@@ -528,10 +770,10 @@ inline void ClientQuickUpdate::clear_velocityy() {
   velocityy_ = 0;
   clear_has_velocityy();
 }
-inline double ClientQuickUpdate::velocityy() const {
+inline float ClientQuickUpdate::velocityy() const {
   return velocityy_;
 }
-inline void ClientQuickUpdate::set_velocityy(double value) {
+inline void ClientQuickUpdate::set_velocityy(float value) {
   set_has_velocityy();
   velocityy_ = value;
 }
@@ -562,7 +804,7 @@ inline void ServerQuickUpdate_PlayerUpdate::set_playerid(::google::protobuf::uin
   playerid_ = value;
 }
 
-// required .ClientQuickUpdate update = 2;
+// required .wire.ClientQuickUpdate update = 2;
 inline bool ServerQuickUpdate_PlayerUpdate::has_update() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -573,20 +815,20 @@ inline void ServerQuickUpdate_PlayerUpdate::clear_has_update() {
   _has_bits_[0] &= ~0x00000002u;
 }
 inline void ServerQuickUpdate_PlayerUpdate::clear_update() {
-  if (update_ != NULL) update_->::ClientQuickUpdate::Clear();
+  if (update_ != NULL) update_->::wire::ClientQuickUpdate::Clear();
   clear_has_update();
 }
-inline const ::ClientQuickUpdate& ServerQuickUpdate_PlayerUpdate::update() const {
+inline const ::wire::ClientQuickUpdate& ServerQuickUpdate_PlayerUpdate::update() const {
   return update_ != NULL ? *update_ : *default_instance_->update_;
 }
-inline ::ClientQuickUpdate* ServerQuickUpdate_PlayerUpdate::mutable_update() {
+inline ::wire::ClientQuickUpdate* ServerQuickUpdate_PlayerUpdate::mutable_update() {
   set_has_update();
-  if (update_ == NULL) update_ = new ::ClientQuickUpdate;
+  if (update_ == NULL) update_ = new ::wire::ClientQuickUpdate;
   return update_;
 }
-inline ::ClientQuickUpdate* ServerQuickUpdate_PlayerUpdate::release_update() {
+inline ::wire::ClientQuickUpdate* ServerQuickUpdate_PlayerUpdate::release_update() {
   clear_has_update();
-  ::ClientQuickUpdate* temp = update_;
+  ::wire::ClientQuickUpdate* temp = update_;
   update_ = NULL;
   return temp;
 }
@@ -595,59 +837,323 @@ inline ::ClientQuickUpdate* ServerQuickUpdate_PlayerUpdate::release_update() {
 
 // ServerQuickUpdate
 
-// repeated .ServerQuickUpdate.PlayerUpdate updates = 1;
+// repeated .wire.ServerQuickUpdate.PlayerUpdate updates = 1;
 inline int ServerQuickUpdate::updates_size() const {
   return updates_.size();
 }
 inline void ServerQuickUpdate::clear_updates() {
   updates_.Clear();
 }
-inline const ::ServerQuickUpdate_PlayerUpdate& ServerQuickUpdate::updates(int index) const {
+inline const ::wire::ServerQuickUpdate_PlayerUpdate& ServerQuickUpdate::updates(int index) const {
   return updates_.Get(index);
 }
-inline ::ServerQuickUpdate_PlayerUpdate* ServerQuickUpdate::mutable_updates(int index) {
+inline ::wire::ServerQuickUpdate_PlayerUpdate* ServerQuickUpdate::mutable_updates(int index) {
   return updates_.Mutable(index);
 }
-inline ::ServerQuickUpdate_PlayerUpdate* ServerQuickUpdate::add_updates() {
+inline ::wire::ServerQuickUpdate_PlayerUpdate* ServerQuickUpdate::add_updates() {
   return updates_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::ServerQuickUpdate_PlayerUpdate >&
+inline const ::google::protobuf::RepeatedPtrField< ::wire::ServerQuickUpdate_PlayerUpdate >&
 ServerQuickUpdate::updates() const {
   return updates_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::ServerQuickUpdate_PlayerUpdate >*
+inline ::google::protobuf::RepeatedPtrField< ::wire::ServerQuickUpdate_PlayerUpdate >*
 ServerQuickUpdate::mutable_updates() {
   return &updates_;
 }
 
 // -------------------------------------------------------------------
 
-// ServerPlayerIDHandshake
+// Chunk
 
-// required uint32 playerID = 1;
-inline bool ServerPlayerIDHandshake::has_playerid() const {
+// required sint32 x = 1;
+inline bool Chunk::has_x() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void ServerPlayerIDHandshake::set_has_playerid() {
+inline void Chunk::set_has_x() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void ServerPlayerIDHandshake::clear_has_playerid() {
+inline void Chunk::clear_has_x() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void ServerPlayerIDHandshake::clear_playerid() {
-  playerid_ = 0u;
-  clear_has_playerid();
+inline void Chunk::clear_x() {
+  x_ = 0;
+  clear_has_x();
 }
-inline ::google::protobuf::uint32 ServerPlayerIDHandshake::playerid() const {
-  return playerid_;
+inline ::google::protobuf::int32 Chunk::x() const {
+  return x_;
 }
-inline void ServerPlayerIDHandshake::set_playerid(::google::protobuf::uint32 value) {
-  set_has_playerid();
-  playerid_ = value;
+inline void Chunk::set_x(::google::protobuf::int32 value) {
+  set_has_x();
+  x_ = value;
+}
+
+// required sint32 y = 2;
+inline bool Chunk::has_y() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Chunk::set_has_y() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Chunk::clear_has_y() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Chunk::clear_y() {
+  y_ = 0;
+  clear_has_y();
+}
+inline ::google::protobuf::int32 Chunk::y() const {
+  return y_;
+}
+inline void Chunk::set_y(::google::protobuf::int32 value) {
+  set_has_y();
+  y_ = value;
+}
+
+// optional bytes tiles = 3;
+inline bool Chunk::has_tiles() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Chunk::set_has_tiles() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Chunk::clear_has_tiles() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Chunk::clear_tiles() {
+  if (tiles_ != &::google::protobuf::internal::kEmptyString) {
+    tiles_->clear();
+  }
+  clear_has_tiles();
+}
+inline const ::std::string& Chunk::tiles() const {
+  return *tiles_;
+}
+inline void Chunk::set_tiles(const ::std::string& value) {
+  set_has_tiles();
+  if (tiles_ == &::google::protobuf::internal::kEmptyString) {
+    tiles_ = new ::std::string;
+  }
+  tiles_->assign(value);
+}
+inline void Chunk::set_tiles(const char* value) {
+  set_has_tiles();
+  if (tiles_ == &::google::protobuf::internal::kEmptyString) {
+    tiles_ = new ::std::string;
+  }
+  tiles_->assign(value);
+}
+inline void Chunk::set_tiles(const void* value, size_t size) {
+  set_has_tiles();
+  if (tiles_ == &::google::protobuf::internal::kEmptyString) {
+    tiles_ = new ::std::string;
+  }
+  tiles_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Chunk::mutable_tiles() {
+  set_has_tiles();
+  if (tiles_ == &::google::protobuf::internal::kEmptyString) {
+    tiles_ = new ::std::string;
+  }
+  return tiles_;
+}
+inline ::std::string* Chunk::release_tiles() {
+  clear_has_tiles();
+  if (tiles_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = tiles_;
+    tiles_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// optional bytes metadata = 4;
+inline bool Chunk::has_metadata() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Chunk::set_has_metadata() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Chunk::clear_has_metadata() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Chunk::clear_metadata() {
+  if (metadata_ != &::google::protobuf::internal::kEmptyString) {
+    metadata_->clear();
+  }
+  clear_has_metadata();
+}
+inline const ::std::string& Chunk::metadata() const {
+  return *metadata_;
+}
+inline void Chunk::set_metadata(const ::std::string& value) {
+  set_has_metadata();
+  if (metadata_ == &::google::protobuf::internal::kEmptyString) {
+    metadata_ = new ::std::string;
+  }
+  metadata_->assign(value);
+}
+inline void Chunk::set_metadata(const char* value) {
+  set_has_metadata();
+  if (metadata_ == &::google::protobuf::internal::kEmptyString) {
+    metadata_ = new ::std::string;
+  }
+  metadata_->assign(value);
+}
+inline void Chunk::set_metadata(const void* value, size_t size) {
+  set_has_metadata();
+  if (metadata_ == &::google::protobuf::internal::kEmptyString) {
+    metadata_ = new ::std::string;
+  }
+  metadata_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Chunk::mutable_metadata() {
+  set_has_metadata();
+  if (metadata_ == &::google::protobuf::internal::kEmptyString) {
+    metadata_ = new ::std::string;
+  }
+  return metadata_;
+}
+inline ::std::string* Chunk::release_metadata() {
+  clear_has_metadata();
+  if (metadata_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = metadata_;
+    metadata_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// Object
+
+// required sint32 x = 1;
+inline bool Object::has_x() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Object::set_has_x() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Object::clear_has_x() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Object::clear_x() {
+  x_ = 0;
+  clear_has_x();
+}
+inline ::google::protobuf::int32 Object::x() const {
+  return x_;
+}
+inline void Object::set_x(::google::protobuf::int32 value) {
+  set_has_x();
+  x_ = value;
+}
+
+// required sint32 y = 2;
+inline bool Object::has_y() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Object::set_has_y() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Object::clear_has_y() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Object::clear_y() {
+  y_ = 0;
+  clear_has_y();
+}
+inline ::google::protobuf::int32 Object::y() const {
+  return y_;
+}
+inline void Object::set_y(::google::protobuf::int32 value) {
+  set_has_y();
+  y_ = value;
+}
+
+// required sint32 angle = 3;
+inline bool Object::has_angle() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Object::set_has_angle() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Object::clear_has_angle() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Object::clear_angle() {
+  angle_ = 0;
+  clear_has_angle();
+}
+inline ::google::protobuf::int32 Object::angle() const {
+  return angle_;
+}
+inline void Object::set_angle(::google::protobuf::int32 value) {
+  set_has_angle();
+  angle_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// Map
+
+// repeated .wire.Chunk chunks = 1;
+inline int Map::chunks_size() const {
+  return chunks_.size();
+}
+inline void Map::clear_chunks() {
+  chunks_.Clear();
+}
+inline const ::wire::Chunk& Map::chunks(int index) const {
+  return chunks_.Get(index);
+}
+inline ::wire::Chunk* Map::mutable_chunks(int index) {
+  return chunks_.Mutable(index);
+}
+inline ::wire::Chunk* Map::add_chunks() {
+  return chunks_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::wire::Chunk >&
+Map::chunks() const {
+  return chunks_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::wire::Chunk >*
+Map::mutable_chunks() {
+  return &chunks_;
+}
+
+// repeated .wire.Object objects = 2;
+inline int Map::objects_size() const {
+  return objects_.size();
+}
+inline void Map::clear_objects() {
+  objects_.Clear();
+}
+inline const ::wire::Object& Map::objects(int index) const {
+  return objects_.Get(index);
+}
+inline ::wire::Object* Map::mutable_objects(int index) {
+  return objects_.Mutable(index);
+}
+inline ::wire::Object* Map::add_objects() {
+  return objects_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::wire::Object >&
+Map::objects() const {
+  return objects_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::wire::Object >*
+Map::mutable_objects() {
+  return &objects_;
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
+
+}  // namespace wire
 
 #ifndef SWIG
 namespace google {

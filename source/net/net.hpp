@@ -143,14 +143,15 @@ static void serverReadPacket(NetworkStateServer& server, uint32_t clientID, sf::
     i++;
     
     if (!isTCP && clientID > 0) {
-        std::string data = std::string(packet.GetData(), packet.GetDataSize());
-        auto ctx = new std::pair<std::string, uint32_t>(data, clientID);
-        mainQueue().push(game_serverQuickUpdate, ctx);
+        const char* dataptr = packet.GetData();
+        std::string data = std::string(dataptr, dataptr + packet.GetDataSize());
+        mainQueue().push(game_serverQuickUpdate, InvocationMessage(clientID, data));
     }
 }
 static void clientReadPacket(NetworkStateClient& client, sf::Packet& packet, bool isTCP) {
     
     // Do something with the packet...
+    printf("CLIENT READ PACKET: is TCP? %d, has handled first? %d\n", isTCP, client.hasHandledFirstTCPPacket);
     if (isTCP && !client.hasHandledFirstTCPPacket) {
         // This is our client ID, hopefully
         client.hasHandledFirstTCPPacket = true;
@@ -158,16 +159,13 @@ static void clientReadPacket(NetworkStateClient& client, sf::Packet& packet, boo
         uint32_t cid;
         packet >> cid;
         
-        auto ctx = new uint32_t(cid);
-        mainQueue().push(game_setClientID, ctx);
+        mainQueue().push(game_setClientID, InvocationMessage(cid, ""));
         return;
     }
     
     if (!isTCP) {
-        const char* start = packet.GetData();
-        const char* end = start + packet.GetDataSize();
-        auto ctx = new std::vector<char>(start, end);
-        mainQueue().push(game_clientQuickUpdate, ctx);
+        const char* dataptr = packet.GetData();
+        mainQueue().push(game_clientQuickUpdate, InvocationMessage(0, std::string(dataptr, dataptr + packet.GetDataSize())));
     }
 }
 
@@ -200,7 +198,9 @@ static void serverNetworkThread(void* userData) {
         unsigned n = server.clients.size();
         if (n == 0)
             n++;
-        for (unsigned i = 0; i < n; i++) {
+        
+        int notDoneCount = 0;
+        while (notDoneCount < 2) {
             sf::Packet packet;
             unsigned short port = server.port + 1;
             sf::IPAddress address;
@@ -221,6 +221,9 @@ static void serverNetworkThread(void* userData) {
                         break;
                     }
                 }
+            }
+            else {
+                notDoneCount++;
             }
         }
         

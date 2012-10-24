@@ -1,8 +1,8 @@
 #import <map>
 #import "util/util.hpp"
 
-const int TILE_SIZE = 24; // In pixels
-const int CHUNK_SIZE = 100; // Let's say 100 x 100
+const int TILE_SIZE = 32; // In pixels
+const int CHUNK_SIZE = 32; // In tiles
 
 enum class CharacterClass : uint8_t {
     Flamethrower = 0,
@@ -36,24 +36,22 @@ struct Player {
           health(Player::MaxHealth) { }
 };
 
+// Some tiles are rotationally symmetric in C2 or C4
+#define NS(name) name ## N, name ## S
+#define NSEW(name) name ## N, name ## S, name ## E, name ## W
+
 struct Tile {
     enum class Type {
         Black = 0,
         Dirt,
+        Grass,
         Tarmac,
+        
+        NSEW(Door),
     };
-    
-    enum {
-        Rot0 = 0,
-        Rot90 = 1,
-        Rot180 = 2,
-        Rot270 = 3,
-    };
-    
     Type type;
-    unsigned rotation : 2;
     
-    Tile() : type(Tile::Type::Black), rotation(Tile::Rot0) { }
+    Tile() : type(Tile::Type::Black) { }
 };
 
 struct Chunk {

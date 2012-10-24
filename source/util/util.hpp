@@ -1,5 +1,14 @@
 #import <cmath>
 
+template<class T>
+static T propermod(T a, T n) {
+    return ((a % n) + n) % n;
+}
+template<class T>
+static T fpropermod(T a, T n) {
+    return fmod(fmod(a, n) + n, n);
+}
+
 struct Angle {
     double angle;
     Angle(double radians) : angle(radians) { }
@@ -25,9 +34,22 @@ struct Angle {
     }
     
     // Angles are represented as 16-bit ints over the wire
-    // uint16_t wireRepr() {
-    //    return round((angle * 65536.0) / M_2_PI) % 65536;
-    // }
+    static Angle FromWire(unsigned v) {
+        double theta = v;
+        // [0, 65536) -> [0, 2 pi)
+        theta /= 65536.0;
+        theta *= 2 * M_PI;
+        
+        Angle a = Angle(theta);
+        a.normalize();
+        return a;
+    }
+    uint16_t wireRepr() {
+       return propermod((int)round((angle * 65536.0) / (2.0 * M_PI)), 65536);
+    }
+    int degrees() {
+        return round(angle * 180.0 / (2.0 * M_PI)) + 180;
+    }
 };
 
 template<class T>
@@ -106,3 +128,12 @@ struct Vec2 {
         return Vec2<T>(x * constant, y * constant);
     }
 };
+
+
+static void die(const char* str) {
+    fprintf(stderr, "%s\n", str);
+    abort();
+}
+static void coma(const char* str) {
+    fprintf(stderr, "%s\n", str);
+}

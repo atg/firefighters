@@ -1,12 +1,16 @@
 // Remember, send state, not differences
+package wire;
 
 // An update from the client to the server, sent over UDP
 message ClientQuickUpdate {
-    required double x = 1;
-    required double y = 2;
-    required double angle = 3;
-    required double velocityX = 4;
-    required double velocityY = 5;
+    required sint32 x = 1;
+    required sint32 y = 2;
+    required sint32 angle = 3;
+    // required sint32 angularVelocity = 4;
+    required float velocityX = 5;
+    required float velocityY = 6;
+    // required float accelerationX = 7;
+    // required float accelerationY = 8;
 }
 
 // An update from the server to the clients, sent over UDP
@@ -19,6 +23,27 @@ message ServerQuickUpdate {
     repeated PlayerUpdate updates = 1;
 }
 
-message ServerPlayerIDHandshake {
-    required uint32 playerID = 1;
+// message ServerPlayerIDHandshake {
+// required uint32 playerID = 1;
+// }
+
+message Chunk {
+    required sint32 x = 1;
+    required sint32 y = 2;
+    
+    // Tiles are compressed with snappy
+    optional bytes tiles = 3;
+    
+    // Metadata is put into a "snake" (hilbert curve) then compressed with snappy
+    optional bytes metadata = 4;
+}
+message Object {
+    
+    required sint32 x = 1;
+    required sint32 y = 2;
+    required sint32 angle = 3;
+}
+message Map {
+    repeated Chunk chunks = 1;
+    repeated Object objects = 2;
 }

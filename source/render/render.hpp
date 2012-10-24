@@ -21,7 +21,7 @@ static void drawPlayer(Player& player, bool isUser) {
     double height = TILE_SIZE * 2.0 / 3.0;
     sf::Color color = isUser ? sf::Color(255, 255, 124, 255) : sf::Color(255, 124, 124, 255);
     sf::Shape box = sf::Shape::Rectangle(0, 0, width, height, color);
-    box.SetPosition(player.position.x * TILE_SIZE, player.position.y * TILE_SIZE);
+    box.SetPosition(player.position.x, player.position.y);
     box.SetCenter(width / 2, height / 2);
     box.SetRotation(360.0 - player.angle.angle * 180.0 / M_PI + 90.0);
     
