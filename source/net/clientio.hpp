@@ -149,6 +149,7 @@ struct NetClient {
             if (udp.Receive(data, PACKET_SIZE, srec, address, port) == sf::Socket::Done && srec > 0)
             // if (udp.Receive(packet, address, port) == sf::Socket::Done)
             {
+                printf("Received from UDP\n");
                 packet.Append(data, srec);
                 clientReadPacket(packet, false);
             }

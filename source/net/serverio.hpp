@@ -144,7 +144,7 @@ struct NetServer {
                 printf("UDP STATUS = %d\n", (int)status);
                 continue;
             }
-            continue;
+            // continue;
             printf("-BEGIN LOCK\n");
             sf::Lock lock(clientMutex);
             printf("-END LOCK\n");

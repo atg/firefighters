@@ -1,6 +1,10 @@
 # Todo: Replace this with a python script
 mkdir -p build/Firefighters.app/Contents/MacOS || true
 
+# Freetype
+cp deps/libfreetype.6.dylib build/Firefighters.app/Contents/Frameworks/libfreetype.6.dylib
+install_name_tool -change /usr/X11/lib/libfreetype.6.dylib @executable_path/../Frameworks/libfreetype.6.dylib build/Firefighters.app/Contents/Frameworks/sfml-graphics.framework/Versions/A/sfml-graphics
+
 # Build .protos
 deps/protobuf-2.4.1/src/protoc -Isource/net --cpp_out=source/net source/net/wire.proto
 mv source/net/wire.pb.cc source/net/wire.pb.cpp
