@@ -22,7 +22,7 @@ struct NetClient {
     void clientReadPacket(sf::Packet& packet, bool isTCP) {
         
         // Do something with the packet...
-        printf("CLIENT READ PACKET: is TCP? %d, has handled first? %d\n", isTCP, hasHandledFirstTCPPacket);
+        // printf("CLIENT READ PACKET: is TCP? %d, has handled first? %d\n", isTCP, hasHandledFirstTCPPacket);
         if (isTCP && !hasHandledFirstTCPPacket) {
             // This is our client ID, hopefully
             hasHandledFirstTCPPacket = true;
@@ -118,7 +118,7 @@ struct NetClient {
         sf::Lock lock(queue.mutex);
         for (; !queue.q.empty(); queue.q.pop()) {
             DataQueue::Member& member = queue.q.back();
-            printf("Send TCP\n");
+            // printf("Send TCP\n");
             tcp.Send(member.packet);
         }
     }
@@ -127,7 +127,7 @@ struct NetClient {
         sf::Lock lock(queue.mutex);
         for (; !queue.q.empty(); queue.q.pop()) {
             DataQueue::Member& member = queue.q.back();
-            printf("Send UDP\n");
+            // printf("Send UDP\n");
             udpSender.Send(member.packet.GetData(), member.packet.GetDataSize(), serverIP, port + 1);
         }
     }
@@ -149,7 +149,7 @@ struct NetClient {
             if (udp.Receive(data, PACKET_SIZE, srec, address, port) == sf::Socket::Done && srec > 0)
             // if (udp.Receive(packet, address, port) == sf::Socket::Done)
             {
-                printf("Received from UDP\n");
+                // printf("Received from UDP\n");
                 packet.Append(data, srec);
                 clientReadPacket(packet, false);
             }

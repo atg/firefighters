@@ -35,7 +35,7 @@ struct NetServer {
             for (Client& client : clients) {
                 if (client.clientID != member.clientID) continue;
 
-                printf("Sending TCP %s\n", client.ip.ToString().c_str());
+                // printf("Sending TCP %s\n", client.ip.ToString().c_str());
                 client.tcpSocket.Send(member.packet);
                 break;
             }
@@ -52,7 +52,7 @@ struct NetServer {
             for (Client& client : clients) {
                 if (client.clientID != member.clientID) continue;
                 
-                printf("Sending UDP %s:%d\n", client.ip.ToString().c_str(), port);
+                // printf("Sending UDP %s:%d\n", client.ip.ToString().c_str(), port);
                 udpSender.Send(member.packet.GetData(), member.packet.GetDataSize(), client.ip, port + 2);
                 break;
             }
@@ -61,9 +61,9 @@ struct NetServer {
 
     // ------ Receiving ------
     void serverReadPacket(uint32_t clientID, sf::Packet& packet, bool isTCP) {
-        static int i;
-        printf("%d\tReceived %d bytes\n", i, (int)(packet.GetDataSize()));
-        i++;
+        // static int i;
+        // printf("%d\tReceived %d bytes\n", i, (int)(packet.GetDataSize()));
+        // i++;
 
         if (!isTCP && clientID > 0) {
             const char* dataptr = packet.GetData();
@@ -135,23 +135,23 @@ struct NetServer {
             unsigned short serverInPort = port + 1;
             sf::IPAddress address;
             
-            printf("BEGIN RECIEVE %d\n", udpListener.IsValid());
+            // printf("BEGIN RECIEVE %d\n", udpListener.IsValid());
             // sf::Socket::Status status = udpListener.Receive(packet, address, serverInPort);
             sf::Socket::Status status = udpListener.Receive(data, PACKET_SIZE, srec, address, serverInPort);
             
-            printf("END RECIEVE\n");
+            // printf("END RECIEVE\n");
             if (status != sf::Socket::Done || srec == 0) {
-                printf("UDP STATUS = %d\n", (int)status);
+                // printf("UDP STATUS = %d\n", (int)status);
                 continue;
             }
             // continue;
-            printf("-BEGIN LOCK\n");
+            // printf("-BEGIN LOCK\n");
             sf::Lock lock(clientMutex);
-            printf("-END LOCK\n");
-            printf("#clients = %lu\n", clients.size());
+            // printf("-END LOCK\n");
+            // printf("#clients = %lu\n", clients.size());
             int id = -1;
             for (const Client& client : clients) {
-                printf("  %s != %s = %d\n", client.ip.ToString().c_str(), address.ToString().c_str(), client.ip != address);
+                // printf("  %s != %s = %d\n", client.ip.ToString().c_str(), address.ToString().c_str(), client.ip != address);
                 if (client.ip != address)
                     continue;
                 

@@ -28,17 +28,17 @@ static void serverReceiveGameState(std::string data, uint32_t clientID) {
     // player->angle = Angle::FromWire(u.angle());
     player->angle.angle = u.angle();
 
-    printf("Player %d\n", (int)clientID);
-    printf("  x = %d\n", (int)(u.x()));
-    printf("  y = %d\n", (int)(u.y()));
-    printf(" th = %d\n", player->angle.degrees());
+    // printf("Player %d\n", (int)clientID);
+    // printf("  x = %d\n", (int)(u.x()));
+    // printf("  y = %d\n", (int)(u.y()));
+    // printf(" th = %d\n", player->angle.degrees());
     
     // TODO: Smooth movement
     // u.set_velocityx(0.0);
     // u.set_velocityy(0.0);
 }
 void game_serverQuickUpdate(InvocationMessage ctx) {
-    printf("Receive game state from %d\n", ctx.sender);
+    // printf("Receive game state from %d\n", ctx.sender);
     serverReceiveGameState(ctx.data, ctx.sender);
 }
 static sf::Packet messageToPacket(const google::protobuf::Message* msg) {
@@ -52,7 +52,7 @@ static sf::Packet messageToPacket(const google::protobuf::Message* msg) {
     if (!s.size())
         die("No data when serializing quick update to string");
     
-    printf("Sending %d bytes\n", (int)(s.size()));
+    // printf("Sending %d bytes\n", (int)(s.size()));
     sf::Packet packet;
     packet.Append(&s[0], s.size());
     return packet;

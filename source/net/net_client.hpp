@@ -75,7 +75,7 @@ static void clientSendGameState() {
     if (!s.size())
         die("No data when serializing quick update to string\n");
     
-    printf("Sending %d bytes\n", (int)(s.size()));
+    // printf("Sending %d bytes\n", (int)(s.size()));
     sf::Packet packet;
     packet.Append(&s[0], s.size());
     
