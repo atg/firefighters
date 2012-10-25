@@ -10,5 +10,5 @@ then
     mv deps/protobuf-2.4.1/src/.libs/libprotobuf.dylib deps/protobuf-2.4.1/src/.libs/_libprotobuf.dylib
 fi
 
-clang++ -std=c++0x -Ideps/protobuf-2.4.1/src -Ldeps/protobuf-2.4.1/src/.libs/ -lprotobuf -Fdeps/sfml-1.6/lib64 -framework SFML -framework sfml-audio -framework sfml-graphics -framework sfml-network -framework sfml-system -framework sfml-window -framework OpenGL -Ideps/sfml-1.6/lib64/SFML.framework/Headers -Isource -o build/Firefighters.app/Contents/MacOS/Firefighters source/*/*.cpp
+clang++ -std=c++0x -Ideps/boost -Ideps/protobuf-2.4.1/src -Ldeps/protobuf-2.4.1/src/.libs/ -lprotobuf -Fdeps/sfml-1.6/lib64 -framework SFML -framework sfml-audio -framework sfml-graphics -framework sfml-network -framework sfml-system -framework sfml-window -framework OpenGL -Ideps/sfml-1.6/lib64/SFML.framework/Headers -Isource -o build/Firefighters.app/Contents/MacOS/Firefighters source/*/*.cpp
 
