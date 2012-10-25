@@ -53,7 +53,7 @@ struct NetServer {
                 if (client.clientID != member.clientID) continue;
                 
                 printf("Sending UDP %s:%d\n", client.ip.ToString().c_str(), port);
-                udpSender.Send(member.packet, client.ip, port + 2);
+                udpSender.Send(member.packet.GetData(), member.packet.GetDataSize(), client.ip, port + 2);
                 break;
             }
         }
@@ -124,22 +124,31 @@ struct NetServer {
     // ------ UDP ------
     void readUDP() {
         while (true) {
+            
+            const size_t PACKET_SIZE = 4096;
+            static char data[PACKET_SIZE + 1];
+            memset(data, 0, PACKET_SIZE);
+                
+            size_t srec = 0;
+            
             sf::Packet packet;
             unsigned short serverInPort = port + 1;
             sf::IPAddress address;
             
             printf("BEGIN RECIEVE %d\n", udpListener.IsValid());
-            sf::Socket::Status status = udpListener.Receive(packet, address, serverInPort);
+            // sf::Socket::Status status = udpListener.Receive(packet, address, serverInPort);
+            sf::Socket::Status status = udpListener.Receive(data, PACKET_SIZE, srec, address, serverInPort);
+            
             printf("END RECIEVE\n");
-            if (status != sf::Socket::Done) {
-                printf("UDP STATUS = %d\n");
+            if (status != sf::Socket::Done || srec == 0) {
+                printf("UDP STATUS = %d\n", (int)status);
                 continue;
             }
             continue;
             printf("-BEGIN LOCK\n");
             sf::Lock lock(clientMutex);
             printf("-END LOCK\n");
-            printf("#clients = %d\n", clients.size());
+            printf("#clients = %lu\n", clients.size());
             int id = -1;
             for (const Client& client : clients) {
                 printf("  %s != %s = %d\n", client.ip.ToString().c_str(), address.ToString().c_str(), client.ip != address);
@@ -150,8 +159,10 @@ struct NetServer {
                 break;
             }
             
-            if (id != -1)
+            if (id != -1) {
+                packet.Append(data, srec);
                 serverReadPacket(id, packet, false);
+            }
         }
     }
     static void readUDPThread(void* unused) { sharedInstance().readUDP(); }
