@@ -39,7 +39,7 @@ static DataQueue& tcpQueue() {
 
 static void startNetworking() {
     
-    static sf::Thread thread(GAME.isServer ? Server::mainThread : &clientNetworkThread);
+    static sf::Thread thread(GAME.isServer ? NetServer::mainThread : &clientNetworkThread);
     thread.Launch();
 }
 

@@ -4,7 +4,6 @@ struct NetServer {
 
     // UDP
     sf::SocketUDP udpListener;
-    DataQueue udpQueue;
 
     // TCP
     sf::SocketTCP tcpListener;
@@ -17,7 +16,7 @@ struct NetServer {
         sf::IPAddress ip;
         sf::SocketTCP tcpSocket;
 
-        ClientState() : clientID(-1), ip(), tcpSocket() { }
+        Client() : clientID(-1), ip(), tcpSocket() { }
     };
 
     sf::Mutex clientMutex;
@@ -35,12 +34,13 @@ struct NetServer {
             for (Client& client : clients) {
                 if (client.clientID != member.clientID) continue;
 
+                printf("Sending TCP %s", client.ip.ToString().c_str());
                 client.tcpSocket.Send(member.packet);
                 break;
             }
         }
     }
-    void sendUDP() {
+    void sendToUDP() {
         DataQueue& queue = udpQueue();
         int port = port + 2;
 
@@ -51,7 +51,8 @@ struct NetServer {
             sf::Lock lock(clientMutex);
             for (Client& client : clients) {
                 if (client.clientID != member.clientID) continue;
-
+                
+                printf("Sending UDP %s:%d", client.ip.ToString().c_str(), port);
                 udpListener.Send(member.packet, client.ip, port);
                 break;
             }
@@ -60,9 +61,9 @@ struct NetServer {
 
     // ------ Receiving ------
     void serverReadPacket(uint32_t clientID, sf::Packet& packet, bool isTCP) {
-        // static int i;
-        // printf("%d\tReceived %d bytes\n", i, (int)(packet.GetDataSize()));
-        // i++;
+        static int i;
+        printf("%d\tReceived %d bytes\n", i, (int)(packet.GetDataSize()));
+        i++;
 
         if (!isTCP && clientID > 0) {
             const char* dataptr = packet.GetData();
@@ -72,11 +73,11 @@ struct NetServer {
     }
 
     // ------ Main ------
-    static void sharedInstance() {
+    static NetServer& sharedInstance() {
         static NetServer shared;
         return shared;
     }
-    NetServer() : port(0), udpListener(), tcpListener(), tcpSelector(), udpQueue(), tcpQueue() { }
+    NetServer() : port(0), udpListener(), tcpListener(), tcpSelector() { }
 
     void setup() {
 
@@ -101,10 +102,10 @@ struct NetServer {
 
         // Threads
         static sf::Thread udpThread(NetServer::readUDPThread);
-        thread.Launch();
+        udpThread.Launch();
 
         static sf::Thread tcpThread(NetServer::readTCPThread);
-        thread.Launch();
+        tcpThread.Launch();
 
         // Sending
         while (true) {
@@ -124,10 +125,11 @@ struct NetServer {
             unsigned short serverInPort = port + 1;
             sf::IPAddress address;
 
-            if (server.udpListener.Receive(packet, address, serverInPort) != sf::Socket::Done)
+            if (udpListener.Receive(packet, address, serverInPort) != sf::Socket::Done)
                 continue;
 
-            for (const NetworkStateServer::ClientState& client : server.clients) {
+            sf::Lock lock(clientMutex);
+            for (const Client& client : clients) {
                 if (client.ip != address)
                     continue;
 
@@ -136,13 +138,13 @@ struct NetServer {
             }
         }
     }
-    static void readUDPThread(void* unused) { sharedInstance().readUDP() }
+    static void readUDPThread(void* unused) { sharedInstance().readUDP(); }
 
 
     // ------ TCP ------
     void readTCP() {
         while (true) {
-            n = server.tcpSelector.Wait(0.01);
+            int n = tcpSelector.Wait(0.01);
             for (unsigned i = 0; i < n; i++) {
 
                 sf::SocketTCP socket = tcpSelector.GetSocketReady(i);
@@ -154,23 +156,26 @@ struct NetServer {
                     tcpListener.Accept(clientSocket, &address);
 
                     Client* clientPtr = NULL;
-                    for (Client& c : server.clients) {
-                        if (c.ip == address)
-                            clientPtr = &c;
-                    }
-
-                    if (clientPtr && clientState->tcpSocket.IsValid()) {
-                        tcpSelector.Remove(clientState->tcpSocket);
-                        clientState->tcpSocket.Close();
-                    }
-
-                    if (!clientPtr) {
-                        Client client();
-                        client.ip = address;
-
-                        sf::Lock lock(clientsMutex);
-                        clients.push_back(client);
-                        clientState = &(server.clients.back());
+                    
+                    {
+                        sf::Lock lock(clientMutex);
+                        for (Client& c : clients) {
+                            if (c.ip == address)
+                                clientPtr = &c;
+                        }
+    
+                        if (clientPtr && clientPtr->tcpSocket.IsValid()) {
+                            tcpSelector.Remove(clientPtr->tcpSocket);
+                            clientPtr->tcpSocket.Close();
+                        }
+    
+                        if (!clientPtr) {
+                            Client client = Client();
+                            client.ip = address;
+    
+                            clients.push_back(client);
+                            clientPtr = &(clients.back());
+                        }
                     }
 
                     clientPtr->tcpSocket = clientSocket;
@@ -183,10 +188,10 @@ struct NetServer {
                     sf::Packet playerIDPacket;
 
                     playerIDPacket << nextClientPlayerID;
-                    clientState->clientID = nextClientPlayerID;
+                    clientPtr->clientID = nextClientPlayerID;
 
                     nextClientPlayerID++;
-                    printf("Sending player id packet to %d\n", clientState->clientID);
+                    printf("Sending player id packet to %d\n", clientPtr->clientID);
                     clientSocket.Send(playerIDPacket);
                 }
                 else {
@@ -198,7 +203,7 @@ struct NetServer {
                         // Read from the packet!
                         uint32_t clientID = 0;
 
-                        sf::Lock lock(clientsMutex);
+                        sf::Lock lock(clientMutex);
                         for (Client& client : clients) {
                             if (client.tcpSocket != socket) continue;
 
@@ -215,5 +220,5 @@ struct NetServer {
             }
         }
     }
-    static void readTCPThread(void* unused) { sharedInstance().readTCP() }
+    static void readTCPThread(void* unused) { sharedInstance().readTCP(); }
 };

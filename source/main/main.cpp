@@ -232,7 +232,7 @@ int main(int argc, char *argv[]) {
         app.Display();
         
         // Sync server state
-        if (networkClock.GetElapsedTime() > 0.5) {
+        if (networkClock.GetElapsedTime() > 0.05) {
             clientSendGameState();
             networkClock.Reset();
         }
