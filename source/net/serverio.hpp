@@ -34,7 +34,7 @@ struct NetServer {
             for (Client& client : clients) {
                 if (client.clientID != member.clientID) continue;
 
-                printf("Sending TCP %s", client.ip.ToString().c_str());
+                printf("Sending TCP %s\n", client.ip.ToString().c_str());
                 client.tcpSocket.Send(member.packet);
                 break;
             }
@@ -52,7 +52,7 @@ struct NetServer {
             for (Client& client : clients) {
                 if (client.clientID != member.clientID) continue;
                 
-                printf("Sending UDP %s:%d", client.ip.ToString().c_str(), port);
+                printf("Sending UDP %s:%d\n", client.ip.ToString().c_str(), port);
                 udpListener.Send(member.packet, client.ip, port);
                 break;
             }
@@ -84,7 +84,7 @@ struct NetServer {
         // Port
         port = GAME.port;
         if (port == 0) die("No port specified\n");
-
+        
         // TCP
         if (!tcpListener.Listen(port)) {
             fprintf(stderr, "Could not listen on TCP port %d\n", port);
@@ -103,10 +103,10 @@ struct NetServer {
         // Threads
         static sf::Thread udpThread(NetServer::readUDPThread);
         udpThread.Launch();
-
+        
         static sf::Thread tcpThread(NetServer::readTCPThread);
         tcpThread.Launch();
-
+        
         // Sending
         while (true) {
             sendToUDP();

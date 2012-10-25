@@ -1,100 +1,127 @@
-struct NetworkStateClient {
-    sf::IPAddress ip;
-    uint32_t clientID;
+struct NetClient {
+    sf::IPAddress serverIP;
     int port;
-
+    
+    int clientID;
+    
     sf::SocketUDP udp;
     sf::SocketTCP tcp;
-
+    
     bool hasHandledFirstTCPPacket;
-};
-
-static void sendTCP(DataQueue& q, sf::SocketTCP& socket) {
-    sf::Lock lock(q.mutex);
-    for (; !q.q.empty(); q.q.pop()) {
-        DataQueue::Member& member = q.q.back();
-        printf("Send TCP\n");
-        socket.Send(member.packet);
+    
+    
+    // ------ Receiving ------
+    void clientReadPacket(sf::Packet& packet, bool isTCP) {
+        
+        // Do something with the packet...
+        printf("CLIENT READ PACKET: is TCP? %d, has handled first? %d\n", isTCP, hasHandledFirstTCPPacket);
+        if (isTCP && !hasHandledFirstTCPPacket) {
+            // This is our client ID, hopefully
+            hasHandledFirstTCPPacket = true;
+            
+            uint32_t cid;
+            packet >> cid;
+            
+            mainQueue().push(game_setClientID, InvocationMessage(cid, ""));
+            return;
+        }
+        
+        if (!isTCP) {
+            const char* dataptr = packet.GetData();
+            std::string data = std::string(dataptr, dataptr + packet.GetDataSize());
+            mainQueue().push(game_clientQuickUpdate, InvocationMessage(0, data));
+        }
     }
-}
-static void sendUDP(DataQueue& q, sf::SocketUDP& socket, sf::IPAddress& ip, int port) {
-    sf::Lock lock(q.mutex);
-    for (; !q.q.empty(); q.q.pop()) {
-        DataQueue::Member& member = q.q.back();
-        printf("Send UDP\n");
-        socket.Send(member.packet, ip, port);
+    
+    
+    // ------ Main ------
+    static NetClient& sharedInstance() {
+        static NetClient shared;
+        return shared;
     }
-}
-
-static void clientReadPacket(NetworkStateClient& client, sf::Packet& packet, bool isTCP) {
-
-    // Do something with the packet...
-    printf("CLIENT READ PACKET: is TCP? %d, has handled first? %d\n", isTCP, client.hasHandledFirstTCPPacket);
-    if (isTCP && !client.hasHandledFirstTCPPacket) {
-        // This is our client ID, hopefully
-        client.hasHandledFirstTCPPacket = true;
-
-        uint32_t cid;
-        packet >> cid;
-
-        mainQueue().push(game_setClientID, InvocationMessage(cid, ""));
-        return;
+    NetClient() : serverIP(), port(0), clientID(), udp(), tcp(), hasHandledFirstTCPPacket(false) { }
+    
+    void setup() {
+        
+        // IP and Port
+        serverIP = GAME.serverIP;
+        port = GAME.port;
+        if (port == 0) die("No port specified");
+        
+        // TCP
+        if (tcp.Connect(port, serverIP) != sf::Socket::Done) {
+            fprintf(stderr, "Could not connect to TCP server %s on port %d", serverIP.ToString().c_str(), port);
+            abort();
+        }
+        
+        // UDP
+        if (!udp.Bind(port + 2)) {
+            fprintf(stderr, "Could not bind on UDP port %d", port + 2);
+            abort();
+        }
+        printf("Client bound to UDP port %d", port + 2);
+        
+        // Threads
+        static sf::Thread udpThread(NetClient::readUDPThread);
+        udpThread.Launch();
+        
+        static sf::Thread tcpThread(NetClient::readTCPThread);
+        tcpThread.Launch();
+        
+        // Sending
+        while (true) {
+            sendUDP();
+            sendTCP();
+        }
     }
-
-    if (!isTCP) {
-        const char* dataptr = packet.GetData();
-        mainQueue().push(game_clientQuickUpdate, InvocationMessage(0, std::string(dataptr, dataptr + packet.GetDataSize())));
+    static void mainThread(void* unused) {
+        sharedInstance().setup();
     }
-}
-
-
-static void clientNetworkThread(void* userData) {
-    // Connect to the given server
-    sf::IPAddress serverAddress((GAME.serverIP));
-
-    static NetworkStateClient client;
-    client.port = GAME.port;
-    client.ip = serverAddress;
-    client.hasHandledFirstTCPPacket = false;
-
-    if (client.tcp.Connect(client.port, client.ip) != sf::Socket::Done) {
-        fprintf(stderr, "Could not connect to TCP server %s on port %d\n", GAME.serverIP.c_str(), client.port);
-        abort();
+    
+    
+    // ------ Reading ------
+    void sendTCP() {
+        DataQueue& queue = tcpQueue();
+        sf::Lock lock(queue.mutex);
+        for (; !queue.q.empty(); queue.q.pop()) {
+            DataQueue::Member& member = queue.q.back();
+            printf("Send TCP\n");
+            tcp.Send(member.packet);
+        }
     }
-    client.tcp.SetBlocking(false);
-
-    if (!client.udp.Bind(client.port + 2)) {
-        fprintf(stderr, "Could not bind on UDP port %d\n", client.port + 2);
-        abort();
+    void sendUDP() {
+        DataQueue& queue = tcpQueue();
+        sf::Lock lock(queue.mutex);
+        for (; !queue.q.empty(); queue.q.pop()) {
+            DataQueue::Member& member = queue.q.back();
+            printf("Send UDP\n");
+            udp.Send(member.packet, serverIP, port + 1);
+        }
     }
-
-    printf("Server bound to UDP port %d\n", client.port + 2);
-    client.udp.SetBlocking(false);
-
-    while (true) {
-
-        // Read from UDP
-        {
+    
+    
+    // ------ UDP ------
+    void readUDP() {
+        while (true) {
             sf::Packet packet;
-            unsigned short port = client.port + 2;
+            unsigned short port = port + 2;
             sf::IPAddress address;
-            if (client.udp.Receive(packet, address, port) == sf::Socket::Done) {
-                clientReadPacket(client, packet, false);
+            if (udp.Receive(packet, address, port) == sf::Socket::Done) {
+                clientReadPacket(packet, false);
             }
         }
-
-        // Send to UDP
-        sendUDP(udpQueue(), client.udp, client.ip, client.port + 1);
-
-        // Read from TCP
-        {
-            sf::Packet packet;
-            if (client.tcp.Receive(packet) == sf::Socket::Done) {
-                clientReadPacket(client, packet, true);
-            }
-        }
-
-        // Send to TCP
-        sendTCP(tcpQueue(), client.tcp);
     }
-}
+    static void readUDPThread(void* unused) { sharedInstance().readUDP(); }
+    
+    
+    // ------ TCP ------
+    void readTCP() {
+        while (true) {
+            sf::Packet packet;
+            if (tcp.Receive(packet) == sf::Socket::Done) {
+                clientReadPacket(packet, true);
+            }
+        }
+    }
+    static void readTCPThread(void* unused) { sharedInstance().readTCP(); }
+};
