@@ -33,7 +33,8 @@ static void clientReceiveGameState(const std::string& data) {
         
         player->position.x = pu.update().x();
         player->position.y = pu.update().y();
-        player->angle = Angle::FromWire(pu.update().angle());
+        // player->angle = Angle::FromWire(pu.update().angle());
+        player->angle.angle = pu.update().angle();
         
         // TODO: Smooth movement
         // u.set_velocityx(0.0);
@@ -52,7 +53,8 @@ static wire::ClientQuickUpdate clientQuickUpdateFrom(const Player& player) {
     
     Angle a = player.angle;
     a.normalize();
-    u.set_angle(a.wireRepr());
+    // u.set_angle(a.wireRepr());
+    u.set_angle(a.angle);
     
     // TODO: Smooth movement
     u.set_velocityx(0);

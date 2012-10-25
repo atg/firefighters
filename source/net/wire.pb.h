@@ -109,12 +109,12 @@ class ClientQuickUpdate : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 y() const;
   inline void set_y(::google::protobuf::int32 value);
   
-  // required sint32 angle = 3;
+  // required float angle = 3;
   inline bool has_angle() const;
   inline void clear_angle();
   static const int kAngleFieldNumber = 3;
-  inline ::google::protobuf::int32 angle() const;
-  inline void set_angle(::google::protobuf::int32 value);
+  inline float angle() const;
+  inline void set_angle(float value);
   
   // required float velocityX = 5;
   inline bool has_velocityx() const;
@@ -147,7 +147,7 @@ class ClientQuickUpdate : public ::google::protobuf::Message {
   
   ::google::protobuf::int32 x_;
   ::google::protobuf::int32 y_;
-  ::google::protobuf::int32 angle_;
+  float angle_;
   float velocityx_;
   float velocityy_;
   
@@ -712,7 +712,7 @@ inline void ClientQuickUpdate::set_y(::google::protobuf::int32 value) {
   y_ = value;
 }
 
-// required sint32 angle = 3;
+// required float angle = 3;
 inline bool ClientQuickUpdate::has_angle() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -726,10 +726,10 @@ inline void ClientQuickUpdate::clear_angle() {
   angle_ = 0;
   clear_has_angle();
 }
-inline ::google::protobuf::int32 ClientQuickUpdate::angle() const {
+inline float ClientQuickUpdate::angle() const {
   return angle_;
 }
-inline void ClientQuickUpdate::set_angle(::google::protobuf::int32 value) {
+inline void ClientQuickUpdate::set_angle(float value) {
   set_has_angle();
   angle_ = value;
 }

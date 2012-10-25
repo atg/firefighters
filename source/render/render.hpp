@@ -40,11 +40,70 @@ static void drawAllPlayers() {
     drawPlayer(*GAME.world.me, true);
 }
 
+static sf::Color colorForTile(Tile& tile) {
+    switch (tile.type){
+        case Tile::Type::Black: return sf::Color(0, 0, 0, 255);
+        case Tile::Type::Dirt: return sf::Color(128, 64, 0, 255);
+        case Tile::Type::Grass: return sf::Color(0, 255, 0, 255);
+        case Tile::Type::Tarmac: return sf::Color(102, 102, 102, 255);
+        case Tile::Type::DoorN:
+        case Tile::Type::DoorS:
+        case Tile::Type::DoorE:
+        case Tile::Type::DoorW:
+          return sf::Color(128, 128, 0, 255);
+    }
+}
+static void drawTile(int xpx, int ypx, Tile& tile) {
+    sf::Shape box = sf::Shape::Rectangle(xpx, ypx, TILE_SIZE, TILE_SIZE, colorForTile(tile));
+    GAME.app->Draw(box);
+}
+
+struct ViewportRect {
+    int minx;
+    int maxx;
+    int miny;
+    int maxy;
+};
+static void drawChunk(int cx, int cy, ViewportRect vr, Chunk& chunk) {
+    for (int i = 0; i < CHUNK_SIZE; i++) {
+        int xcoord = (cx * CHUNK_SIZE + i) * TILE_SIZE;
+        if (xcoord + TILE_SIZE < vr.minx) continue;
+        if (xcoord > vr.maxx) break;
+        
+        for (int j = 0; j < CHUNK_SIZE; j++) {
+            int ycoord = (cy * CHUNK_SIZE + j) * TILE_SIZE;
+            
+            if (ycoord + TILE_SIZE < vr.miny) continue;
+            if (ycoord > vr.maxy) break;
+            
+            drawTile(xcoord, ycoord, chunk.tiles[i][j]);
+        }
+    }
+}
+
 static void render() {
     // Get the mouse position, and draw a crosshair
     drawCrosshair();
     
     // Draw the players
     drawAllPlayers();
+    
+    // Draw chunks
+    ViewportRect vr = { GAME.viewportX, GAME.viewportX + GAME.viewportWidth, GAME.viewportY, GAME.viewportY + GAME.viewportHeight };
+    
+    int chunkMinX = vr.minx >> (CHUNK_SIZE_LOG - 1);
+    int chunkMaxX = (vr.maxx >> (CHUNK_SIZE_LOG - 1)) + 1;
+    
+    int chunkMinY = vr.miny >> (CHUNK_SIZE_LOG - 1);
+    int chunkMaxY = (vr.maxy >> (CHUNK_SIZE_LOG - 1)) + 1;
+    
+    auto& chunks = GAME.world.chunks;
+    for (int x = chunkMinX; x <= chunkMaxX; x++) {
+        for (int y = chunkMinX; y <= chunkMaxX; y++) {
+            if (chunks.count(std::make_pair(x, y))) {
+                drawChunk(x, y, vr, chunks[std::make_pair(x, y)]);
+            }
+        }
+    }
 }
 

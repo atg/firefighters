@@ -22,6 +22,11 @@ struct Game {
     int mouseX;
     int mouseY;
     
+    int viewportX;
+    int viewportY;
+    int viewportWidth;
+    int viewportHeight;
+    
     // Server state
     // ...
 };
@@ -75,7 +80,7 @@ static InvocationQueue& mainQueue() {
 
 static void game_setClientID(InvocationMessage ctx) {
     uint32_t cid = ctx.sender;
-    printf("Got ClientID: %u\n", cid);
+    printf("Client #%u\n", cid);
     GAME.clientID = cid;
     
     // Create the player

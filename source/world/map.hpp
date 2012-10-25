@@ -2,7 +2,10 @@
 #import "util/util.hpp"
 
 const int TILE_SIZE = 32; // In pixels
+const int TILE_SIZE_LOG = 5;
+
 const int CHUNK_SIZE = 32; // In tiles
+const int CHUNK_SIZE_LOG = 5;
 
 enum class CharacterClass : uint8_t {
     Flamethrower = 0,

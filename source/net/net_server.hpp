@@ -25,8 +25,9 @@ static void serverReceiveGameState(std::string data, uint32_t clientID) {
     
     player->position.x = u.x();
     player->position.y = u.y();
-    player->angle = Angle::FromWire(u.angle());
-    
+    // player->angle = Angle::FromWire(u.angle());
+    player->angle.angle = u.angle();
+
     printf("Player %d\n", (int)clientID);
     printf("  x = %d\n", (int)(u.x()));
     printf("  y = %d\n", (int)(u.y()));
@@ -72,6 +73,7 @@ static void serverSendGameState() {
             Player& otherPlayer = GAME.world.players[otherKV.first];
             
             // If this player is too far away from the player, ignore them
+            // TODO: Replace this with an actual maximal chunk distance calculation
             if (player.position.distance(otherPlayer.position) > TILE_SIZE * CHUNK_SIZE * 2)
                 continue;
             

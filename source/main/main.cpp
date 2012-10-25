@@ -42,7 +42,7 @@ static void processEvents() {
         
         // W A S D left right up down, etc
         else if (event.Type == sf::Event::KeyPressed || event.Type == sf::Event::KeyReleased) {
-            printf("event.Key.Code = %d\n", event.Key.Code);
+            // printf("event.Key.Code = %d\n", event.Key.Code);
             handleKeyEvent(event, event.Type == sf::Event::KeyReleased);
         }
         
@@ -58,7 +58,12 @@ static void processEvents() {
     GAME.mouseX = mouseX;
     GAME.mouseY = mouseY;
     
-    Vec2<double> viewportPosition = Vec2<double>(0.0, 0.0); // TODO: Moving viewports!
+    GAME.viewportX = 0;
+    GAME.viewportY = 0;
+    GAME.viewportWidth = GAME.app->GetWidth();
+    GAME.viewportHeight = GAME.app->GetHeight();
+    
+    Vec2<double> viewportPosition = Vec2<double>(GAME.viewportX, GAME.viewportY); // TODO: Moving viewports!
     Vec2<double> playerPosition = GAME.world.me->position;
     Vec2<double> mousePosition = viewportPosition + Vec2<double>(mouseX, mouseY);
     
@@ -72,7 +77,7 @@ static void processEvents() {
     Angle angle = playerPosition.angle();
     bool changedPosition = false;
     
-    const double walkingSpeed = 4.59; //4.59; // ft/s
+    const double walkingSpeed = 110.0; //4.59; // ft/s
     
     // We should really use some kind of clock instead of having uneven movement speeds
     double movementDistance = GAME.clock.GetElapsedTime() * walkingSpeed; // For now we just move one foot
@@ -126,7 +131,7 @@ static void processEvents() {
         // Remember to tell the server after moving the player!
         GAME.world.me->angle = angle;
         GAME.world.me->position = playerPosition;
-        printf("New Position (%lf, %lf) pointing %lf\n", GAME.world.me->position.x, GAME.world.me->position.y, GAME.world.me->angle.angle);
+        // printf("New Position (%lf, %lf) pointing %lf\n", GAME.world.me->position.x, GAME.world.me->position.y, GAME.world.me->angle.angle);
     }
 }
 
@@ -181,7 +186,6 @@ int main(int argc, char *argv[]) {
         setUpServer();
         
         while (true) {
-            printf("Q\n");
             mainQueue().popAll();
             serverSendGameState();
             sf::Sleep(0.01);
@@ -228,7 +232,7 @@ int main(int argc, char *argv[]) {
         app.Display();
         
         // Sync server state
-        if (networkClock.GetElapsedTime() > 1.0) {
+        if (networkClock.GetElapsedTime() > 0.5) {
             clientSendGameState();
             networkClock.Reset();
         }

@@ -197,7 +197,7 @@ void protobuf_AddDesc_wire_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\nwire.proto\022\004wire\"^\n\021ClientQuickUpdate\022"
-    "\t\n\001x\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\r\n\005angle\030\003 \002(\021\022\021\n\t"
+    "\t\n\001x\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\r\n\005angle\030\003 \002(\002\022\021\n\t"
     "velocityX\030\005 \002(\002\022\021\n\tvelocityY\030\006 \002(\002\"\225\001\n\021S"
     "erverQuickUpdate\0225\n\007updates\030\001 \003(\0132$.wire"
     ".ServerQuickUpdate.PlayerUpdate\032I\n\014Playe"
@@ -341,17 +341,17 @@ bool ClientQuickUpdate::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(24)) goto parse_angle;
+        if (input->ExpectTag(29)) goto parse_angle;
         break;
       }
       
-      // required sint32 angle = 3;
+      // required float angle = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
          parse_angle:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_SINT32>(
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &angle_)));
           set_has_angle();
         } else {
@@ -421,9 +421,9 @@ void ClientQuickUpdate::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteSInt32(2, this->y(), output);
   }
   
-  // required sint32 angle = 3;
+  // required float angle = 3;
   if (has_angle()) {
-    ::google::protobuf::internal::WireFormatLite::WriteSInt32(3, this->angle(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->angle(), output);
   }
   
   // required float velocityX = 5;
@@ -454,9 +454,9 @@ void ClientQuickUpdate::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteSInt32ToArray(2, this->y(), target);
   }
   
-  // required sint32 angle = 3;
+  // required float angle = 3;
   if (has_angle()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteSInt32ToArray(3, this->angle(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->angle(), target);
   }
   
   // required float velocityX = 5;
@@ -494,11 +494,9 @@ int ClientQuickUpdate::ByteSize() const {
           this->y());
     }
     
-    // required sint32 angle = 3;
+    // required float angle = 3;
     if (has_angle()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::SInt32Size(
-          this->angle());
+      total_size += 1 + 4;
     }
     
     // required float velocityX = 5;

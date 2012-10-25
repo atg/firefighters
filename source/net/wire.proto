@@ -5,8 +5,8 @@ package wire;
 message ClientQuickUpdate {
     required sint32 x = 1;
     required sint32 y = 2;
-    required sint32 angle = 3;
-    // required sint32 angularVelocity = 4;
+    required float angle = 3;
+    // required float angularVelocity = 4;
     required float velocityX = 5;
     required float velocityY = 6;
     // required float accelerationX = 7;
@@ -31,7 +31,7 @@ message Chunk {
     required sint32 x = 1;
     required sint32 y = 2;
     
-    // Tiles are compressed with snappy
+    // Tiles are compressed with snappy. Or maybe simple huffman coding would be better.
     optional bytes tiles = 3;
     
     // Metadata is put into a "snake" (hilbert curve) then compressed with snappy
