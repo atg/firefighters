@@ -7,7 +7,7 @@
 
 static void clientReceiveGameState(const std::string& data) {
     wire::ServerQuickUpdate u;
-    printf("Message is: %s\n", data.c_str());
+    // printf("Message is: %s\n", data.c_str());
     std::istringstream iss(data);
     if (!u.ParseFromIstream(&iss)) {
         coma("Could not read quick update.");

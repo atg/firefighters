@@ -4,7 +4,8 @@ struct NetServer {
 
     // UDP
     sf::SocketUDP udpListener;
-
+    sf::SocketUDP udpSender;
+    
     // TCP
     sf::SocketTCP tcpListener;
     sf::SelectorTCP tcpSelector;
@@ -42,18 +43,17 @@ struct NetServer {
     }
     void sendToUDP() {
         DataQueue& queue = udpQueue();
-        int port = port + 2;
-
+        
         sf::Lock lock(queue.mutex);
         for (; !queue.q.empty(); queue.q.pop()) {
             DataQueue::Member& member = queue.q.back();
-
+            
             sf::Lock lock(clientMutex);
             for (Client& client : clients) {
                 if (client.clientID != member.clientID) continue;
                 
                 printf("Sending UDP %s:%d\n", client.ip.ToString().c_str(), port);
-                udpListener.Send(member.packet, client.ip, port);
+                udpSender.Send(member.packet, client.ip, port + 2);
                 break;
             }
         }
@@ -99,7 +99,10 @@ struct NetServer {
             abort();
         }
         printf("Server bound to UDP port %d\n", port + 1);
-
+        
+        if (!udpSender.Bind(0))
+            die("Could not bind UDP send socket");
+        
         // Threads
         static sf::Thread udpThread(NetServer::readUDPThread);
         udpThread.Launch();
@@ -124,18 +127,31 @@ struct NetServer {
             sf::Packet packet;
             unsigned short serverInPort = port + 1;
             sf::IPAddress address;
-
-            if (udpListener.Receive(packet, address, serverInPort) != sf::Socket::Done)
+            
+            printf("BEGIN RECIEVE\n");
+            sf::Socket::Status status = udpListener.Receive(packet, address, serverInPort);
+            printf("END RECIEVE\n");
+            if (status != sf::Socket::Done) {
+                printf("UDP STATUS = %d\n");
                 continue;
-
+            }
+            
+            printf("-BEGIN LOCK\n");
             sf::Lock lock(clientMutex);
+            printf("-END LOCK\n");
+            printf("#clients = %d\n", clients.size());
+            int id = -1;
             for (const Client& client : clients) {
+                printf("  %s != %s = %d\n", client.ip.ToString().c_str(), address.ToString().c_str(), client.ip != address);
                 if (client.ip != address)
                     continue;
-
-                serverReadPacket(client.clientID, packet, false);
+                
+                id = client.clientID;
                 break;
             }
+            
+            if (id != -1)
+                serverReadPacket(id, packet, false);
         }
     }
     static void readUDPThread(void* unused) { sharedInstance().readUDP(); }
@@ -204,12 +220,16 @@ struct NetServer {
                         uint32_t clientID = 0;
 
                         sf::Lock lock(clientMutex);
+                        int id = -1;
                         for (Client& client : clients) {
                             if (client.tcpSocket != socket) continue;
-
-                            serverReadPacket(client.clientID, packet, true);
+                            
+                            id = client.clientID;
                             break;
                         }
+                        
+                        if (id != -1)
+                            serverReadPacket(id, packet, true);
                     }
                     else if (status == sf::Socket::Disconnected || status == sf::Socket::Error) {
                         // Oops, error. Remove the socket.
