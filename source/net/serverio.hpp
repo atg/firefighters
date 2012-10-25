@@ -128,14 +128,14 @@ struct NetServer {
             unsigned short serverInPort = port + 1;
             sf::IPAddress address;
             
-            printf("BEGIN RECIEVE\n");
+            printf("BEGIN RECIEVE %d\n", udpListener.IsValid());
             sf::Socket::Status status = udpListener.Receive(packet, address, serverInPort);
             printf("END RECIEVE\n");
             if (status != sf::Socket::Done) {
                 printf("UDP STATUS = %d\n");
                 continue;
             }
-            
+            continue;
             printf("-BEGIN LOCK\n");
             sf::Lock lock(clientMutex);
             printf("-END LOCK\n");
