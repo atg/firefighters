@@ -5,6 +5,7 @@ struct NetClient {
     int clientID;
     
     sf::SocketUDP udp;
+    sf::SocketUDP udpSender;
     sf::SocketTCP tcp;
     
     bool hasHandledFirstTCPPacket;
@@ -50,15 +51,20 @@ struct NetClient {
         
         // TCP
         if (tcp.Connect(port, serverIP) != sf::Socket::Done) {
-            fprintf(stderr, "Could not connect to TCP server %s on port %d", serverIP.ToString().c_str(), port);
+            fprintf(stderr, "Could not connect to TCP server %s on port %d\n", serverIP.ToString().c_str(), port);
             abort();
         }
         
         // UDP
         if (!udp.Bind(port + 2)) {
-            fprintf(stderr, "Could not bind on UDP port %d", port + 2);
+            fprintf(stderr, "Could not bind on UDP port %d\n", port + 2);
             abort();
         }
+        
+        if (!udpSender.Bind(0)) {
+            die("Could not bind UDP sender");
+        }
+        
         printf("Client bound to UDP port %d", port + 2);
         
         // Threads
@@ -95,7 +101,7 @@ struct NetClient {
         for (; !queue.q.empty(); queue.q.pop()) {
             DataQueue::Member& member = queue.q.back();
             printf("Send UDP\n");
-            udp.Send(member.packet, serverIP, port + 1);
+            udpSender.Send(member.packet, serverIP, port + 1);
         }
     }
     
