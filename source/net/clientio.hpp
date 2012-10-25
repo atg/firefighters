@@ -90,7 +90,7 @@ struct NetClient {
         }
     }
     void sendUDP() {
-        DataQueue& queue = tcpQueue();
+        DataQueue& queue = udpQueue();
         sf::Lock lock(queue.mutex);
         for (; !queue.q.empty(); queue.q.pop()) {
             DataQueue::Member& member = queue.q.back();
