@@ -14,7 +14,7 @@ enum class CharacterClass : uint8_t {
 struct Player {
     
     // Each player needs an identifier so we can refer to them over the wire
-    typedef uint16_t ID;
+    typedef int ID;
     Player::ID identifier;
     
     // Location
@@ -30,6 +30,14 @@ struct Player {
     static const uint32_t MaxHealth = (uint32_t)-1;
     bool isAlive() { return health > 0; }
     
+    // Visited chunks (for the server)
+    struct VisitedChunk {
+        int x;
+        int y;
+        int version; // Chunks are versioned
+    };
+    std::map<std::pair<int, int>, VisitedChunk> visitedChunks;
+
     Player(Player::ID _identifier=0)
         : identifier(_identifier),
           position(),
@@ -40,24 +48,25 @@ struct Player {
 };
 
 // Some tiles are rotationally symmetric in C2 or C4
-#define NS(name) name ## N, name ## S
+// Vertical or horizontal
+#define VH(name) name ## V, name ## H
+// Rotated
 #define NSEW(name) name ## N, name ## S, name ## E, name ## W
 
-struct Tile {
-    enum class Type {
-        Black = 0,
-        Dirt,
-        Grass,
-        Tarmac,
-        
-        NSEW(Door),
-    };
-    Type type;
+enum class Tile : uint8_t {
+    Black = 0,
+    Dirt,
+    Grass,
+    Tarmac,
+    Pavement,
+    RoadCenterLine,
     
-    Tile() : type(Tile::Type::Black) { }
+    NSEW(Door),
 };
 
 struct Chunk {
+    // Chunks are versioned. If a chunk changes, then its version is increased (by the server ONLY!) so that other clients know to refresh it
+    int version;
     Tile tiles[CHUNK_SIZE][CHUNK_SIZE];
 };
 

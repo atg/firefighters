@@ -31,11 +31,14 @@ message Chunk {
     required sint32 x = 1;
     required sint32 y = 2;
     
+    // Chunks are versioned. If a chunk changes, then its version is increased (by the server ONLY!) so that other clients know to refresh it
+    required int32 version = 3;
+    
     // Tiles are compressed with snappy. Or maybe simple huffman coding would be better.
-    optional bytes tiles = 3;
+    optional bytes tiles = 4;
     
     // Metadata is put into a "snake" (hilbert curve) then compressed with snappy
-    optional bytes metadata = 4;
+    optional bytes metadata = 5;
 }
 message Object {
     
@@ -43,7 +46,7 @@ message Object {
     required sint32 y = 2;
     required sint32 angle = 3;
 }
-message Map {
+message ServerUpdate {
     repeated Chunk chunks = 1;
     repeated Object objects = 2;
 }

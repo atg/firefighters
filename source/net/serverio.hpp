@@ -211,10 +211,10 @@ struct NetServer {
 
 
                     // Send a PlayerID packet
-                    static uint32_t nextClientPlayerID = 2;
+                    static int nextClientPlayerID = 2;
                     sf::Packet playerIDPacket;
 
-                    playerIDPacket << nextClientPlayerID;
+                    playerIDPacket << (uint16_t)nextClientPlayerID;
                     clientPtr->clientID = nextClientPlayerID;
 
                     nextClientPlayerID++;

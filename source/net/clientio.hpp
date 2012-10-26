@@ -27,10 +27,10 @@ struct NetClient {
             // This is our client ID, hopefully
             hasHandledFirstTCPPacket = true;
             
-            uint32_t cid;
+            uint16_t cid;
             packet >> cid;
             
-            mainQueue().push(game_setClientID, InvocationMessage(cid, ""));
+            mainQueue().push(game_setClientID, InvocationMessage((int)cid, ""));
             return;
         }
         

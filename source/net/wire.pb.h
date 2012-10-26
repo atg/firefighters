@@ -37,7 +37,7 @@ class ServerQuickUpdate;
 class ServerQuickUpdate_PlayerUpdate;
 class Chunk;
 class Object;
-class Map;
+class ServerUpdate;
 
 // ===================================================================
 
@@ -411,10 +411,17 @@ class Chunk : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 y() const;
   inline void set_y(::google::protobuf::int32 value);
   
-  // optional bytes tiles = 3;
+  // required int32 version = 3;
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 3;
+  inline ::google::protobuf::int32 version() const;
+  inline void set_version(::google::protobuf::int32 value);
+  
+  // optional bytes tiles = 4;
   inline bool has_tiles() const;
   inline void clear_tiles();
-  static const int kTilesFieldNumber = 3;
+  static const int kTilesFieldNumber = 4;
   inline const ::std::string& tiles() const;
   inline void set_tiles(const ::std::string& value);
   inline void set_tiles(const char* value);
@@ -422,10 +429,10 @@ class Chunk : public ::google::protobuf::Message {
   inline ::std::string* mutable_tiles();
   inline ::std::string* release_tiles();
   
-  // optional bytes metadata = 4;
+  // optional bytes metadata = 5;
   inline bool has_metadata() const;
   inline void clear_metadata();
-  static const int kMetadataFieldNumber = 4;
+  static const int kMetadataFieldNumber = 5;
   inline const ::std::string& metadata() const;
   inline void set_metadata(const ::std::string& value);
   inline void set_metadata(const char* value);
@@ -439,6 +446,8 @@ class Chunk : public ::google::protobuf::Message {
   inline void clear_has_x();
   inline void set_has_y();
   inline void clear_has_y();
+  inline void set_has_version();
+  inline void clear_has_version();
   inline void set_has_tiles();
   inline void clear_has_tiles();
   inline void set_has_metadata();
@@ -450,9 +459,10 @@ class Chunk : public ::google::protobuf::Message {
   ::google::protobuf::int32 y_;
   ::std::string* tiles_;
   ::std::string* metadata_;
+  ::google::protobuf::int32 version_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   friend void  protobuf_AddDesc_wire_2eproto();
   friend void protobuf_AssignDesc_wire_2eproto();
@@ -565,14 +575,14 @@ class Object : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class Map : public ::google::protobuf::Message {
+class ServerUpdate : public ::google::protobuf::Message {
  public:
-  Map();
-  virtual ~Map();
+  ServerUpdate();
+  virtual ~ServerUpdate();
   
-  Map(const Map& from);
+  ServerUpdate(const ServerUpdate& from);
   
-  inline Map& operator=(const Map& from) {
+  inline ServerUpdate& operator=(const ServerUpdate& from) {
     CopyFrom(from);
     return *this;
   }
@@ -586,17 +596,17 @@ class Map : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const Map& default_instance();
+  static const ServerUpdate& default_instance();
   
-  void Swap(Map* other);
+  void Swap(ServerUpdate* other);
   
   // implements Message ----------------------------------------------
   
-  Map* New() const;
+  ServerUpdate* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const Map& from);
-  void MergeFrom(const Map& from);
+  void CopyFrom(const ServerUpdate& from);
+  void MergeFrom(const ServerUpdate& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -643,7 +653,7 @@ class Map : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::wire::Object >*
       mutable_objects();
   
-  // @@protoc_insertion_point(class_scope:wire.Map)
+  // @@protoc_insertion_point(class_scope:wire.ServerUpdate)
  private:
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -659,7 +669,7 @@ class Map : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_wire_2eproto();
   
   void InitAsDefaultInstance();
-  static Map* default_instance_;
+  static ServerUpdate* default_instance_;
 };
 // ===================================================================
 
@@ -910,15 +920,37 @@ inline void Chunk::set_y(::google::protobuf::int32 value) {
   y_ = value;
 }
 
-// optional bytes tiles = 3;
-inline bool Chunk::has_tiles() const {
+// required int32 version = 3;
+inline bool Chunk::has_version() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void Chunk::set_has_tiles() {
+inline void Chunk::set_has_version() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void Chunk::clear_has_tiles() {
+inline void Chunk::clear_has_version() {
   _has_bits_[0] &= ~0x00000004u;
+}
+inline void Chunk::clear_version() {
+  version_ = 0;
+  clear_has_version();
+}
+inline ::google::protobuf::int32 Chunk::version() const {
+  return version_;
+}
+inline void Chunk::set_version(::google::protobuf::int32 value) {
+  set_has_version();
+  version_ = value;
+}
+
+// optional bytes tiles = 4;
+inline bool Chunk::has_tiles() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Chunk::set_has_tiles() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Chunk::clear_has_tiles() {
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void Chunk::clear_tiles() {
   if (tiles_ != &::google::protobuf::internal::kEmptyString) {
@@ -968,15 +1000,15 @@ inline ::std::string* Chunk::release_tiles() {
   }
 }
 
-// optional bytes metadata = 4;
+// optional bytes metadata = 5;
 inline bool Chunk::has_metadata() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void Chunk::set_has_metadata() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000010u;
 }
 inline void Chunk::clear_has_metadata() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void Chunk::clear_metadata() {
   if (metadata_ != &::google::protobuf::internal::kEmptyString) {
@@ -1098,55 +1130,55 @@ inline void Object::set_angle(::google::protobuf::int32 value) {
 
 // -------------------------------------------------------------------
 
-// Map
+// ServerUpdate
 
 // repeated .wire.Chunk chunks = 1;
-inline int Map::chunks_size() const {
+inline int ServerUpdate::chunks_size() const {
   return chunks_.size();
 }
-inline void Map::clear_chunks() {
+inline void ServerUpdate::clear_chunks() {
   chunks_.Clear();
 }
-inline const ::wire::Chunk& Map::chunks(int index) const {
+inline const ::wire::Chunk& ServerUpdate::chunks(int index) const {
   return chunks_.Get(index);
 }
-inline ::wire::Chunk* Map::mutable_chunks(int index) {
+inline ::wire::Chunk* ServerUpdate::mutable_chunks(int index) {
   return chunks_.Mutable(index);
 }
-inline ::wire::Chunk* Map::add_chunks() {
+inline ::wire::Chunk* ServerUpdate::add_chunks() {
   return chunks_.Add();
 }
 inline const ::google::protobuf::RepeatedPtrField< ::wire::Chunk >&
-Map::chunks() const {
+ServerUpdate::chunks() const {
   return chunks_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::wire::Chunk >*
-Map::mutable_chunks() {
+ServerUpdate::mutable_chunks() {
   return &chunks_;
 }
 
 // repeated .wire.Object objects = 2;
-inline int Map::objects_size() const {
+inline int ServerUpdate::objects_size() const {
   return objects_.size();
 }
-inline void Map::clear_objects() {
+inline void ServerUpdate::clear_objects() {
   objects_.Clear();
 }
-inline const ::wire::Object& Map::objects(int index) const {
+inline const ::wire::Object& ServerUpdate::objects(int index) const {
   return objects_.Get(index);
 }
-inline ::wire::Object* Map::mutable_objects(int index) {
+inline ::wire::Object* ServerUpdate::mutable_objects(int index) {
   return objects_.Mutable(index);
 }
-inline ::wire::Object* Map::add_objects() {
+inline ::wire::Object* ServerUpdate::add_objects() {
   return objects_.Add();
 }
 inline const ::google::protobuf::RepeatedPtrField< ::wire::Object >&
-Map::objects() const {
+ServerUpdate::objects() const {
   return objects_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::wire::Object >*
-Map::mutable_objects() {
+ServerUpdate::mutable_objects() {
   return &objects_;
 }
 

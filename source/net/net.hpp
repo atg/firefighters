@@ -12,11 +12,11 @@ struct DataQueue {
     sf::Mutex mutex;
     struct Member {
         sf::Packet packet;
-        uint32_t clientID;
+        int clientID;
     };
     std::queue<DataQueue::Member> q;
 
-    void push(sf::Packet packet, uint32_t clientID) {
+    void push(sf::Packet packet, int clientID) {
         sf::Lock lock(mutex);
         DataQueue::Member member;
         member.packet = packet;

@@ -14,6 +14,8 @@
 #import "net/net_client.hpp"
 #import "net/net_server.hpp"
 
+#import "world/buildmap.hpp"
+
 Game GAME;
 
 static void handleKeyEvent(sf::Event& event, bool isKeyUp) {
@@ -161,7 +163,7 @@ static void parseArguments(int argc, char *argv[]) {
 }
 
 void setUpServer() {
-    
+    generate(GAME.world);
     startNetworking();
 }
 void setUpClient() {

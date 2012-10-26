@@ -32,9 +32,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* Object_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Object_reflection_ = NULL;
-const ::google::protobuf::Descriptor* Map_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* ServerUpdate_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  Map_reflection_ = NULL;
+  ServerUpdate_reflection_ = NULL;
 
 }  // namespace
 
@@ -96,9 +96,10 @@ void protobuf_AssignDesc_wire_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ServerQuickUpdate_PlayerUpdate));
   Chunk_descriptor_ = file->message_type(2);
-  static const int Chunk_offsets_[4] = {
+  static const int Chunk_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Chunk, x_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Chunk, y_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Chunk, version_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Chunk, tiles_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Chunk, metadata_),
   };
@@ -130,22 +131,22 @@ void protobuf_AssignDesc_wire_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Object));
-  Map_descriptor_ = file->message_type(4);
-  static const int Map_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Map, chunks_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Map, objects_),
+  ServerUpdate_descriptor_ = file->message_type(4);
+  static const int ServerUpdate_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerUpdate, chunks_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerUpdate, objects_),
   };
-  Map_reflection_ =
+  ServerUpdate_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      Map_descriptor_,
-      Map::default_instance_,
-      Map_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Map, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Map, _unknown_fields_),
+      ServerUpdate_descriptor_,
+      ServerUpdate::default_instance_,
+      ServerUpdate_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerUpdate, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerUpdate, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(Map));
+      sizeof(ServerUpdate));
 }
 
 namespace {
@@ -169,7 +170,7 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Object_descriptor_, &Object::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    Map_descriptor_, &Map::default_instance());
+    ServerUpdate_descriptor_, &ServerUpdate::default_instance());
 }
 
 }  // namespace
@@ -185,8 +186,8 @@ void protobuf_ShutdownFile_wire_2eproto() {
   delete Chunk_reflection_;
   delete Object::default_instance_;
   delete Object_reflection_;
-  delete Map::default_instance_;
-  delete Map_reflection_;
+  delete ServerUpdate::default_instance_;
+  delete ServerUpdate_reflection_;
 }
 
 void protobuf_AddDesc_wire_2eproto() {
@@ -202,12 +203,12 @@ void protobuf_AddDesc_wire_2eproto() {
     "erverQuickUpdate\0225\n\007updates\030\001 \003(\0132$.wire"
     ".ServerQuickUpdate.PlayerUpdate\032I\n\014Playe"
     "rUpdate\022\020\n\010playerID\030\001 \002(\r\022\'\n\006update\030\002 \002("
-    "\0132\027.wire.ClientQuickUpdate\">\n\005Chunk\022\t\n\001x"
-    "\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\r\n\005tiles\030\003 \001(\014\022\020\n\010meta"
-    "data\030\004 \001(\014\"-\n\006Object\022\t\n\001x\030\001 \002(\021\022\t\n\001y\030\002 \002"
-    "(\021\022\r\n\005angle\030\003 \002(\021\"A\n\003Map\022\033\n\006chunks\030\001 \003(\013"
-    "2\013.wire.Chunk\022\035\n\007objects\030\002 \003(\0132\014.wire.Ob"
-    "ject", 444);
+    "\0132\027.wire.ClientQuickUpdate\"O\n\005Chunk\022\t\n\001x"
+    "\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\017\n\007version\030\003 \002(\005\022\r\n\005ti"
+    "les\030\004 \001(\014\022\020\n\010metadata\030\005 \001(\014\"-\n\006Object\022\t\n"
+    "\001x\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\r\n\005angle\030\003 \002(\021\"J\n\014Se"
+    "rverUpdate\022\033\n\006chunks\030\001 \003(\0132\013.wire.Chunk\022"
+    "\035\n\007objects\030\002 \003(\0132\014.wire.Object", 470);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "wire.proto", &protobuf_RegisterTypes);
   ClientQuickUpdate::default_instance_ = new ClientQuickUpdate();
@@ -215,13 +216,13 @@ void protobuf_AddDesc_wire_2eproto() {
   ServerQuickUpdate_PlayerUpdate::default_instance_ = new ServerQuickUpdate_PlayerUpdate();
   Chunk::default_instance_ = new Chunk();
   Object::default_instance_ = new Object();
-  Map::default_instance_ = new Map();
+  ServerUpdate::default_instance_ = new ServerUpdate();
   ClientQuickUpdate::default_instance_->InitAsDefaultInstance();
   ServerQuickUpdate::default_instance_->InitAsDefaultInstance();
   ServerQuickUpdate_PlayerUpdate::default_instance_->InitAsDefaultInstance();
   Chunk::default_instance_->InitAsDefaultInstance();
   Object::default_instance_->InitAsDefaultInstance();
-  Map::default_instance_->InitAsDefaultInstance();
+  ServerUpdate::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_wire_2eproto);
 }
 
@@ -1061,6 +1062,7 @@ void ServerQuickUpdate::Swap(ServerQuickUpdate* other) {
 #ifndef _MSC_VER
 const int Chunk::kXFieldNumber;
 const int Chunk::kYFieldNumber;
+const int Chunk::kVersionFieldNumber;
 const int Chunk::kTilesFieldNumber;
 const int Chunk::kMetadataFieldNumber;
 #endif  // !_MSC_VER
@@ -1083,6 +1085,7 @@ void Chunk::SharedCtor() {
   _cached_size_ = 0;
   x_ = 0;
   y_ = 0;
+  version_ = 0;
   tiles_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   metadata_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1127,6 +1130,7 @@ void Chunk::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     x_ = 0;
     y_ = 0;
+    version_ = 0;
     if (has_tiles()) {
       if (tiles_ != &::google::protobuf::internal::kEmptyString) {
         tiles_->clear();
@@ -1175,12 +1179,28 @@ bool Chunk::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_tiles;
+        if (input->ExpectTag(24)) goto parse_version;
         break;
       }
       
-      // optional bytes tiles = 3;
+      // required int32 version = 3;
       case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_version:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &version_)));
+          set_has_version();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_tiles;
+        break;
+      }
+      
+      // optional bytes tiles = 4;
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_tiles:
@@ -1189,12 +1209,12 @@ bool Chunk::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(34)) goto parse_metadata;
+        if (input->ExpectTag(42)) goto parse_metadata;
         break;
       }
       
-      // optional bytes metadata = 4;
-      case 4: {
+      // optional bytes metadata = 5;
+      case 5: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_metadata:
@@ -1235,16 +1255,21 @@ void Chunk::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteSInt32(2, this->y(), output);
   }
   
-  // optional bytes tiles = 3;
-  if (has_tiles()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      3, this->tiles(), output);
+  // required int32 version = 3;
+  if (has_version()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->version(), output);
   }
   
-  // optional bytes metadata = 4;
+  // optional bytes tiles = 4;
+  if (has_tiles()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      4, this->tiles(), output);
+  }
+  
+  // optional bytes metadata = 5;
   if (has_metadata()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      4, this->metadata(), output);
+      5, this->metadata(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1265,18 +1290,23 @@ void Chunk::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteSInt32ToArray(2, this->y(), target);
   }
   
-  // optional bytes tiles = 3;
+  // required int32 version = 3;
+  if (has_version()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->version(), target);
+  }
+  
+  // optional bytes tiles = 4;
   if (has_tiles()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        3, this->tiles(), target);
+        4, this->tiles(), target);
   }
   
-  // optional bytes metadata = 4;
+  // optional bytes metadata = 5;
   if (has_metadata()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        4, this->metadata(), target);
+        5, this->metadata(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1304,14 +1334,21 @@ int Chunk::ByteSize() const {
           this->y());
     }
     
-    // optional bytes tiles = 3;
+    // required int32 version = 3;
+    if (has_version()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->version());
+    }
+    
+    // optional bytes tiles = 4;
     if (has_tiles()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->tiles());
     }
     
-    // optional bytes metadata = 4;
+    // optional bytes metadata = 5;
     if (has_metadata()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -1351,6 +1388,9 @@ void Chunk::MergeFrom(const Chunk& from) {
     if (from.has_y()) {
       set_y(from.y());
     }
+    if (from.has_version()) {
+      set_version(from.version());
+    }
     if (from.has_tiles()) {
       set_tiles(from.tiles());
     }
@@ -1374,7 +1414,7 @@ void Chunk::CopyFrom(const Chunk& from) {
 }
 
 bool Chunk::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
   
   return true;
 }
@@ -1383,6 +1423,7 @@ void Chunk::Swap(Chunk* other) {
   if (other != this) {
     std::swap(x_, other->x_);
     std::swap(y_, other->y_);
+    std::swap(version_, other->version_);
     std::swap(tiles_, other->tiles_);
     std::swap(metadata_, other->metadata_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
@@ -1691,66 +1732,66 @@ void Object::Swap(Object* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int Map::kChunksFieldNumber;
-const int Map::kObjectsFieldNumber;
+const int ServerUpdate::kChunksFieldNumber;
+const int ServerUpdate::kObjectsFieldNumber;
 #endif  // !_MSC_VER
 
-Map::Map()
+ServerUpdate::ServerUpdate()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void Map::InitAsDefaultInstance() {
+void ServerUpdate::InitAsDefaultInstance() {
 }
 
-Map::Map(const Map& from)
+ServerUpdate::ServerUpdate(const ServerUpdate& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void Map::SharedCtor() {
+void ServerUpdate::SharedCtor() {
   _cached_size_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-Map::~Map() {
+ServerUpdate::~ServerUpdate() {
   SharedDtor();
 }
 
-void Map::SharedDtor() {
+void ServerUpdate::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void Map::SetCachedSize(int size) const {
+void ServerUpdate::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Map::descriptor() {
+const ::google::protobuf::Descriptor* ServerUpdate::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return Map_descriptor_;
+  return ServerUpdate_descriptor_;
 }
 
-const Map& Map::default_instance() {
+const ServerUpdate& ServerUpdate::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_wire_2eproto();  return *default_instance_;
 }
 
-Map* Map::default_instance_ = NULL;
+ServerUpdate* ServerUpdate::default_instance_ = NULL;
 
-Map* Map::New() const {
-  return new Map;
+ServerUpdate* ServerUpdate::New() const {
+  return new ServerUpdate;
 }
 
-void Map::Clear() {
+void ServerUpdate::Clear() {
   chunks_.Clear();
   objects_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool Map::MergePartialFromCodedStream(
+bool ServerUpdate::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -1802,7 +1843,7 @@ bool Map::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void Map::SerializeWithCachedSizes(
+void ServerUpdate::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // repeated .wire.Chunk chunks = 1;
   for (int i = 0; i < this->chunks_size(); i++) {
@@ -1822,7 +1863,7 @@ void Map::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* Map::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* ServerUpdate::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // repeated .wire.Chunk chunks = 1;
   for (int i = 0; i < this->chunks_size(); i++) {
@@ -1845,7 +1886,7 @@ void Map::SerializeWithCachedSizes(
   return target;
 }
 
-int Map::ByteSize() const {
+int ServerUpdate::ByteSize() const {
   int total_size = 0;
   
   // repeated .wire.Chunk chunks = 1;
@@ -1875,10 +1916,10 @@ int Map::ByteSize() const {
   return total_size;
 }
 
-void Map::MergeFrom(const ::google::protobuf::Message& from) {
+void ServerUpdate::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const Map* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const Map*>(
+  const ServerUpdate* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const ServerUpdate*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1887,26 +1928,26 @@ void Map::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void Map::MergeFrom(const Map& from) {
+void ServerUpdate::MergeFrom(const ServerUpdate& from) {
   GOOGLE_CHECK_NE(&from, this);
   chunks_.MergeFrom(from.chunks_);
   objects_.MergeFrom(from.objects_);
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void Map::CopyFrom(const ::google::protobuf::Message& from) {
+void ServerUpdate::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Map::CopyFrom(const Map& from) {
+void ServerUpdate::CopyFrom(const ServerUpdate& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Map::IsInitialized() const {
+bool ServerUpdate::IsInitialized() const {
   
   for (int i = 0; i < chunks_size(); i++) {
     if (!this->chunks(i).IsInitialized()) return false;
@@ -1917,7 +1958,7 @@ bool Map::IsInitialized() const {
   return true;
 }
 
-void Map::Swap(Map* other) {
+void ServerUpdate::Swap(ServerUpdate* other) {
   if (other != this) {
     chunks_.Swap(&other->chunks_);
     objects_.Swap(&other->objects_);
@@ -1927,11 +1968,11 @@ void Map::Swap(Map* other) {
   }
 }
 
-::google::protobuf::Metadata Map::GetMetadata() const {
+::google::protobuf::Metadata ServerUpdate::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = Map_descriptor_;
-  metadata.reflection = Map_reflection_;
+  metadata.descriptor = ServerUpdate_descriptor_;
+  metadata.reflection = ServerUpdate_reflection_;
   return metadata;
 }
 

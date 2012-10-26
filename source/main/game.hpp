@@ -34,10 +34,10 @@ struct Game {
 extern Game GAME;
 
 struct InvocationMessage {
-    uint32_t sender;
+    int sender;
     std::string data;
     
-    InvocationMessage(uint32_t _sender, std::string _data) : sender(_sender), data(_data) { }
+    InvocationMessage(int _sender, std::string _data) : sender(_sender), data(_data) { }
 };
 struct Invocation {
     void (*function)(InvocationMessage);
@@ -79,7 +79,7 @@ static InvocationQueue& mainQueue() {
 
 
 static void game_setClientID(InvocationMessage ctx) {
-    uint32_t cid = ctx.sender;
+    int cid = ctx.sender;
     printf("Client #%u\n", cid);
     GAME.clientID = cid;
     

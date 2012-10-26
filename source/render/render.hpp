@@ -40,20 +40,22 @@ static void drawAllPlayers() {
     drawPlayer(*GAME.world.me, true);
 }
 
-static sf::Color colorForTile(Tile& tile) {
-    switch (tile.type){
-        case Tile::Type::Black: return sf::Color(0, 0, 0, 255);
-        case Tile::Type::Dirt: return sf::Color(128, 64, 0, 255);
-        case Tile::Type::Grass: return sf::Color(0, 255, 0, 255);
-        case Tile::Type::Tarmac: return sf::Color(102, 102, 102, 255);
-        case Tile::Type::DoorN:
-        case Tile::Type::DoorS:
-        case Tile::Type::DoorE:
-        case Tile::Type::DoorW:
+static sf::Color colorForTile(Tile tile) {
+    switch (tile){
+        case Tile::Black: return sf::Color(0, 0, 0, 255);
+        case Tile::Dirt: return sf::Color(128, 64, 0, 255);
+        case Tile::Grass: return sf::Color(0, 255, 0, 255);
+        case Tile::Tarmac: return sf::Color(102, 102, 102, 255);
+        case Tile::Pavement: return sf::Color(192, 192, 192, 255);
+        case Tile::RoadCenterLine: return sf::Color(255, 255, 0, 255);
+        case Tile::DoorN:
+        case Tile::DoorS:
+        case Tile::DoorE:
+        case Tile::DoorW:
           return sf::Color(128, 128, 0, 255);
     }
 }
-static void drawTile(int xpx, int ypx, Tile& tile) {
+static void drawTile(int xpx, int ypx, Tile tile) {
     sf::Shape box = sf::Shape::Rectangle(xpx, ypx, TILE_SIZE, TILE_SIZE, colorForTile(tile));
     GAME.app->Draw(box);
 }
