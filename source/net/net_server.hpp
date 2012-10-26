@@ -137,6 +137,11 @@ static void serverSendGameState() {
                     
                     serveru.add_chunks()->CopyFrom(chunku);
                     modifiedSu = true;
+                    
+                    if (visitedIter == player.visitedChunks.end())
+                        visitedIter->second.version = worldIter->second.version;
+                    else
+                        player.visitedChunks[std::make_pair(vc_x, vc_y)] = MakeVisitedChunk(vc_x, vc_y, worldIter->second.version);
                 }
             }
         }

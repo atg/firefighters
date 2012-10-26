@@ -35,6 +35,10 @@ struct Player {
         int x;
         int y;
         int version; // Chunks are versioned
+        
+        static VisitedChunk MakeVisitedChunk(int _x, int _y, int _v) {
+            VisitedChunk xyv; xyv.x = _x; xyv.y = _x; xyv.version = _v; return xyv;
+        }
     };
     std::map<std::pair<int, int>, VisitedChunk> visitedChunks;
 
