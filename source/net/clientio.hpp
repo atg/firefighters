@@ -39,6 +39,12 @@ struct NetClient {
             std::string data = std::string(dataptr, dataptr + packet.GetDataSize());
             mainQueue().push(game_clientQuickUpdate, InvocationMessage(0, data));
         }
+        
+        if (isTCP) {
+            const char* dataptr = packet.GetData();
+            std::string data = std::string(dataptr, dataptr + packet.GetDataSize());
+            mainQueue().push(game_clientFullUpdate, InvocationMessage(0, data));
+        }
     }
     
     

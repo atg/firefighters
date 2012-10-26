@@ -89,4 +89,5 @@ static void game_setClientID(InvocationMessage ctx) {
     GAME.world.me = &(GAME.world.players[me.identifier]);
 }
 void game_clientQuickUpdate(InvocationMessage ctx);
+void game_clientFullUpdate(InvocationMessage ctx);
 void game_serverQuickUpdate(InvocationMessage ctx);

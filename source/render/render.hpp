@@ -55,8 +55,27 @@ static sf::Color colorForTile(Tile tile) {
           return sf::Color(128, 128, 0, 255);
     }
 }
+struct TileNeighbourhood {
+    Tile neigh[3][3];
+};
+
+// We can classify tiles like so: std::bitset<int(Tile::Last)> indoorTiles;
+static TileNeighbourhood neighbourhood(int tilex, int tiley, Tile centre) {
+    TileNeighbourhood horse;
+    horse.neigh[0][0] = Tile::Black;
+    horse.neigh[0][1] = Tile::Black;
+    horse.neigh[0][2] = Tile::Black;
+    horse.neigh[1][0] = Tile::Black;
+    horse.neigh[1][1] = centre;
+    horse.neigh[1][2] = Tile::Black;
+    horse.neigh[2][0] = Tile::Black;
+    horse.neigh[2][1] = Tile::Black;
+    horse.neigh[2][2] = Tile::Black;
+    
+    return horse; // TODO
+}
 static void drawTile(int xpx, int ypx, Tile tile) {
-    sf::Shape box = sf::Shape::Rectangle(xpx, ypx, TILE_SIZE, TILE_SIZE, colorForTile(tile));
+    sf::Shape box = sf::Shape::Rectangle(xpx, ypx, xpx + TILE_SIZE, ypx + TILE_SIZE, colorForTile(tile));
     GAME.app->Draw(box);
 }
 
@@ -78,34 +97,37 @@ static void drawChunk(int cx, int cy, ViewportRect vr, Chunk& chunk) {
             if (ycoord + TILE_SIZE < vr.miny) continue;
             if (ycoord > vr.maxy) break;
             
+            // printf("Drawing tile at %d, %d :: %d, %d -> %d\n", xcoord, ycoord, i, j, chunk.tiles[i][j]);
             drawTile(xcoord, ycoord, chunk.tiles[i][j]);
         }
     }
 }
 
 static void render() {
-    // Get the mouse position, and draw a crosshair
-    drawCrosshair();
-    
-    // Draw the players
-    drawAllPlayers();
-    
     // Draw chunks
-    ViewportRect vr = { GAME.viewportX, GAME.viewportX + GAME.viewportWidth, GAME.viewportY, GAME.viewportY + GAME.viewportHeight };
+    //ViewportRect vr = { GAME.viewportX, GAME.viewportX + GAME.viewportWidth, GAME.viewportY, GAME.viewportY + GAME.viewportHeight };
+    ViewportRect vr = { GAME.mouseX, GAME.mouseX + GAME.viewportWidth, GAME.mouseY, GAME.mouseY + GAME.viewportHeight };
     
-    int chunkMinX = vr.minx >> (CHUNK_SIZE_LOG - 1);
-    int chunkMaxX = (vr.maxx >> (CHUNK_SIZE_LOG - 1)) + 1;
+    int chunkMinX = vr.minx >> (TILE_SIZE_LOG + CHUNK_SIZE_LOG - 1);
+    int chunkMaxX = (vr.maxx >> (TILE_SIZE_LOG + CHUNK_SIZE_LOG - 1)) + 1;
     
-    int chunkMinY = vr.miny >> (CHUNK_SIZE_LOG - 1);
-    int chunkMaxY = (vr.maxy >> (CHUNK_SIZE_LOG - 1)) + 1;
+    int chunkMinY = vr.miny >> (TILE_SIZE_LOG + CHUNK_SIZE_LOG - 1);
+    int chunkMaxY = (vr.maxy >> (TILE_SIZE_LOG + CHUNK_SIZE_LOG - 1)) + 1;
     
     auto& chunks = GAME.world.chunks;
     for (int x = chunkMinX; x <= chunkMaxX; x++) {
         for (int y = chunkMinX; y <= chunkMaxX; y++) {
+            // printf("Attempting to draw chunk (%d, %d)\n", x, y);
             if (chunks.count(std::make_pair(x, y))) {
                 drawChunk(x, y, vr, chunks[std::make_pair(x, y)]);
             }
         }
     }
+    
+    // Get the mouse position, and draw a crosshair
+    drawCrosshair();
+    
+    // Draw the players
+    drawAllPlayers();
 }
 

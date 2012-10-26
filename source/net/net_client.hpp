@@ -41,8 +41,41 @@ static void clientReceiveGameState(const std::string& data) {
         // u.set_velocityy(0.0);
     }
 }
+static void clientReceiveFullUpdate(const std::string& data) {
+    wire::ServerUpdate u;
+    // printf("Message is: %s\n", data.c_str());
+    std::istringstream iss(data);
+    if (!u.ParseFromIstream(&iss)) {
+        coma("Could not read quick update.");
+        return;
+    }
+
+    // For each chunk
+    for (const wire::Chunk& chunku : u.chunks()) {
+
+        int x = chunku.x();
+        int y = chunku.y();
+        int version = chunku.version();
+        
+        // Find a player with this ID
+        Player* player = NULL;
+        auto worldIter = GAME.world.chunks.find(std::make_pair(x, y));
+        if (worldIter == GAME.world.chunks.end()) {
+            Chunk chunk;
+            GAME.world.chunks[std::make_pair(x, y)] = chunk;
+            
+            worldIter = GAME.world.chunks.find(std::make_pair(x, y));
+        }
+        
+        worldIter->second.version = version;
+        std::copy(chunku.tiles().begin(), chunku.tiles().end(), (char*)&worldIter->second.tiles[0][0]);
+    }
+}
 void game_clientQuickUpdate(InvocationMessage ctx) {
     clientReceiveGameState(ctx.data);
+}
+void game_clientFullUpdate(InvocationMessage ctx) {
+    clientReceiveFullUpdate(ctx.data);
 }
 
 static wire::ClientQuickUpdate clientQuickUpdateFrom(const Player& player) {
