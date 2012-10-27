@@ -56,10 +56,8 @@ static bool collides(AABB first, int x, int y, int z = 0) {
     if (first.z != z) return false;
 
     // Check coordinates
-    if (x < first.x && x >= first.maxx()) return false;
-    if (y < first.y && y >= first.maxy()) return false;
-
-    return true;
+    return first.x <= x && x < first.maxx()
+        && first.y <= y && y < first.maxy();
 }
 
 
