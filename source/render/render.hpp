@@ -17,9 +17,19 @@ static void drawCrosshair() {
 
 static void drawEmitter(Emitter& emitter) {
     // Draw each particle
-    printf("emitter.particles = %d\n", (int)(emitter.particles.size()));
+    // printf("emitter.particles = %d\n", (int)(emitter.particles.size()));
+    
+    /*
+    // Loop through particles, find minX, minY, maxX, maxY
+    // Create array of that size, memset to 0
+    // Set colors
+    // Create image
+    sf::Image img = sf::Image::LoadFromPixels(width, height, data);
+    // Draw
+    */
+    
     for (Particle& p : emitter.particles) {
-        printf("Draw particle: %f, %f\n", p.position.x, p.position.y);
+        // printf("Draw particle: %f, %f\n", p.position.x, p.position.y);
         sf::Shape shape = sf::Shape::Line(p.position.x, p.position.y, p.position.x + 1, p.position.y + 1, 1.0, sf::Color(255, 255, 255, 255));
         GAME.app->Draw(shape);
     }
@@ -69,10 +79,11 @@ static sf::Color colorForTile(Tile tile) {
         case Tile::Tarmac: return sf::Color(102, 102, 102, 255);
         case Tile::Pavement: return sf::Color(192, 192, 192, 255);
         case Tile::RoadCenterLine: return sf::Color(255, 255, 0, 255);
-        case Tile::DoorN:
-        case Tile::DoorS:
-        case Tile::DoorE:
-        case Tile::DoorW:
+        case Tile::BrickWall: return sf::Color(255, 128, 0, 255);
+        case Tile::DoorClosedN:
+        case Tile::DoorClosedS:
+        case Tile::DoorClosedE:
+        case Tile::DoorClosedW:
           return sf::Color(128, 128, 0, 255);
     }
 }

@@ -92,6 +92,7 @@ struct Player {
 void Weapon::start(Player& player) {
     if (isFiring) {
         _emitter.position = Vec2<int>(round(player.position.x), round(player.position.y));
+        _emitter.direction.angle = M_PI + player.angle.angle;
         _emitter.update();
         return;
     }
@@ -99,7 +100,9 @@ void Weapon::start(Player& player) {
     isFiring = true;
     
     // TODO: 0.942 radians is just a random angle, change it to something better
-    _emitter = Emitter(player.angle, Angle(0.942), 10, 100);
+    _emitter = Emitter(Angle(M_PI + player.angle.angle), Angle(0.942), 1000, 10000);
+    
+    _emitter.averageSpeed = 100.0;
     _emitter.position = Vec2<int>(round(player.position.x), round(player.position.y));
     _hasEmitter = true;
     
@@ -126,14 +129,19 @@ void Weapon::start(Player& player) {
 #define NSEW(name) name ## N, name ## S, name ## E, name ## W
 
 enum class Tile : uint8_t {
-    Black = 0,
+    Black = 0, // Must be the first
+    
     Dirt,
     Grass,
     Tarmac,
     Pavement,
     RoadCenterLine,
     
-    NSEW(Door),
+    BrickWall,
+    NSEW(DoorClosed),
+    
+    // ----------------------
+    LAST// Nothing after this
 };
 
 struct Chunk {
@@ -146,5 +154,6 @@ struct World {
     Player* me; // Client only
     std::map<Player::ID, Player> players;
     
+    // I think we're better off making this a huge array of smart pointers
     std::map<std::pair<int, int>, Chunk> chunks;
 };
