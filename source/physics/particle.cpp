@@ -21,6 +21,13 @@ void Emitter::update() {
             break;
     }
     
+    // TODO: Use something nicer than an AABB for this
+    std::vector<AABB> playerBoundingAreas;
+    const int playerRadius = 32;
+    for (auto& kvpair : GAME.world.players) {
+        playerBoundingAreas.push_back(AABB(kvpair.second.position.x - 32, kvpair.second.position.y - 32, kvpair.second.position.x + 32, kvpair.second.position.y + 32));
+    }
+    
     // Update particles
     for (Particle& p : particles) {
         if (p.dead) continue;
@@ -39,6 +46,8 @@ void Emitter::update() {
         // printf("  %u %u %u %u %u %u %u %u %u\n", (unsigned)Tile::Black, (unsigned)Tile::Dirt, (unsigned)Tile::Grass, (unsigned)Tile::Tarmac, (unsigned)Tile::Pavement, (unsigned)Tile::RoadCenterLine, (unsigned)Tile::BrickWall, (unsigned)Tile::DoorClosedN, (unsigned)Tile::LAST);
         if (is_solid(tile))
             p.dead = true;
+        
+        // Player collisions
     }
     
     // Spawn new particles

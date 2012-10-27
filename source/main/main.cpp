@@ -11,6 +11,7 @@
 #import "render/render.hpp"
 
 #import "main/game.hpp"
+#import "main/preferences.hpp"
 #import "net/net.hpp"
 
 #import "net/net_client.hpp"
@@ -135,10 +136,11 @@ static void processEvents() {
         playerPosition = Vec2<double>::FromPolar(distance, angle);
         playerPosition = playerPosition + mousePosition;
         
-        // Remember to tell the server after moving the player!
-        GAME.world.me->angle = angle;
         GAME.world.me->position = playerPosition;
-        // printf("New Position (%lf, %lf) pointing %lf\n", GAME.world.me->position.x, GAME.world.me->position.y, GAME.world.me->angle.angle);
+        GAME.world.me->angle = angle;
+    }
+    else if (PREFS.playerAngleFollowsMouse) {
+        GAME.world.me->angle = angle;
     }
     
     // Handle weapon firing
