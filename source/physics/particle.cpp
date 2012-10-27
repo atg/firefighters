@@ -2,8 +2,9 @@
 #import "main/game.hpp"
 #import "world/map.hpp"
 #import "world/tilephysics.hpp"
+#import "main/gamemode.hpp"
 
-void Emitter::update() {
+void Emitter::update(Player& owner) {
     
     float t = timer.GetElapsedTime();
     float dt = t - lastUpdate;
@@ -22,10 +23,15 @@ void Emitter::update() {
     }
     
     // TODO: Use something nicer than an AABB for this
+    std::vector<int> playerIDs;
     std::vector<AABB> playerBoundingAreas;
     const int playerRadius = 32;
     for (auto& kvpair : GAME.world.players) {
+        if (kvpair.second.identifier == owner.identifier)
+            continue; // Ignore collisions with the player since they happen all the time
+        
         playerBoundingAreas.push_back(AABB(kvpair.second.position.x - 32, kvpair.second.position.y - 32, kvpair.second.position.x + 32, kvpair.second.position.y + 32));
+        playerIDs.push_back(kvpair.second.identifier);
     }
     
     // Update particles
@@ -46,6 +52,18 @@ void Emitter::update() {
         // printf("  %u %u %u %u %u %u %u %u %u\n", (unsigned)Tile::Black, (unsigned)Tile::Dirt, (unsigned)Tile::Grass, (unsigned)Tile::Tarmac, (unsigned)Tile::Pavement, (unsigned)Tile::RoadCenterLine, (unsigned)Tile::BrickWall, (unsigned)Tile::DoorClosedN, (unsigned)Tile::LAST);
         if (is_solid(tile))
             p.dead = true;
+        
+        for (int i = 0, playerCount = playerBoundingAreas.size(); i < playerCount; i++) {
+            // TODO: Work out the direction from the given player
+            int dimension = 0; // owner.z
+            if (collides(playerBoundingAreas[i], p.position.x, p.position.y, dimension)) {
+                // Kill the particle
+                p.dead = true;
+                
+                // Damage the player
+                playerDamaged(owner.identifier, playerIDs[i], 1);
+            }
+        }
         
         // Player collisions
     }

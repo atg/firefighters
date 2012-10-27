@@ -98,7 +98,7 @@ void Weapon::start(Player& player) {
     if (isFiring) {
         _emitter.position = Vec2<int>(round(player.position.x), round(player.position.y));
         _emitter.direction.angle = M_PI + player.angle.angle;
-        _emitter.update();
+        _emitter.update(player);
         return;
     }
     

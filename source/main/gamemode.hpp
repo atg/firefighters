@@ -30,20 +30,17 @@ struct Team {
     Team() : tickets(500) { }
 };
 
-enum GameState {
+struct GameState {
     GameMode mode;
     
     Team red;
     Team blu;
 };
 
-
 enum class CauseOfDeath {
     Stupidity = -10, // They killed themselves. What a plonker.
     OtherTeam = -9, // They were killed by the other team, but we don't know who did it
 };
 
-void playerDied_server(int killer, int dead);
-// void playerDied_client(int killer, int dead);
-
-
+void playerDamaged(int assaulter, int victim, int amount);
+void playerDied(int killer, int dead);

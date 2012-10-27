@@ -2,6 +2,8 @@
 #import <boost/random.hpp>
 #import <SFML/Window.hpp>
 
+struct Player;
+
 template<class T>
 bool boolWithProbability(T& gen, float prob) {
     if (prob <= 0.0) return false;
@@ -72,5 +74,5 @@ struct Emitter {
         timer.Reset();
         particleClock.Reset();
     }
-    void update();
+    void update(Player& owner);
 };
