@@ -46,12 +46,16 @@ void protobuf_AssignDesc_wire_2eproto() {
       "wire.proto");
   GOOGLE_CHECK(file != NULL);
   ClientQuickUpdate_descriptor_ = file->message_type(0);
-  static const int ClientQuickUpdate_offsets_[5] = {
+  static const int ClientQuickUpdate_offsets_[9] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, x_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, y_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, angle_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, velocityx_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, velocityy_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, viewportx_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, viewporty_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, viewportwidth_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, viewportheight_),
   };
   ClientQuickUpdate_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -197,18 +201,20 @@ void protobuf_AddDesc_wire_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\nwire.proto\022\004wire\"^\n\021ClientQuickUpdate\022"
-    "\t\n\001x\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\r\n\005angle\030\003 \002(\002\022\021\n\t"
-    "velocityX\030\005 \002(\002\022\021\n\tvelocityY\030\006 \002(\002\"\225\001\n\021S"
-    "erverQuickUpdate\0225\n\007updates\030\001 \003(\0132$.wire"
-    ".ServerQuickUpdate.PlayerUpdate\032I\n\014Playe"
-    "rUpdate\022\020\n\010playerID\030\001 \002(\r\022\'\n\006update\030\002 \002("
-    "\0132\027.wire.ClientQuickUpdate\"O\n\005Chunk\022\t\n\001x"
-    "\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\017\n\007version\030\003 \002(\005\022\r\n\005ti"
-    "les\030\004 \001(\014\022\020\n\010metadata\030\005 \001(\014\"-\n\006Object\022\t\n"
-    "\001x\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\r\n\005angle\030\003 \002(\021\"J\n\014Se"
-    "rverUpdate\022\033\n\006chunks\030\001 \003(\0132\013.wire.Chunk\022"
-    "\035\n\007objects\030\002 \003(\0132\014.wire.Object", 470);
+    "\n\nwire.proto\022\004wire\"\263\001\n\021ClientQuickUpdate"
+    "\022\t\n\001x\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\r\n\005angle\030\003 \002(\002\022\021\n"
+    "\tvelocityX\030\005 \002(\002\022\021\n\tvelocityY\030\006 \002(\002\022\021\n\tv"
+    "iewportX\030\n \001(\021\022\021\n\tviewportY\030\013 \001(\021\022\025\n\rvie"
+    "wportWidth\030\014 \001(\021\022\026\n\016viewportHeight\030\r \001(\021"
+    "\"\225\001\n\021ServerQuickUpdate\0225\n\007updates\030\001 \003(\0132"
+    "$.wire.ServerQuickUpdate.PlayerUpdate\032I\n"
+    "\014PlayerUpdate\022\020\n\010playerID\030\001 \002(\r\022\'\n\006updat"
+    "e\030\002 \002(\0132\027.wire.ClientQuickUpdate\"O\n\005Chun"
+    "k\022\t\n\001x\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\017\n\007version\030\003 \002(\005"
+    "\022\r\n\005tiles\030\004 \001(\014\022\020\n\010metadata\030\005 \001(\014\"-\n\006Obj"
+    "ect\022\t\n\001x\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\r\n\005angle\030\003 \002(\021"
+    "\"J\n\014ServerUpdate\022\033\n\006chunks\030\001 \003(\0132\013.wire."
+    "Chunk\022\035\n\007objects\030\002 \003(\0132\014.wire.Object", 556);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "wire.proto", &protobuf_RegisterTypes);
   ClientQuickUpdate::default_instance_ = new ClientQuickUpdate();
@@ -242,6 +248,10 @@ const int ClientQuickUpdate::kYFieldNumber;
 const int ClientQuickUpdate::kAngleFieldNumber;
 const int ClientQuickUpdate::kVelocityXFieldNumber;
 const int ClientQuickUpdate::kVelocityYFieldNumber;
+const int ClientQuickUpdate::kViewportXFieldNumber;
+const int ClientQuickUpdate::kViewportYFieldNumber;
+const int ClientQuickUpdate::kViewportWidthFieldNumber;
+const int ClientQuickUpdate::kViewportHeightFieldNumber;
 #endif  // !_MSC_VER
 
 ClientQuickUpdate::ClientQuickUpdate()
@@ -265,6 +275,10 @@ void ClientQuickUpdate::SharedCtor() {
   angle_ = 0;
   velocityx_ = 0;
   velocityy_ = 0;
+  viewportx_ = 0;
+  viewporty_ = 0;
+  viewportwidth_ = 0;
+  viewportheight_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -304,6 +318,12 @@ void ClientQuickUpdate::Clear() {
     angle_ = 0;
     velocityx_ = 0;
     velocityy_ = 0;
+    viewportx_ = 0;
+    viewporty_ = 0;
+    viewportwidth_ = 0;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    viewportheight_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -390,6 +410,70 @@ bool ClientQuickUpdate::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(80)) goto parse_viewportX;
+        break;
+      }
+      
+      // optional sint32 viewportX = 10;
+      case 10: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_viewportX:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_SINT32>(
+                 input, &viewportx_)));
+          set_has_viewportx();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(88)) goto parse_viewportY;
+        break;
+      }
+      
+      // optional sint32 viewportY = 11;
+      case 11: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_viewportY:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_SINT32>(
+                 input, &viewporty_)));
+          set_has_viewporty();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(96)) goto parse_viewportWidth;
+        break;
+      }
+      
+      // optional sint32 viewportWidth = 12;
+      case 12: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_viewportWidth:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_SINT32>(
+                 input, &viewportwidth_)));
+          set_has_viewportwidth();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(104)) goto parse_viewportHeight;
+        break;
+      }
+      
+      // optional sint32 viewportHeight = 13;
+      case 13: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_viewportHeight:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_SINT32>(
+                 input, &viewportheight_)));
+          set_has_viewportheight();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -437,6 +521,26 @@ void ClientQuickUpdate::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteFloat(6, this->velocityy(), output);
   }
   
+  // optional sint32 viewportX = 10;
+  if (has_viewportx()) {
+    ::google::protobuf::internal::WireFormatLite::WriteSInt32(10, this->viewportx(), output);
+  }
+  
+  // optional sint32 viewportY = 11;
+  if (has_viewporty()) {
+    ::google::protobuf::internal::WireFormatLite::WriteSInt32(11, this->viewporty(), output);
+  }
+  
+  // optional sint32 viewportWidth = 12;
+  if (has_viewportwidth()) {
+    ::google::protobuf::internal::WireFormatLite::WriteSInt32(12, this->viewportwidth(), output);
+  }
+  
+  // optional sint32 viewportHeight = 13;
+  if (has_viewportheight()) {
+    ::google::protobuf::internal::WireFormatLite::WriteSInt32(13, this->viewportheight(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -468,6 +572,26 @@ void ClientQuickUpdate::SerializeWithCachedSizes(
   // required float velocityY = 6;
   if (has_velocityy()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(6, this->velocityy(), target);
+  }
+  
+  // optional sint32 viewportX = 10;
+  if (has_viewportx()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteSInt32ToArray(10, this->viewportx(), target);
+  }
+  
+  // optional sint32 viewportY = 11;
+  if (has_viewporty()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteSInt32ToArray(11, this->viewporty(), target);
+  }
+  
+  // optional sint32 viewportWidth = 12;
+  if (has_viewportwidth()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteSInt32ToArray(12, this->viewportwidth(), target);
+  }
+  
+  // optional sint32 viewportHeight = 13;
+  if (has_viewportheight()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteSInt32ToArray(13, this->viewportheight(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -508,6 +632,36 @@ int ClientQuickUpdate::ByteSize() const {
     // required float velocityY = 6;
     if (has_velocityy()) {
       total_size += 1 + 4;
+    }
+    
+    // optional sint32 viewportX = 10;
+    if (has_viewportx()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::SInt32Size(
+          this->viewportx());
+    }
+    
+    // optional sint32 viewportY = 11;
+    if (has_viewporty()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::SInt32Size(
+          this->viewporty());
+    }
+    
+    // optional sint32 viewportWidth = 12;
+    if (has_viewportwidth()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::SInt32Size(
+          this->viewportwidth());
+    }
+    
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional sint32 viewportHeight = 13;
+    if (has_viewportheight()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::SInt32Size(
+          this->viewportheight());
     }
     
   }
@@ -552,6 +706,20 @@ void ClientQuickUpdate::MergeFrom(const ClientQuickUpdate& from) {
     if (from.has_velocityy()) {
       set_velocityy(from.velocityy());
     }
+    if (from.has_viewportx()) {
+      set_viewportx(from.viewportx());
+    }
+    if (from.has_viewporty()) {
+      set_viewporty(from.viewporty());
+    }
+    if (from.has_viewportwidth()) {
+      set_viewportwidth(from.viewportwidth());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_viewportheight()) {
+      set_viewportheight(from.viewportheight());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -581,6 +749,10 @@ void ClientQuickUpdate::Swap(ClientQuickUpdate* other) {
     std::swap(angle_, other->angle_);
     std::swap(velocityx_, other->velocityx_);
     std::swap(velocityy_, other->velocityy_);
+    std::swap(viewportx_, other->viewportx_);
+    std::swap(viewporty_, other->viewporty_);
+    std::swap(viewportwidth_, other->viewportwidth_);
+    std::swap(viewportheight_, other->viewportheight_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

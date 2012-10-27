@@ -16,6 +16,9 @@
 
 #import "world/buildmap.hpp"
 
+#import "physics/collision.hpp"
+#import "physics/particle.hpp"
+
 Game GAME;
 
 static void handleKeyEvent(sf::Event& event, bool isKeyUp) {
@@ -60,12 +63,12 @@ static void processEvents() {
     GAME.mouseX = mouseX;
     GAME.mouseY = mouseY;
     
-    GAME.viewportX = 0;
-    GAME.viewportY = 0;
     GAME.viewportWidth = GAME.app->GetWidth();
     GAME.viewportHeight = GAME.app->GetHeight();
+    GAME.viewportX = round(GAME.world.me->position.x - GAME.viewportWidth / 2.0);
+    GAME.viewportY = round(GAME.world.me->position.y - GAME.viewportHeight / 2.0);
     
-    Vec2<double> viewportPosition = Vec2<double>(GAME.viewportX, GAME.viewportY); // TODO: Moving viewports!
+    Vec2<double> viewportPosition = Vec2<double>(GAME.viewportX, GAME.viewportY);
     Vec2<double> playerPosition = GAME.world.me->position;
     Vec2<double> mousePosition = viewportPosition + Vec2<double>(mouseX, mouseY);
     
@@ -135,6 +138,25 @@ static void processEvents() {
         GAME.world.me->position = playerPosition;
         // printf("New Position (%lf, %lf) pointing %lf\n", GAME.world.me->position.x, GAME.world.me->position.y, GAME.world.me->angle.angle);
     }
+    
+    // Handle weapon firing
+    auto& weapons = GAME.world.me->weapons;
+    if (isKeyDown(sf::Key::Space)) {
+        printf("Space down: %d\n", weapons.empty());
+        if (!weapons.empty()) {
+            // Start the weapon up
+            weapons[0].start(*GAME.world.me);
+        }
+    }
+    else {
+        printf("Space up\n");
+        for (Weapon& weapon : weapons) {
+            weapon.stop();
+        }
+    }
+    
+    GAME.viewportX = round(GAME.world.me->position.x - GAME.viewportWidth / 2.0);
+    GAME.viewportY = round(GAME.world.me->position.y - GAME.viewportHeight / 2.0);
 }
 
 

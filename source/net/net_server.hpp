@@ -23,11 +23,19 @@ static void serverReceiveGameState(std::string data, int clientID) {
         player = &(GAME.world.players[clientID]);
     }
     
+    if (!u.has_viewportx() || !u.has_viewporty() || !u.has_viewportwidth() || !u.has_viewportheight())
+        die("Player did not send viewport information"); // Should probably kick the player instead of crashing the server
+    
     player->position.x = u.x();
     player->position.y = u.y();
     // player->angle = Angle::FromWire(u.angle());
     player->angle.angle = u.angle();
-
+    
+    player->viewportX = u.viewportx();
+    player->viewportY = u.viewporty();
+    player->viewportWidth = u.viewportwidth();
+    player->viewportHeight = u.viewportheight();
+    
     // printf("Player %d\n", (int)clientID);
     // printf("  x = %d\n", (int)(u.x()));
     // printf("  y = %d\n", (int)(u.y()));
@@ -105,14 +113,17 @@ static void serverSendGameState() {
         
         // Find out if they need new chunks around their neighbourhood
         
-        // Do a simple neighbourhood calculation for now: chunks around the player
-        int chX = int(round(player.position.x)) >> 5 + 5;
-        int chY = int(round(player.position.x)) >> 5 + 5;
+        // Do a simple neighbourhood calculation
+        int chunk_tile_lg = CHUNK_SIZE_LOG + TILE_SIZE_LOG;
+        int neigh_min_x = (player.viewportX) >> chunk_tile_lg;
+        int neigh_min_y = (player.viewportY) >> chunk_tile_lg;
+        int neigh_max_x = (player.viewportX + player.viewportWidth) >> chunk_tile_lg;
+        int neigh_max_y = (player.viewportY + player.viewportHeight) >> chunk_tile_lg;
         
-        int neigh_min_x = chX - 1;
-        int neigh_max_x = chX + 1;
-        int neigh_min_y = chY - 1;
-        int neigh_max_y = chY + 1;
+        --neigh_min_x;
+        --neigh_min_y;
+        ++neigh_max_x;
+        ++neigh_max_y;
         
         for (int vc_x = neigh_min_x; vc_x <= neigh_max_x; vc_x++) {
             for (int vc_y = neigh_min_y; vc_y <= neigh_max_y; vc_y++) {
@@ -135,10 +146,15 @@ static void serverSendGameState() {
                     )); // TODO: Endianness! Should convert to little endian if this is big endian
                     chunku.set_metadata(std::string());
                     
-                    serveru.add_chunks()->CopyFrom(chunku);
+                    printf("Will copy (%d, %d)\n", vc_x, vc_y);
+                    wire::Chunk* chunkPtr = serveru.add_chunks();
+                    printf("  did add\n");
+                    chunkPtr->CopyFrom(chunku);
+                    printf("  copy fromed\n");
+                    
                     modifiedSu = true;
                     
-                    if (visitedIter == player.visitedChunks.end())
+                    if (visitedIter != player.visitedChunks.end())
                         visitedIter->second.version = worldIter->second.version;
                     else
                         player.visitedChunks[std::make_pair(vc_x, vc_y)] = Player::VisitedChunk::Make(vc_x, vc_y, worldIter->second.version);

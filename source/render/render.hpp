@@ -1,4 +1,6 @@
 #import "main/game.hpp"
+#import "physics/collision.hpp"
+#import "physics/particle.hpp"
 #import <SFML/Graphics.hpp>
 
 static void drawCrosshair() {
@@ -13,6 +15,15 @@ static void drawCrosshair() {
     GAME.app->Draw(crosshairH);
 }
 
+static void drawEmitter(Emitter& emitter) {
+    // Draw each particle
+    printf("emitter.particles = %d\n", (int)(emitter.particles.size()));
+    for (Particle& p : emitter.particles) {
+        printf("Draw particle: %f, %f\n", p.position.x, p.position.y);
+        sf::Shape shape = sf::Shape::Line(p.position.x, p.position.y, p.position.x + 1, p.position.y + 1, 1.0, sf::Color(255, 255, 255, 255));
+        GAME.app->Draw(shape);
+    }
+}
 static void drawPlayer(Player& player, bool isUser) {
     // First of all, is the player IN our viewport?
     // TODO: Check its axis-aligned bounding box
@@ -38,6 +49,16 @@ static void drawAllPlayers() {
     }
     
     drawPlayer(*GAME.world.me, true);
+    
+    // Draw emitters on top
+    for (std::pair<Player::ID, Player> pair : GAME.world.players) {
+        Player& player = GAME.world.players[pair.first];
+        for (Weapon& weapon : player.weapons) {
+            if (weapon.isFiring) {
+                drawEmitter(weapon._emitter);
+            }
+        }
+    }
 }
 
 static sf::Color colorForTile(Tile tile) {
@@ -88,46 +109,70 @@ struct ViewportRect {
 static void drawChunk(int cx, int cy, ViewportRect vr, Chunk& chunk) {
     for (int i = 0; i < CHUNK_SIZE; i++) {
         int xcoord = (cx * CHUNK_SIZE + i) * TILE_SIZE;
-        if (xcoord + TILE_SIZE < vr.minx) continue;
-        if (xcoord > vr.maxx) break;
+        if (xcoord + TILE_SIZE < vr.minx) { /* printf("  %d + T < %d CONT\n", xcoord, vr.minx); */ continue; }
+        if (xcoord > TILE_SIZE + vr.maxx) { /* printf("  %d > T + %d BREAK\n", xcoord, vr.maxx); */ break; }
         
         for (int j = 0; j < CHUNK_SIZE; j++) {
             int ycoord = (cy * CHUNK_SIZE + j) * TILE_SIZE;
             
-            if (ycoord + TILE_SIZE < vr.miny) continue;
-            if (ycoord > vr.maxy) break;
+            if (ycoord + TILE_SIZE < vr.miny) { /* printf("%d + T < %d CONT\n", ycoord, vr.miny); */ continue; }
+            if (ycoord > TILE_SIZE + vr.maxy) { /* printf("%d > T + %d BREAK\n", ycoord, vr.maxy); */ break; }
             
             // printf("Drawing tile at %d, %d :: %d, %d -> %d\n", xcoord, ycoord, i, j, chunk.tiles[i][j]);
             drawTile(xcoord, ycoord, chunk.tiles[i][j]);
         }
     }
 }
-
-static void render() {
-    // Draw chunks
-    //ViewportRect vr = { GAME.viewportX, GAME.viewportX + GAME.viewportWidth, GAME.viewportY, GAME.viewportY + GAME.viewportHeight };
-    ViewportRect vr = { GAME.mouseX, GAME.mouseX + GAME.viewportWidth, GAME.mouseY, GAME.mouseY + GAME.viewportHeight };
+static void drawChunks(ViewportRect vr) {
+    // ViewportRect vr = { meX - vW/2, meX + vW - vW/2, meY - vH/2, meY + vH - vH/2 };
     
-    int chunkMinX = vr.minx >> (TILE_SIZE_LOG + CHUNK_SIZE_LOG - 1);
-    int chunkMaxX = (vr.maxx >> (TILE_SIZE_LOG + CHUNK_SIZE_LOG - 1)) + 1;
+    int chunk_tile_lg = CHUNK_SIZE_LOG + TILE_SIZE_LOG; // used to have a -1, wtf?
+    int chunkMinX = vr.minx >> chunk_tile_lg;
+    int chunkMaxX = vr.maxx >> chunk_tile_lg;
     
-    int chunkMinY = vr.miny >> (TILE_SIZE_LOG + CHUNK_SIZE_LOG - 1);
-    int chunkMaxY = (vr.maxy >> (TILE_SIZE_LOG + CHUNK_SIZE_LOG - 1)) + 1;
+    int chunkMinY = vr.miny >> chunk_tile_lg;
+    int chunkMaxY = vr.maxy >> chunk_tile_lg;
+    
+    --chunkMinX;
+    --chunkMinY;
+    ++chunkMaxX;
+    ++chunkMaxY;
     
     auto& chunks = GAME.world.chunks;
     for (int x = chunkMinX; x <= chunkMaxX; x++) {
         for (int y = chunkMinX; y <= chunkMaxX; y++) {
-            // printf("Attempting to draw chunk (%d, %d)\n", x, y);
+            // printf("Attempting to draw chunk (%d, %d) = %d\n", x, y, int(chunks.count(std::make_pair(x, y))));
             if (chunks.count(std::make_pair(x, y))) {
                 drawChunk(x, y, vr, chunks[std::make_pair(x, y)]);
             }
         }
     }
+}
+
+static void render() {
+    // *** Draw Game ***
     
-    // Get the mouse position, and draw a crosshair
-    drawCrosshair();
+    // Draw chunks
+    ViewportRect vr = { GAME.viewportX, GAME.viewportX + GAME.viewportWidth, GAME.viewportY, GAME.viewportY + GAME.viewportHeight };
+    // int meX = round(GAME.world.me->position.x);
+    // int meY = round(GAME.world.me->position.y);
+    // int vW = GAME.viewportWidth;
+    // int vH = GAME.viewportHeight;
+    
+    // Center the view on the player
+    sf::View view(sf::FloatRect(GAME.viewportX, GAME.viewportY, GAME.viewportX + GAME.viewportWidth, GAME.viewportY + GAME.viewportHeight));
+    GAME.app->SetView(view);
+    
+    drawChunks(vr);
     
     // Draw the players
     drawAllPlayers();
+    
+    
+    // *** Draw Interface ***
+    GAME.app->SetView(GAME.app->GetDefaultView());
+    
+    // Get the mouse position, and draw a crosshair
+    drawCrosshair();
 }
 

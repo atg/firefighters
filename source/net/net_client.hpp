@@ -29,10 +29,14 @@ static void clientReceiveGameState(const std::string& data) {
             newPlayer.identifier = clientID;
             GAME.world.players[clientID] = newPlayer;
             player = &(GAME.world.players[clientID]);
+            
+            player->weapons.push_back(Weapon());
+            // printf("PLAYER WEAPONS NUMBER: %d", player->weapons.empty());
         }
         
         player->position.x = pu.update().x();
         player->position.y = pu.update().y();
+        
         // player->angle = Angle::FromWire(pu.update().angle());
         player->angle.angle = pu.update().angle();
         
@@ -98,6 +102,10 @@ static void clientSendGameState() {
     
     // Construct client game state
     wire::ClientQuickUpdate u = clientQuickUpdateFrom(*(GAME.world.me));
+    u.set_viewportx(GAME.viewportX);
+    u.set_viewporty(GAME.viewportY);
+    u.set_viewportwidth(GAME.viewportWidth);
+    u.set_viewportheight(GAME.viewportHeight);
     
     // Write to a std::string
     std::ostringstream oss;

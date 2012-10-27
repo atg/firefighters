@@ -130,6 +130,34 @@ class ClientQuickUpdate : public ::google::protobuf::Message {
   inline float velocityy() const;
   inline void set_velocityy(float value);
   
+  // optional sint32 viewportX = 10;
+  inline bool has_viewportx() const;
+  inline void clear_viewportx();
+  static const int kViewportXFieldNumber = 10;
+  inline ::google::protobuf::int32 viewportx() const;
+  inline void set_viewportx(::google::protobuf::int32 value);
+  
+  // optional sint32 viewportY = 11;
+  inline bool has_viewporty() const;
+  inline void clear_viewporty();
+  static const int kViewportYFieldNumber = 11;
+  inline ::google::protobuf::int32 viewporty() const;
+  inline void set_viewporty(::google::protobuf::int32 value);
+  
+  // optional sint32 viewportWidth = 12;
+  inline bool has_viewportwidth() const;
+  inline void clear_viewportwidth();
+  static const int kViewportWidthFieldNumber = 12;
+  inline ::google::protobuf::int32 viewportwidth() const;
+  inline void set_viewportwidth(::google::protobuf::int32 value);
+  
+  // optional sint32 viewportHeight = 13;
+  inline bool has_viewportheight() const;
+  inline void clear_viewportheight();
+  static const int kViewportHeightFieldNumber = 13;
+  inline ::google::protobuf::int32 viewportheight() const;
+  inline void set_viewportheight(::google::protobuf::int32 value);
+  
   // @@protoc_insertion_point(class_scope:wire.ClientQuickUpdate)
  private:
   inline void set_has_x();
@@ -142,6 +170,14 @@ class ClientQuickUpdate : public ::google::protobuf::Message {
   inline void clear_has_velocityx();
   inline void set_has_velocityy();
   inline void clear_has_velocityy();
+  inline void set_has_viewportx();
+  inline void clear_has_viewportx();
+  inline void set_has_viewporty();
+  inline void clear_has_viewporty();
+  inline void set_has_viewportwidth();
+  inline void clear_has_viewportwidth();
+  inline void set_has_viewportheight();
+  inline void clear_has_viewportheight();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -150,9 +186,13 @@ class ClientQuickUpdate : public ::google::protobuf::Message {
   float angle_;
   float velocityx_;
   float velocityy_;
+  ::google::protobuf::int32 viewportx_;
+  ::google::protobuf::int32 viewporty_;
+  ::google::protobuf::int32 viewportwidth_;
+  ::google::protobuf::int32 viewportheight_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(9 + 31) / 32];
   
   friend void  protobuf_AddDesc_wire_2eproto();
   friend void protobuf_AssignDesc_wire_2eproto();
@@ -786,6 +826,94 @@ inline float ClientQuickUpdate::velocityy() const {
 inline void ClientQuickUpdate::set_velocityy(float value) {
   set_has_velocityy();
   velocityy_ = value;
+}
+
+// optional sint32 viewportX = 10;
+inline bool ClientQuickUpdate::has_viewportx() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void ClientQuickUpdate::set_has_viewportx() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void ClientQuickUpdate::clear_has_viewportx() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void ClientQuickUpdate::clear_viewportx() {
+  viewportx_ = 0;
+  clear_has_viewportx();
+}
+inline ::google::protobuf::int32 ClientQuickUpdate::viewportx() const {
+  return viewportx_;
+}
+inline void ClientQuickUpdate::set_viewportx(::google::protobuf::int32 value) {
+  set_has_viewportx();
+  viewportx_ = value;
+}
+
+// optional sint32 viewportY = 11;
+inline bool ClientQuickUpdate::has_viewporty() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void ClientQuickUpdate::set_has_viewporty() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void ClientQuickUpdate::clear_has_viewporty() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void ClientQuickUpdate::clear_viewporty() {
+  viewporty_ = 0;
+  clear_has_viewporty();
+}
+inline ::google::protobuf::int32 ClientQuickUpdate::viewporty() const {
+  return viewporty_;
+}
+inline void ClientQuickUpdate::set_viewporty(::google::protobuf::int32 value) {
+  set_has_viewporty();
+  viewporty_ = value;
+}
+
+// optional sint32 viewportWidth = 12;
+inline bool ClientQuickUpdate::has_viewportwidth() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void ClientQuickUpdate::set_has_viewportwidth() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void ClientQuickUpdate::clear_has_viewportwidth() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void ClientQuickUpdate::clear_viewportwidth() {
+  viewportwidth_ = 0;
+  clear_has_viewportwidth();
+}
+inline ::google::protobuf::int32 ClientQuickUpdate::viewportwidth() const {
+  return viewportwidth_;
+}
+inline void ClientQuickUpdate::set_viewportwidth(::google::protobuf::int32 value) {
+  set_has_viewportwidth();
+  viewportwidth_ = value;
+}
+
+// optional sint32 viewportHeight = 13;
+inline bool ClientQuickUpdate::has_viewportheight() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void ClientQuickUpdate::set_has_viewportheight() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void ClientQuickUpdate::clear_has_viewportheight() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void ClientQuickUpdate::clear_viewportheight() {
+  viewportheight_ = 0;
+  clear_has_viewportheight();
+}
+inline ::google::protobuf::int32 ClientQuickUpdate::viewportheight() const {
+  return viewportheight_;
+}
+inline void ClientQuickUpdate::set_viewportheight(::google::protobuf::int32 value) {
+  set_has_viewportheight();
+  viewportheight_ = value;
 }
 
 // -------------------------------------------------------------------

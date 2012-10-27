@@ -11,6 +11,11 @@ message ClientQuickUpdate {
     required float velocityY = 6;
     // required float accelerationX = 7;
     // required float accelerationY = 8;
+    
+    optional sint32 viewportX = 10;
+    optional sint32 viewportY = 11;
+    optional sint32 viewportWidth = 12;
+    optional sint32 viewportHeight = 13;
 }
 
 // An update from the server to the clients, sent over UDP
