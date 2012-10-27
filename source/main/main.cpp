@@ -142,7 +142,7 @@ static void processEvents() {
     }
     
     // Handle weapon firing
-    Weapon* weapon = GAME.world.me->activeWeapon;
+    Weapon* weapon = GAME.world.me->activeWeapon();
     if (isKeyDown(sf::Key::Space)) {
         if (weapon)
             weapon->start(*GAME.world.me);

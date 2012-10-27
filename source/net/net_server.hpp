@@ -51,7 +51,7 @@ static void serverReceiveGameState(std::string data, int clientID) {
         player->flamethrower.start(*player);
     else
         player->flamethrower.stop();
-    player->activeWeapon = &(player->flamethrower);
+    // player->activeWeapon = &(player->flamethrower);
 }
 void game_serverQuickUpdate(InvocationMessage ctx) {
     // printf("Receive game state from %d\n", ctx.sender);

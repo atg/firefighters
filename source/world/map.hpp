@@ -60,8 +60,10 @@ struct Player {
     bool isAlive() { return health > 0; }
     
     // Weapons
-    Weapon* activeWeapon;
     Weapon flamethrower;
+    Weapon* activeWeapon() {
+        return &flamethrower;
+    }
     
     // Visited chunks (for the server)
     struct VisitedChunk {
@@ -88,7 +90,7 @@ struct Player {
           cclass(CharacterClass::Flamethrower),
           health(Player::MaxHealth),
           viewportX(0), viewportY(0), viewportWidth(0), viewportHeight(0),
-          flamethrower(), activeWeapon(&flamethrower) { }
+          flamethrower() { }
 };
 
 #ifdef MAIN_UNIT

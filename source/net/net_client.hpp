@@ -46,7 +46,7 @@ static void clientReceiveGameState(const std::string& data) {
             player->flamethrower.start(*player);
         else
             player->flamethrower.stop();
-        player->activeWeapon = &(player->flamethrower);
+        // player->activeWeapon = &(player->flamethrower);
     }
 }
 static void clientReceiveFullUpdate(const std::string& data) {
@@ -86,7 +86,7 @@ void game_clientFullUpdate(InvocationMessage ctx) {
     clientReceiveFullUpdate(ctx.data);
 }
 
-static wire::ClientQuickUpdate clientQuickUpdateFrom(const Player& player) {
+static wire::ClientQuickUpdate clientQuickUpdateFrom(Player& player) {
     
     wire::ClientQuickUpdate u;
     u.set_x(round(player.position.x));
@@ -101,7 +101,7 @@ static wire::ClientQuickUpdate clientQuickUpdateFrom(const Player& player) {
     u.set_velocityx(0);
     u.set_velocityy(0);
     
-    if (player.activeWeapon == &(player.flamethrower))
+    if (player.activeWeapon() == &(player.flamethrower))
         u.set_isfiringflamethrower(player.flamethrower.isFiring);
     
     return u;

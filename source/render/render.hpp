@@ -91,9 +91,9 @@ static void drawAllPlayers() {
     // Draw emitters on top
     for (std::pair<Player::ID, Player> pair : GAME.world.players) {
         Player& player = GAME.world.players[pair.first];
-        if (player.activeWeapon) {
-            if (player.activeWeapon->isFiring) {
-                drawEmitter(player.activeWeapon->_emitter);
+        if (player.activeWeapon()) {
+            if (player.activeWeapon()->isFiring) {
+                drawEmitter(player.activeWeapon()->_emitter);
             }
         }
     }
