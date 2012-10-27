@@ -1,5 +1,5 @@
-static std::bitset<Tile::LAST> solid_init() {    
-    std::bitset<Tile::LAST> bits;
+static std::bitset<(int)Tile::LAST> solid_init() {    
+    std::bitset<(int)Tile::LAST> bits;
 
     #define AFFIRM_SOLIDITY(tilename) \
       bits[(int)Tile::tilename] = 1;

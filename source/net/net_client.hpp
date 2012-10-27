@@ -41,7 +41,6 @@ static void clientReceiveGameState(const std::string& data) {
         // u.set_velocityx(0.0);
         // u.set_velocityy(0.0);
         
-        
         // Do this at the very end
         if (pu.update().isfiringflamethrower())
             player->flamethrower.start(*player);

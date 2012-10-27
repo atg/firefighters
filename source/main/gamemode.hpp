@@ -11,6 +11,9 @@ struct Team {
     int tickets;
     std::set<int> members; // Player ids
     
+    std::set<int, int> killCounts;
+    std::set<int, int> deathCounts;
+    
     /*
     struct CTFState {
         // A flag holder of 0 indicates the flag is in the base
@@ -39,8 +42,8 @@ enum class CauseOfDeath {
     Stupidity = -10, // They killed themselves. What a plonker.
     OtherTeam = -9, // They were killed by the other team, but we don't know who did it
 };
-static void playerDied(int killer, int dead) {
-    
-}
+
+void playerDied_server(int killer, int dead);
+// void playerDied_client(int killer, int dead);
 
 
