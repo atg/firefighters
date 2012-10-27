@@ -51,7 +51,7 @@ static void clientReceiveGameState(const std::string& data) {
 }
 static void clientReceiveFullUpdate(const std::string& data) {
     wire::ServerUpdate u;
-    // printf("Message is: %s\n", data.c_str());
+    printf("Message is: %s\n", data.c_str());
     std::istringstream iss(data);
     if (!u.ParseFromIstream(&iss)) {
         coma("Could not read quick update.");
@@ -59,11 +59,12 @@ static void clientReceiveFullUpdate(const std::string& data) {
     }
 
     // For each chunk
+    printf("Receiving update where chunks would be set theoretically\n");
     for (const wire::Chunk& chunku : u.chunks()) {
-
         int x = chunku.x();
         int y = chunku.y();
         int version = chunku.version();
+        printf("\t Receiving chunks: %d / %d / %d\n", x, y, version);
         
         // Find a player with this ID
         Player* player = NULL;
@@ -83,6 +84,7 @@ void game_clientQuickUpdate(InvocationMessage ctx) {
     clientReceiveGameState(ctx.data);
 }
 void game_clientFullUpdate(InvocationMessage ctx) {
+    printf("#### FULL UPDATE #### \n");
     clientReceiveFullUpdate(ctx.data);
 }
 

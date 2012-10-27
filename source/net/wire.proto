@@ -7,17 +7,17 @@ message ClientQuickUpdate {
     required sint32 y = 2;
     required float angle = 3;
     // required float angularVelocity = 4;
-    required float velocityX = 5;
-    required float velocityY = 6;
+    required float velocityX = 4;
+    required float velocityY = 5;
     // required float accelerationX = 7;
     // required float accelerationY = 8;
     
-    required bool isFiringFlamethrower = 9;
+    required bool isFiringFlamethrower = 6;
     
-    optional sint32 viewportX = 10;
-    optional sint32 viewportY = 11;
-    optional sint32 viewportWidth = 12;
-    optional sint32 viewportHeight = 13;
+    optional sint32 viewportX = 7;
+    optional sint32 viewportY = 8;
+    optional sint32 viewportWidth = 9;
+    optional sint32 viewportHeight = 10;
 }
 
 // An update from the server to the clients, sent over UDP
@@ -28,11 +28,31 @@ message ServerQuickUpdate {
     }
     
     repeated PlayerUpdate updates = 1;
+    
+    // required int32 health = 2;
 }
 
 // message ServerPlayerIDHandshake {
 // required uint32 playerID = 1;
 // }
+
+message Team {
+    required int32 tickets = 1;
+    repeated int32 members = 2 [packed=true];
+}
+message Score {
+    required Team red = 1;
+    required Team blu = 2;
+    
+    message MetaPlayer {
+        required int32 kills = 1;
+        required int32 deaths = 2;
+        optional int32 health = 3;
+        // required int32 ping = 4;
+    }
+    
+    repeated MetaPlayer metaplayers = 3;
+}
 
 message Chunk {
     required sint32 x = 1;

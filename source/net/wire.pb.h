@@ -35,6 +35,9 @@ void protobuf_ShutdownFile_wire_2eproto();
 class ClientQuickUpdate;
 class ServerQuickUpdate;
 class ServerQuickUpdate_PlayerUpdate;
+class Team;
+class Score;
+class Score_MetaPlayer;
 class Chunk;
 class Object;
 class ServerUpdate;
@@ -116,52 +119,52 @@ class ClientQuickUpdate : public ::google::protobuf::Message {
   inline float angle() const;
   inline void set_angle(float value);
   
-  // required float velocityX = 5;
+  // required float velocityX = 4;
   inline bool has_velocityx() const;
   inline void clear_velocityx();
-  static const int kVelocityXFieldNumber = 5;
+  static const int kVelocityXFieldNumber = 4;
   inline float velocityx() const;
   inline void set_velocityx(float value);
   
-  // required float velocityY = 6;
+  // required float velocityY = 5;
   inline bool has_velocityy() const;
   inline void clear_velocityy();
-  static const int kVelocityYFieldNumber = 6;
+  static const int kVelocityYFieldNumber = 5;
   inline float velocityy() const;
   inline void set_velocityy(float value);
   
-  // required bool isFiringFlamethrower = 9;
+  // required bool isFiringFlamethrower = 6;
   inline bool has_isfiringflamethrower() const;
   inline void clear_isfiringflamethrower();
-  static const int kIsFiringFlamethrowerFieldNumber = 9;
+  static const int kIsFiringFlamethrowerFieldNumber = 6;
   inline bool isfiringflamethrower() const;
   inline void set_isfiringflamethrower(bool value);
   
-  // optional sint32 viewportX = 10;
+  // optional sint32 viewportX = 7;
   inline bool has_viewportx() const;
   inline void clear_viewportx();
-  static const int kViewportXFieldNumber = 10;
+  static const int kViewportXFieldNumber = 7;
   inline ::google::protobuf::int32 viewportx() const;
   inline void set_viewportx(::google::protobuf::int32 value);
   
-  // optional sint32 viewportY = 11;
+  // optional sint32 viewportY = 8;
   inline bool has_viewporty() const;
   inline void clear_viewporty();
-  static const int kViewportYFieldNumber = 11;
+  static const int kViewportYFieldNumber = 8;
   inline ::google::protobuf::int32 viewporty() const;
   inline void set_viewporty(::google::protobuf::int32 value);
   
-  // optional sint32 viewportWidth = 12;
+  // optional sint32 viewportWidth = 9;
   inline bool has_viewportwidth() const;
   inline void clear_viewportwidth();
-  static const int kViewportWidthFieldNumber = 12;
+  static const int kViewportWidthFieldNumber = 9;
   inline ::google::protobuf::int32 viewportwidth() const;
   inline void set_viewportwidth(::google::protobuf::int32 value);
   
-  // optional sint32 viewportHeight = 13;
+  // optional sint32 viewportHeight = 10;
   inline bool has_viewportheight() const;
   inline void clear_viewportheight();
-  static const int kViewportHeightFieldNumber = 13;
+  static const int kViewportHeightFieldNumber = 10;
   inline ::google::protobuf::int32 viewportheight() const;
   inline void set_viewportheight(::google::protobuf::int32 value);
   
@@ -390,6 +393,313 @@ class ServerQuickUpdate : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static ServerQuickUpdate* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Team : public ::google::protobuf::Message {
+ public:
+  Team();
+  virtual ~Team();
+  
+  Team(const Team& from);
+  
+  inline Team& operator=(const Team& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Team& default_instance();
+  
+  void Swap(Team* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Team* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Team& from);
+  void MergeFrom(const Team& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required int32 tickets = 1;
+  inline bool has_tickets() const;
+  inline void clear_tickets();
+  static const int kTicketsFieldNumber = 1;
+  inline ::google::protobuf::int32 tickets() const;
+  inline void set_tickets(::google::protobuf::int32 value);
+  
+  // repeated int32 members = 2 [packed = true];
+  inline int members_size() const;
+  inline void clear_members();
+  static const int kMembersFieldNumber = 2;
+  inline ::google::protobuf::int32 members(int index) const;
+  inline void set_members(int index, ::google::protobuf::int32 value);
+  inline void add_members(::google::protobuf::int32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+      members() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+      mutable_members();
+  
+  // @@protoc_insertion_point(class_scope:wire.Team)
+ private:
+  inline void set_has_tickets();
+  inline void clear_has_tickets();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > members_;
+  mutable int _members_cached_byte_size_;
+  ::google::protobuf::int32 tickets_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_wire_2eproto();
+  friend void protobuf_AssignDesc_wire_2eproto();
+  friend void protobuf_ShutdownFile_wire_2eproto();
+  
+  void InitAsDefaultInstance();
+  static Team* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Score_MetaPlayer : public ::google::protobuf::Message {
+ public:
+  Score_MetaPlayer();
+  virtual ~Score_MetaPlayer();
+  
+  Score_MetaPlayer(const Score_MetaPlayer& from);
+  
+  inline Score_MetaPlayer& operator=(const Score_MetaPlayer& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Score_MetaPlayer& default_instance();
+  
+  void Swap(Score_MetaPlayer* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Score_MetaPlayer* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Score_MetaPlayer& from);
+  void MergeFrom(const Score_MetaPlayer& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required int32 kills = 1;
+  inline bool has_kills() const;
+  inline void clear_kills();
+  static const int kKillsFieldNumber = 1;
+  inline ::google::protobuf::int32 kills() const;
+  inline void set_kills(::google::protobuf::int32 value);
+  
+  // required int32 deaths = 2;
+  inline bool has_deaths() const;
+  inline void clear_deaths();
+  static const int kDeathsFieldNumber = 2;
+  inline ::google::protobuf::int32 deaths() const;
+  inline void set_deaths(::google::protobuf::int32 value);
+  
+  // optional int32 health = 3;
+  inline bool has_health() const;
+  inline void clear_health();
+  static const int kHealthFieldNumber = 3;
+  inline ::google::protobuf::int32 health() const;
+  inline void set_health(::google::protobuf::int32 value);
+  
+  // @@protoc_insertion_point(class_scope:wire.Score.MetaPlayer)
+ private:
+  inline void set_has_kills();
+  inline void clear_has_kills();
+  inline void set_has_deaths();
+  inline void clear_has_deaths();
+  inline void set_has_health();
+  inline void clear_has_health();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::google::protobuf::int32 kills_;
+  ::google::protobuf::int32 deaths_;
+  ::google::protobuf::int32 health_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_wire_2eproto();
+  friend void protobuf_AssignDesc_wire_2eproto();
+  friend void protobuf_ShutdownFile_wire_2eproto();
+  
+  void InitAsDefaultInstance();
+  static Score_MetaPlayer* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Score : public ::google::protobuf::Message {
+ public:
+  Score();
+  virtual ~Score();
+  
+  Score(const Score& from);
+  
+  inline Score& operator=(const Score& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Score& default_instance();
+  
+  void Swap(Score* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Score* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Score& from);
+  void MergeFrom(const Score& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  typedef Score_MetaPlayer MetaPlayer;
+  
+  // accessors -------------------------------------------------------
+  
+  // required .wire.Team red = 1;
+  inline bool has_red() const;
+  inline void clear_red();
+  static const int kRedFieldNumber = 1;
+  inline const ::wire::Team& red() const;
+  inline ::wire::Team* mutable_red();
+  inline ::wire::Team* release_red();
+  
+  // required .wire.Team blu = 2;
+  inline bool has_blu() const;
+  inline void clear_blu();
+  static const int kBluFieldNumber = 2;
+  inline const ::wire::Team& blu() const;
+  inline ::wire::Team* mutable_blu();
+  inline ::wire::Team* release_blu();
+  
+  // repeated .wire.Score.MetaPlayer metaplayers = 3;
+  inline int metaplayers_size() const;
+  inline void clear_metaplayers();
+  static const int kMetaplayersFieldNumber = 3;
+  inline const ::wire::Score_MetaPlayer& metaplayers(int index) const;
+  inline ::wire::Score_MetaPlayer* mutable_metaplayers(int index);
+  inline ::wire::Score_MetaPlayer* add_metaplayers();
+  inline const ::google::protobuf::RepeatedPtrField< ::wire::Score_MetaPlayer >&
+      metaplayers() const;
+  inline ::google::protobuf::RepeatedPtrField< ::wire::Score_MetaPlayer >*
+      mutable_metaplayers();
+  
+  // @@protoc_insertion_point(class_scope:wire.Score)
+ private:
+  inline void set_has_red();
+  inline void clear_has_red();
+  inline void set_has_blu();
+  inline void clear_has_blu();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::wire::Team* red_;
+  ::wire::Team* blu_;
+  ::google::protobuf::RepeatedPtrField< ::wire::Score_MetaPlayer > metaplayers_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_wire_2eproto();
+  friend void protobuf_AssignDesc_wire_2eproto();
+  friend void protobuf_ShutdownFile_wire_2eproto();
+  
+  void InitAsDefaultInstance();
+  static Score* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -794,7 +1104,7 @@ inline void ClientQuickUpdate::set_angle(float value) {
   angle_ = value;
 }
 
-// required float velocityX = 5;
+// required float velocityX = 4;
 inline bool ClientQuickUpdate::has_velocityx() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
@@ -816,7 +1126,7 @@ inline void ClientQuickUpdate::set_velocityx(float value) {
   velocityx_ = value;
 }
 
-// required float velocityY = 6;
+// required float velocityY = 5;
 inline bool ClientQuickUpdate::has_velocityy() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
@@ -838,7 +1148,7 @@ inline void ClientQuickUpdate::set_velocityy(float value) {
   velocityy_ = value;
 }
 
-// required bool isFiringFlamethrower = 9;
+// required bool isFiringFlamethrower = 6;
 inline bool ClientQuickUpdate::has_isfiringflamethrower() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
@@ -860,7 +1170,7 @@ inline void ClientQuickUpdate::set_isfiringflamethrower(bool value) {
   isfiringflamethrower_ = value;
 }
 
-// optional sint32 viewportX = 10;
+// optional sint32 viewportX = 7;
 inline bool ClientQuickUpdate::has_viewportx() const {
   return (_has_bits_[0] & 0x00000040u) != 0;
 }
@@ -882,7 +1192,7 @@ inline void ClientQuickUpdate::set_viewportx(::google::protobuf::int32 value) {
   viewportx_ = value;
 }
 
-// optional sint32 viewportY = 11;
+// optional sint32 viewportY = 8;
 inline bool ClientQuickUpdate::has_viewporty() const {
   return (_has_bits_[0] & 0x00000080u) != 0;
 }
@@ -904,7 +1214,7 @@ inline void ClientQuickUpdate::set_viewporty(::google::protobuf::int32 value) {
   viewporty_ = value;
 }
 
-// optional sint32 viewportWidth = 12;
+// optional sint32 viewportWidth = 9;
 inline bool ClientQuickUpdate::has_viewportwidth() const {
   return (_has_bits_[0] & 0x00000100u) != 0;
 }
@@ -926,7 +1236,7 @@ inline void ClientQuickUpdate::set_viewportwidth(::google::protobuf::int32 value
   viewportwidth_ = value;
 }
 
-// optional sint32 viewportHeight = 13;
+// optional sint32 viewportHeight = 10;
 inline bool ClientQuickUpdate::has_viewportheight() const {
   return (_has_bits_[0] & 0x00000200u) != 0;
 }
@@ -1030,6 +1340,214 @@ ServerQuickUpdate::updates() const {
 inline ::google::protobuf::RepeatedPtrField< ::wire::ServerQuickUpdate_PlayerUpdate >*
 ServerQuickUpdate::mutable_updates() {
   return &updates_;
+}
+
+// -------------------------------------------------------------------
+
+// Team
+
+// required int32 tickets = 1;
+inline bool Team::has_tickets() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Team::set_has_tickets() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Team::clear_has_tickets() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Team::clear_tickets() {
+  tickets_ = 0;
+  clear_has_tickets();
+}
+inline ::google::protobuf::int32 Team::tickets() const {
+  return tickets_;
+}
+inline void Team::set_tickets(::google::protobuf::int32 value) {
+  set_has_tickets();
+  tickets_ = value;
+}
+
+// repeated int32 members = 2 [packed = true];
+inline int Team::members_size() const {
+  return members_.size();
+}
+inline void Team::clear_members() {
+  members_.Clear();
+}
+inline ::google::protobuf::int32 Team::members(int index) const {
+  return members_.Get(index);
+}
+inline void Team::set_members(int index, ::google::protobuf::int32 value) {
+  members_.Set(index, value);
+}
+inline void Team::add_members(::google::protobuf::int32 value) {
+  members_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+Team::members() const {
+  return members_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+Team::mutable_members() {
+  return &members_;
+}
+
+// -------------------------------------------------------------------
+
+// Score_MetaPlayer
+
+// required int32 kills = 1;
+inline bool Score_MetaPlayer::has_kills() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Score_MetaPlayer::set_has_kills() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Score_MetaPlayer::clear_has_kills() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Score_MetaPlayer::clear_kills() {
+  kills_ = 0;
+  clear_has_kills();
+}
+inline ::google::protobuf::int32 Score_MetaPlayer::kills() const {
+  return kills_;
+}
+inline void Score_MetaPlayer::set_kills(::google::protobuf::int32 value) {
+  set_has_kills();
+  kills_ = value;
+}
+
+// required int32 deaths = 2;
+inline bool Score_MetaPlayer::has_deaths() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Score_MetaPlayer::set_has_deaths() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Score_MetaPlayer::clear_has_deaths() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Score_MetaPlayer::clear_deaths() {
+  deaths_ = 0;
+  clear_has_deaths();
+}
+inline ::google::protobuf::int32 Score_MetaPlayer::deaths() const {
+  return deaths_;
+}
+inline void Score_MetaPlayer::set_deaths(::google::protobuf::int32 value) {
+  set_has_deaths();
+  deaths_ = value;
+}
+
+// optional int32 health = 3;
+inline bool Score_MetaPlayer::has_health() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Score_MetaPlayer::set_has_health() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Score_MetaPlayer::clear_has_health() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Score_MetaPlayer::clear_health() {
+  health_ = 0;
+  clear_has_health();
+}
+inline ::google::protobuf::int32 Score_MetaPlayer::health() const {
+  return health_;
+}
+inline void Score_MetaPlayer::set_health(::google::protobuf::int32 value) {
+  set_has_health();
+  health_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// Score
+
+// required .wire.Team red = 1;
+inline bool Score::has_red() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Score::set_has_red() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Score::clear_has_red() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Score::clear_red() {
+  if (red_ != NULL) red_->::wire::Team::Clear();
+  clear_has_red();
+}
+inline const ::wire::Team& Score::red() const {
+  return red_ != NULL ? *red_ : *default_instance_->red_;
+}
+inline ::wire::Team* Score::mutable_red() {
+  set_has_red();
+  if (red_ == NULL) red_ = new ::wire::Team;
+  return red_;
+}
+inline ::wire::Team* Score::release_red() {
+  clear_has_red();
+  ::wire::Team* temp = red_;
+  red_ = NULL;
+  return temp;
+}
+
+// required .wire.Team blu = 2;
+inline bool Score::has_blu() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Score::set_has_blu() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Score::clear_has_blu() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Score::clear_blu() {
+  if (blu_ != NULL) blu_->::wire::Team::Clear();
+  clear_has_blu();
+}
+inline const ::wire::Team& Score::blu() const {
+  return blu_ != NULL ? *blu_ : *default_instance_->blu_;
+}
+inline ::wire::Team* Score::mutable_blu() {
+  set_has_blu();
+  if (blu_ == NULL) blu_ = new ::wire::Team;
+  return blu_;
+}
+inline ::wire::Team* Score::release_blu() {
+  clear_has_blu();
+  ::wire::Team* temp = blu_;
+  blu_ = NULL;
+  return temp;
+}
+
+// repeated .wire.Score.MetaPlayer metaplayers = 3;
+inline int Score::metaplayers_size() const {
+  return metaplayers_.size();
+}
+inline void Score::clear_metaplayers() {
+  metaplayers_.Clear();
+}
+inline const ::wire::Score_MetaPlayer& Score::metaplayers(int index) const {
+  return metaplayers_.Get(index);
+}
+inline ::wire::Score_MetaPlayer* Score::mutable_metaplayers(int index) {
+  return metaplayers_.Mutable(index);
+}
+inline ::wire::Score_MetaPlayer* Score::add_metaplayers() {
+  return metaplayers_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::wire::Score_MetaPlayer >&
+Score::metaplayers() const {
+  return metaplayers_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::wire::Score_MetaPlayer >*
+Score::mutable_metaplayers() {
+  return &metaplayers_;
 }
 
 // -------------------------------------------------------------------

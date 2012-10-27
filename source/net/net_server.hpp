@@ -154,7 +154,7 @@ static void serverSendGameState() {
                     )); // TODO: Endianness! Should convert to little endian if this is big endian
                     chunku.set_metadata(std::string());
                     
-                    printf("Will copy (%d, %d)\n", vc_x, vc_y);
+                    printf("Will copy (%d, %d, %d) -> %d\n", vc_x, vc_y, worldIter->second.version, player.identifier);
                     wire::Chunk* chunkPtr = serveru.add_chunks();
                     printf("  did add\n");
                     chunkPtr->CopyFrom(chunku);

@@ -22,14 +22,15 @@ struct NetClient {
     void clientReadPacket(sf::Packet& packet, bool isTCP) {
         
         // Do something with the packet...
-        // printf("CLIENT READ PACKET: is TCP? %d, has handled first? %d\n", isTCP, hasHandledFirstTCPPacket);
+        if (isTCP)
+            printf("CLIENT READ PACKET: is TCP? %d, has handled first? %d\n", isTCP, hasHandledFirstTCPPacket);
         if (isTCP && !hasHandledFirstTCPPacket) {
             // This is our client ID, hopefully
             hasHandledFirstTCPPacket = true;
             
             uint16_t cid;
             packet >> cid;
-            
+            printf("SET CLIENT ID PACKET: %d\n", cid);
             mainQueue().push(game_setClientID, InvocationMessage((int)cid, ""));
             return;
         }
@@ -37,13 +38,17 @@ struct NetClient {
         if (!isTCP) {
             const char* dataptr = packet.GetData();
             std::string data = std::string(dataptr, dataptr + packet.GetDataSize());
-            mainQueue().push(game_clientQuickUpdate, InvocationMessage(0, data));
+            mainQueue().push(game_clientQuickUpdate, InvocationMessage(37, data));
         }
         
         if (isTCP) {
+            // printf("RECEIVED PACKET VIA TCP: %u\n", (unsigned)packet.GetDataSize());
             const char* dataptr = packet.GetData();
             std::string data = std::string(dataptr, dataptr + packet.GetDataSize());
+            // printf("WILL PUSH 42\n");
             mainQueue().push(game_clientFullUpdate, InvocationMessage(0, data));
+            // printf("DID PUSH 42\n");
+            // game_clientFullUpdate(InvocationMessage(0, data));
         }
     }
     

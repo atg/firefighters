@@ -49,24 +49,28 @@ struct Invocation {
         function(context);
     }
 };
+
+void game_clientQuickUpdate(InvocationMessage ctx);
+void game_clientFullUpdate(InvocationMessage ctx);
+void game_serverQuickUpdate(InvocationMessage ctx);
+
 struct InvocationQueue {
     sf::Mutex mutex;
     std::queue<Invocation> q;
-
+    
     void push(void (*function)(InvocationMessage), InvocationMessage arg) {
         sf::Lock lock(mutex);
         q.push(Invocation(function, arg));
     }
     void popAll() {
-        
         std::vector<Invocation> others;
         mutex.Lock();
         others.reserve(q.size());
-        for (; !q.empty(); q.pop()) {
-            others.push_back(q.back());
+        for (int i = 0, n = q.size(); i < n; i++) {
+            others.push_back(q.front());
+            q.pop();
         }
         mutex.Unlock();
-        
         for (Invocation& invok : others) {
             invok.invoke();
         }
@@ -90,6 +94,3 @@ static void game_setClientID(InvocationMessage ctx) {
     
     // GAME.world.me->activeWeapon = &(player->flamethrower);
 }
-void game_clientQuickUpdate(InvocationMessage ctx);
-void game_clientFullUpdate(InvocationMessage ctx);
-void game_serverQuickUpdate(InvocationMessage ctx);
