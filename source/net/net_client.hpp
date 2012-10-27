@@ -29,9 +29,6 @@ static void clientReceiveGameState(const std::string& data) {
             newPlayer.identifier = clientID;
             GAME.world.players[clientID] = newPlayer;
             player = &(GAME.world.players[clientID]);
-            
-            player->weapons.push_back(Weapon());
-            // printf("PLAYER WEAPONS NUMBER: %d", player->weapons.empty());
         }
         
         player->position.x = pu.update().x();
@@ -43,6 +40,14 @@ static void clientReceiveGameState(const std::string& data) {
         // TODO: Smooth movement
         // u.set_velocityx(0.0);
         // u.set_velocityy(0.0);
+        
+        
+        // Do this at the very end
+        if (pu.update().isfiringflamethrower())
+            player->flamethrower.start(*player);
+        else
+            player->flamethrower.stop();
+        player->activeWeapon = &(player->flamethrower);
     }
 }
 static void clientReceiveFullUpdate(const std::string& data) {
@@ -96,6 +101,10 @@ static wire::ClientQuickUpdate clientQuickUpdateFrom(const Player& player) {
     // TODO: Smooth movement
     u.set_velocityx(0);
     u.set_velocityy(0);
+    
+    if (player.activeWeapon == &(player.flamethrower))
+        u.set_isfiringflamethrower(player.flamethrower.isFiring);
+    
     return u;
 }
 static void clientSendGameState() {

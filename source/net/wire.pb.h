@@ -130,6 +130,13 @@ class ClientQuickUpdate : public ::google::protobuf::Message {
   inline float velocityy() const;
   inline void set_velocityy(float value);
   
+  // required bool isFiringFlamethrower = 9;
+  inline bool has_isfiringflamethrower() const;
+  inline void clear_isfiringflamethrower();
+  static const int kIsFiringFlamethrowerFieldNumber = 9;
+  inline bool isfiringflamethrower() const;
+  inline void set_isfiringflamethrower(bool value);
+  
   // optional sint32 viewportX = 10;
   inline bool has_viewportx() const;
   inline void clear_viewportx();
@@ -170,6 +177,8 @@ class ClientQuickUpdate : public ::google::protobuf::Message {
   inline void clear_has_velocityx();
   inline void set_has_velocityy();
   inline void clear_has_velocityy();
+  inline void set_has_isfiringflamethrower();
+  inline void clear_has_isfiringflamethrower();
   inline void set_has_viewportx();
   inline void clear_has_viewportx();
   inline void set_has_viewporty();
@@ -186,13 +195,14 @@ class ClientQuickUpdate : public ::google::protobuf::Message {
   float angle_;
   float velocityx_;
   float velocityy_;
+  bool isfiringflamethrower_;
   ::google::protobuf::int32 viewportx_;
   ::google::protobuf::int32 viewporty_;
   ::google::protobuf::int32 viewportwidth_;
   ::google::protobuf::int32 viewportheight_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(9 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(10 + 31) / 32];
   
   friend void  protobuf_AddDesc_wire_2eproto();
   friend void protobuf_AssignDesc_wire_2eproto();
@@ -828,15 +838,37 @@ inline void ClientQuickUpdate::set_velocityy(float value) {
   velocityy_ = value;
 }
 
-// optional sint32 viewportX = 10;
-inline bool ClientQuickUpdate::has_viewportx() const {
+// required bool isFiringFlamethrower = 9;
+inline bool ClientQuickUpdate::has_isfiringflamethrower() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
-inline void ClientQuickUpdate::set_has_viewportx() {
+inline void ClientQuickUpdate::set_has_isfiringflamethrower() {
   _has_bits_[0] |= 0x00000020u;
 }
-inline void ClientQuickUpdate::clear_has_viewportx() {
+inline void ClientQuickUpdate::clear_has_isfiringflamethrower() {
   _has_bits_[0] &= ~0x00000020u;
+}
+inline void ClientQuickUpdate::clear_isfiringflamethrower() {
+  isfiringflamethrower_ = false;
+  clear_has_isfiringflamethrower();
+}
+inline bool ClientQuickUpdate::isfiringflamethrower() const {
+  return isfiringflamethrower_;
+}
+inline void ClientQuickUpdate::set_isfiringflamethrower(bool value) {
+  set_has_isfiringflamethrower();
+  isfiringflamethrower_ = value;
+}
+
+// optional sint32 viewportX = 10;
+inline bool ClientQuickUpdate::has_viewportx() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void ClientQuickUpdate::set_has_viewportx() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void ClientQuickUpdate::clear_has_viewportx() {
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void ClientQuickUpdate::clear_viewportx() {
   viewportx_ = 0;
@@ -852,13 +884,13 @@ inline void ClientQuickUpdate::set_viewportx(::google::protobuf::int32 value) {
 
 // optional sint32 viewportY = 11;
 inline bool ClientQuickUpdate::has_viewporty() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000080u) != 0;
 }
 inline void ClientQuickUpdate::set_has_viewporty() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000080u;
 }
 inline void ClientQuickUpdate::clear_has_viewporty() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline void ClientQuickUpdate::clear_viewporty() {
   viewporty_ = 0;
@@ -874,13 +906,13 @@ inline void ClientQuickUpdate::set_viewporty(::google::protobuf::int32 value) {
 
 // optional sint32 viewportWidth = 12;
 inline bool ClientQuickUpdate::has_viewportwidth() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
+  return (_has_bits_[0] & 0x00000100u) != 0;
 }
 inline void ClientQuickUpdate::set_has_viewportwidth() {
-  _has_bits_[0] |= 0x00000080u;
+  _has_bits_[0] |= 0x00000100u;
 }
 inline void ClientQuickUpdate::clear_has_viewportwidth() {
-  _has_bits_[0] &= ~0x00000080u;
+  _has_bits_[0] &= ~0x00000100u;
 }
 inline void ClientQuickUpdate::clear_viewportwidth() {
   viewportwidth_ = 0;
@@ -896,13 +928,13 @@ inline void ClientQuickUpdate::set_viewportwidth(::google::protobuf::int32 value
 
 // optional sint32 viewportHeight = 13;
 inline bool ClientQuickUpdate::has_viewportheight() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
+  return (_has_bits_[0] & 0x00000200u) != 0;
 }
 inline void ClientQuickUpdate::set_has_viewportheight() {
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000200u;
 }
 inline void ClientQuickUpdate::clear_has_viewportheight() {
-  _has_bits_[0] &= ~0x00000100u;
+  _has_bits_[0] &= ~0x00000200u;
 }
 inline void ClientQuickUpdate::clear_viewportheight() {
   viewportheight_ = 0;

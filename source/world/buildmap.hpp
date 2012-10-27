@@ -84,6 +84,21 @@ void generate(World& world) {
         }
     }
     
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            Tile above = j == 0    ? Tile::Black : tiles(i, j - 1);
+            Tile below = j == size ? Tile::Black : tiles(i, j + 1);
+            Tile  left = i == 0    ? Tile::Black : tiles(i - 1, j);
+            Tile right = i == size ? Tile::Black : tiles(i + 1, j);
+            
+            Tile here = tiles(i, j);
+            
+            // Walls around pavements
+            if (here == Tile::Grass && (above == Tile::Pavement || below == Tile::Pavement || left == Tile::Pavement || right == Tile::Pavement))
+                tiles(i, j) = Tile::BrickWall;
+        }
+    }
+    
     // Chunkify
     for (int i = 0; i < size / CHUNK_SIZE; i++) {
         for (int j = 0; j < size / CHUNK_SIZE; j++) {

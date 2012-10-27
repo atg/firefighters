@@ -60,7 +60,8 @@ struct Player {
     bool isAlive() { return health > 0; }
     
     // Weapons
-    std::vector<Weapon> weapons;
+    Weapon* activeWeapon;
+    Weapon flamethrower;
     
     // Visited chunks (for the server)
     struct VisitedChunk {
@@ -86,9 +87,11 @@ struct Player {
           team(0),
           cclass(CharacterClass::Flamethrower),
           health(Player::MaxHealth),
-          viewportX(0), viewportY(0), viewportWidth(0), viewportHeight(0) { }
+          viewportX(0), viewportY(0), viewportWidth(0), viewportHeight(0),
+          flamethrower(), activeWeapon(&flamethrower) { }
 };
 
+#ifdef MAIN_UNIT
 void Weapon::start(Player& player) {
     if (isFiring) {
         _emitter.position = Vec2<int>(round(player.position.x), round(player.position.y));
@@ -108,19 +111,7 @@ void Weapon::start(Player& player) {
     
     _emitter.begin();
 }
-// static void updatedPlayerPosition(Player& player) {
-    // Not needed now
-
-    // Update the emitter positions for each weapon
-    /*
-    for (Weapon& weapon : player.weapons) {
-        if (weapon.hasEmitter()) {
-            weapon._emitter.position.x = round(player.position.x);
-            weapon._emitter.position.y = round(player.position.y);
-        }
-    }
-    */
-// }
+#endif
 
 // Some tiles are rotationally symmetric in C2 or C4
 // Vertical or horizontal

@@ -12,6 +12,8 @@ message ClientQuickUpdate {
     // required float accelerationX = 7;
     // required float accelerationY = 8;
     
+    required bool isFiringFlamethrower = 9;
+    
     optional sint32 viewportX = 10;
     optional sint32 viewportY = 11;
     optional sint32 viewportWidth = 12;

@@ -46,12 +46,13 @@ void protobuf_AssignDesc_wire_2eproto() {
       "wire.proto");
   GOOGLE_CHECK(file != NULL);
   ClientQuickUpdate_descriptor_ = file->message_type(0);
-  static const int ClientQuickUpdate_offsets_[9] = {
+  static const int ClientQuickUpdate_offsets_[10] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, x_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, y_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, angle_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, velocityx_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, velocityy_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, isfiringflamethrower_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, viewportx_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, viewporty_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientQuickUpdate, viewportwidth_),
@@ -201,20 +202,21 @@ void protobuf_AddDesc_wire_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\nwire.proto\022\004wire\"\263\001\n\021ClientQuickUpdate"
+    "\n\nwire.proto\022\004wire\"\321\001\n\021ClientQuickUpdate"
     "\022\t\n\001x\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\r\n\005angle\030\003 \002(\002\022\021\n"
-    "\tvelocityX\030\005 \002(\002\022\021\n\tvelocityY\030\006 \002(\002\022\021\n\tv"
-    "iewportX\030\n \001(\021\022\021\n\tviewportY\030\013 \001(\021\022\025\n\rvie"
-    "wportWidth\030\014 \001(\021\022\026\n\016viewportHeight\030\r \001(\021"
-    "\"\225\001\n\021ServerQuickUpdate\0225\n\007updates\030\001 \003(\0132"
-    "$.wire.ServerQuickUpdate.PlayerUpdate\032I\n"
-    "\014PlayerUpdate\022\020\n\010playerID\030\001 \002(\r\022\'\n\006updat"
-    "e\030\002 \002(\0132\027.wire.ClientQuickUpdate\"O\n\005Chun"
-    "k\022\t\n\001x\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\017\n\007version\030\003 \002(\005"
-    "\022\r\n\005tiles\030\004 \001(\014\022\020\n\010metadata\030\005 \001(\014\"-\n\006Obj"
-    "ect\022\t\n\001x\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\r\n\005angle\030\003 \002(\021"
-    "\"J\n\014ServerUpdate\022\033\n\006chunks\030\001 \003(\0132\013.wire."
-    "Chunk\022\035\n\007objects\030\002 \003(\0132\014.wire.Object", 556);
+    "\tvelocityX\030\005 \002(\002\022\021\n\tvelocityY\030\006 \002(\002\022\034\n\024i"
+    "sFiringFlamethrower\030\t \002(\010\022\021\n\tviewportX\030\n"
+    " \001(\021\022\021\n\tviewportY\030\013 \001(\021\022\025\n\rviewportWidth"
+    "\030\014 \001(\021\022\026\n\016viewportHeight\030\r \001(\021\"\225\001\n\021Serve"
+    "rQuickUpdate\0225\n\007updates\030\001 \003(\0132$.wire.Ser"
+    "verQuickUpdate.PlayerUpdate\032I\n\014PlayerUpd"
+    "ate\022\020\n\010playerID\030\001 \002(\r\022\'\n\006update\030\002 \002(\0132\027."
+    "wire.ClientQuickUpdate\"O\n\005Chunk\022\t\n\001x\030\001 \002"
+    "(\021\022\t\n\001y\030\002 \002(\021\022\017\n\007version\030\003 \002(\005\022\r\n\005tiles\030"
+    "\004 \001(\014\022\020\n\010metadata\030\005 \001(\014\"-\n\006Object\022\t\n\001x\030\001"
+    " \002(\021\022\t\n\001y\030\002 \002(\021\022\r\n\005angle\030\003 \002(\021\"J\n\014Server"
+    "Update\022\033\n\006chunks\030\001 \003(\0132\013.wire.Chunk\022\035\n\007o"
+    "bjects\030\002 \003(\0132\014.wire.Object", 586);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "wire.proto", &protobuf_RegisterTypes);
   ClientQuickUpdate::default_instance_ = new ClientQuickUpdate();
@@ -248,6 +250,7 @@ const int ClientQuickUpdate::kYFieldNumber;
 const int ClientQuickUpdate::kAngleFieldNumber;
 const int ClientQuickUpdate::kVelocityXFieldNumber;
 const int ClientQuickUpdate::kVelocityYFieldNumber;
+const int ClientQuickUpdate::kIsFiringFlamethrowerFieldNumber;
 const int ClientQuickUpdate::kViewportXFieldNumber;
 const int ClientQuickUpdate::kViewportYFieldNumber;
 const int ClientQuickUpdate::kViewportWidthFieldNumber;
@@ -275,6 +278,7 @@ void ClientQuickUpdate::SharedCtor() {
   angle_ = 0;
   velocityx_ = 0;
   velocityy_ = 0;
+  isfiringflamethrower_ = false;
   viewportx_ = 0;
   viewporty_ = 0;
   viewportwidth_ = 0;
@@ -318,11 +322,12 @@ void ClientQuickUpdate::Clear() {
     angle_ = 0;
     velocityx_ = 0;
     velocityy_ = 0;
+    isfiringflamethrower_ = false;
     viewportx_ = 0;
     viewporty_ = 0;
-    viewportwidth_ = 0;
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    viewportwidth_ = 0;
     viewportheight_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -407,6 +412,22 @@ bool ClientQuickUpdate::MergePartialFromCodedStream(
                    float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &velocityy_)));
           set_has_velocityy();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(72)) goto parse_isFiringFlamethrower;
+        break;
+      }
+      
+      // required bool isFiringFlamethrower = 9;
+      case 9: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_isFiringFlamethrower:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &isfiringflamethrower_)));
+          set_has_isfiringflamethrower();
         } else {
           goto handle_uninterpreted;
         }
@@ -521,6 +542,11 @@ void ClientQuickUpdate::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteFloat(6, this->velocityy(), output);
   }
   
+  // required bool isFiringFlamethrower = 9;
+  if (has_isfiringflamethrower()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(9, this->isfiringflamethrower(), output);
+  }
+  
   // optional sint32 viewportX = 10;
   if (has_viewportx()) {
     ::google::protobuf::internal::WireFormatLite::WriteSInt32(10, this->viewportx(), output);
@@ -572,6 +598,11 @@ void ClientQuickUpdate::SerializeWithCachedSizes(
   // required float velocityY = 6;
   if (has_velocityy()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(6, this->velocityy(), target);
+  }
+  
+  // required bool isFiringFlamethrower = 9;
+  if (has_isfiringflamethrower()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(9, this->isfiringflamethrower(), target);
   }
   
   // optional sint32 viewportX = 10;
@@ -634,6 +665,11 @@ int ClientQuickUpdate::ByteSize() const {
       total_size += 1 + 4;
     }
     
+    // required bool isFiringFlamethrower = 9;
+    if (has_isfiringflamethrower()) {
+      total_size += 1 + 1;
+    }
+    
     // optional sint32 viewportX = 10;
     if (has_viewportx()) {
       total_size += 1 +
@@ -648,6 +684,8 @@ int ClientQuickUpdate::ByteSize() const {
           this->viewporty());
     }
     
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     // optional sint32 viewportWidth = 12;
     if (has_viewportwidth()) {
       total_size += 1 +
@@ -655,8 +693,6 @@ int ClientQuickUpdate::ByteSize() const {
           this->viewportwidth());
     }
     
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     // optional sint32 viewportHeight = 13;
     if (has_viewportheight()) {
       total_size += 1 +
@@ -706,17 +742,20 @@ void ClientQuickUpdate::MergeFrom(const ClientQuickUpdate& from) {
     if (from.has_velocityy()) {
       set_velocityy(from.velocityy());
     }
+    if (from.has_isfiringflamethrower()) {
+      set_isfiringflamethrower(from.isfiringflamethrower());
+    }
     if (from.has_viewportx()) {
       set_viewportx(from.viewportx());
     }
     if (from.has_viewporty()) {
       set_viewporty(from.viewporty());
     }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (from.has_viewportwidth()) {
       set_viewportwidth(from.viewportwidth());
     }
-  }
-  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (from.has_viewportheight()) {
       set_viewportheight(from.viewportheight());
     }
@@ -737,7 +776,7 @@ void ClientQuickUpdate::CopyFrom(const ClientQuickUpdate& from) {
 }
 
 bool ClientQuickUpdate::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  if ((_has_bits_[0] & 0x0000003f) != 0x0000003f) return false;
   
   return true;
 }
@@ -749,6 +788,7 @@ void ClientQuickUpdate::Swap(ClientQuickUpdate* other) {
     std::swap(angle_, other->angle_);
     std::swap(velocityx_, other->velocityx_);
     std::swap(velocityy_, other->velocityy_);
+    std::swap(isfiringflamethrower_, other->isfiringflamethrower_);
     std::swap(viewportx_, other->viewportx_);
     std::swap(viewporty_, other->viewporty_);
     std::swap(viewportwidth_, other->viewportwidth_);

@@ -87,8 +87,6 @@ static void game_setClientID(InvocationMessage ctx) {
     Player me(GAME.clientID);
     GAME.world.players[me.identifier] = me;
     GAME.world.me = &(GAME.world.players[me.identifier]);
-    
-    GAME.world.me->weapons.push_back(Weapon());
 }
 void game_clientQuickUpdate(InvocationMessage ctx);
 void game_clientFullUpdate(InvocationMessage ctx);

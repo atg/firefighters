@@ -6,6 +6,7 @@
 #import <sstream>
 #import <string>
 
+// TODO: Unify this and clientReceiveGameState()
 static void serverReceiveGameState(std::string data, int clientID) {
     wire::ClientQuickUpdate u;
     std::istringstream iss(std::string(&data[0], data.size()));
@@ -44,6 +45,13 @@ static void serverReceiveGameState(std::string data, int clientID) {
     // TODO: Smooth movement
     // u.set_velocityx(0.0);
     // u.set_velocityy(0.0);
+    
+    // Do this at the very end
+    if (u.isfiringflamethrower())
+        player->flamethrower.start(*player);
+    else
+        player->flamethrower.stop();
+    player->activeWeapon = &(player->flamethrower);
 }
 void game_serverQuickUpdate(InvocationMessage ctx) {
     // printf("Receive game state from %d\n", ctx.sender);

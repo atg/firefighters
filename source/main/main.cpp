@@ -1,3 +1,5 @@
+#define MAIN_UNIT
+
 #import <SFML/Window.hpp>
 #import <SFML/Graphics.hpp>
 #import <SFML/System/Sleep.hpp>
@@ -140,19 +142,14 @@ static void processEvents() {
     }
     
     // Handle weapon firing
-    auto& weapons = GAME.world.me->weapons;
+    Weapon* weapon = GAME.world.me->activeWeapon;
     if (isKeyDown(sf::Key::Space)) {
-        printf("Space down: %d\n", weapons.empty());
-        if (!weapons.empty()) {
-            // Start the weapon up
-            weapons[0].start(*GAME.world.me);
-        }
+        if (weapon)
+            weapon->start(*GAME.world.me);
     }
     else {
-        printf("Space up\n");
-        for (Weapon& weapon : weapons) {
-            weapon.stop();
-        }
+        if (weapon)
+            weapon->stop();
     }
     
     GAME.viewportX = round(GAME.world.me->position.x - GAME.viewportWidth / 2.0);

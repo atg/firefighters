@@ -29,8 +29,36 @@ static void drawEmitter(Emitter& emitter) {
     */
     
     for (Particle& p : emitter.particles) {
+        if (p.dead) continue;
+        
+        // White  255 255 255
+        // Yellow 255 255 0
+        // Orange 255 128 0
+        // Red    255 0   0
+        // Brown  128 0   0
+        
+        int red = 255;
+        int green = 255;
+        int blue = 255;
+        
+        float percentage = p.age;
+        if (percentage > 0.995)
+            percentage = 0.995;
+        
+        float intpart = floorf(percentage * 4.0);
+        float fracpart = percentage * 4.0 - intpart;
+        
+        if (intpart == 0) blue *= 1.0 - fracpart;
+        else blue = 0;
+        
+        if (intpart == 1) green *= (1.0 - fracpart) * 0.5 + 0.5;
+        else if (intpart == 2) green *= (1.0 - fracpart) * 0.5;
+        else if (intpart >= 3) green = 0;
+        
+        if (intpart == 3) red *= (1.0 - fracpart) * 0.5 + 0.5;
+        
         // printf("Draw particle: %f, %f\n", p.position.x, p.position.y);
-        sf::Shape shape = sf::Shape::Line(p.position.x, p.position.y, p.position.x + 1, p.position.y + 1, 1.0, sf::Color(255, 255, 255, 255));
+        sf::Shape shape = sf::Shape::Line(p.position.x, p.position.y, p.position.x + 1, p.position.y + 1, 1.0, sf::Color(red, green, blue, 255));
         GAME.app->Draw(shape);
     }
 }
@@ -63,17 +91,18 @@ static void drawAllPlayers() {
     // Draw emitters on top
     for (std::pair<Player::ID, Player> pair : GAME.world.players) {
         Player& player = GAME.world.players[pair.first];
-        for (Weapon& weapon : player.weapons) {
-            if (weapon.isFiring) {
-                drawEmitter(weapon._emitter);
+        if (player.activeWeapon) {
+            if (player.activeWeapon->isFiring) {
+                drawEmitter(player.activeWeapon->_emitter);
             }
         }
     }
 }
 
 static sf::Color colorForTile(Tile tile) {
-    switch (tile){
-        case Tile::Black: return sf::Color(0, 0, 0, 255);
+    switch (tile) {
+        case Tile::LAST: case Tile::Black: return sf::Color(0, 0, 0, 255);
+        
         case Tile::Dirt: return sf::Color(128, 64, 0, 255);
         case Tile::Grass: return sf::Color(0, 255, 0, 255);
         case Tile::Tarmac: return sf::Color(102, 102, 102, 255);
