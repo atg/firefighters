@@ -46,8 +46,8 @@ message Score {
     
     message MetaPlayer {
         required int32 identifier = 1;
-        required int32 kills = 2;
-        required int32 deaths = 3;
+        optional int32 kills = 2;
+        optional int32 deaths = 3;
         optional int32 health = 4;
         // required int32 ping = 5;
     }

@@ -289,7 +289,7 @@ void protobuf_AddDesc_wire_2eproto() {
     "\n\003red\030\001 \002(\0132\n.wire.Team\022\027\n\003blu\030\002 \002(\0132\n.w"
     "ire.Team\022+\n\013metaplayers\030\003 \003(\0132\026.wire.Sco"
     "re.MetaPlayer\032O\n\nMetaPlayer\022\022\n\nidentifie"
-    "r\030\001 \002(\005\022\r\n\005kills\030\002 \002(\005\022\016\n\006deaths\030\003 \002(\005\022\016"
+    "r\030\001 \002(\005\022\r\n\005kills\030\002 \001(\005\022\016\n\006deaths\030\003 \001(\005\022\016"
     "\n\006health\030\004 \001(\005\"O\n\005Chunk\022\t\n\001x\030\001 \002(\021\022\t\n\001y\030"
     "\002 \002(\021\022\017\n\007version\030\003 \002(\005\022\r\n\005tiles\030\004 \001(\014\022\020\n"
     "\010metadata\030\005 \001(\014\"-\n\006Object\022\t\n\001x\030\001 \002(\021\022\t\n\001"
@@ -1720,7 +1720,7 @@ bool Score_MetaPlayer::MergePartialFromCodedStream(
         break;
       }
       
-      // required int32 kills = 2;
+      // optional int32 kills = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -1736,7 +1736,7 @@ bool Score_MetaPlayer::MergePartialFromCodedStream(
         break;
       }
       
-      // required int32 deaths = 3;
+      // optional int32 deaths = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -1791,12 +1791,12 @@ void Score_MetaPlayer::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->identifier(), output);
   }
   
-  // required int32 kills = 2;
+  // optional int32 kills = 2;
   if (has_kills()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->kills(), output);
   }
   
-  // required int32 deaths = 3;
+  // optional int32 deaths = 3;
   if (has_deaths()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->deaths(), output);
   }
@@ -1819,12 +1819,12 @@ void Score_MetaPlayer::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->identifier(), target);
   }
   
-  // required int32 kills = 2;
+  // optional int32 kills = 2;
   if (has_kills()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->kills(), target);
   }
   
-  // required int32 deaths = 3;
+  // optional int32 deaths = 3;
   if (has_deaths()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->deaths(), target);
   }
@@ -1852,14 +1852,14 @@ int Score_MetaPlayer::ByteSize() const {
           this->identifier());
     }
     
-    // required int32 kills = 2;
+    // optional int32 kills = 2;
     if (has_kills()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->kills());
     }
     
-    // required int32 deaths = 3;
+    // optional int32 deaths = 3;
     if (has_deaths()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -1929,7 +1929,7 @@ void Score_MetaPlayer::CopyFrom(const Score_MetaPlayer& from) {
 }
 
 bool Score_MetaPlayer::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
   
   return true;
 }

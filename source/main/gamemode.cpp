@@ -20,9 +20,11 @@ static void setOrAdd(T& mapping, int key, int val) {
 }
 
 void playerDamaged(int assaulter, int victim, int amount) {
+    GAME.state.hasChanged = true;
     if (GAME.isClient)
         return;
     
+    amount = 11;
     printf("Player %d damaged player %d! It was %d effective.\n", assaulter, victim, amount);
     auto& players = GAME.world.players;
     if (assaulter < 1)
@@ -30,7 +32,7 @@ void playerDamaged(int assaulter, int victim, int amount) {
     
     if (players.find(victim) == players.end())
         return; // ???
-    
+    printf("Found victim\n");
     if (players.find(assaulter) == players.end())
         assaulter = (int)CauseOfDeath::PastPlayer;
     
@@ -41,13 +43,17 @@ void playerDamaged(int assaulter, int victim, int amount) {
     else
         victimPlayer.health -= amount;
     
+    printf("New health = %d\n", victimPlayer.health);
     
     if (victimPlayer.health == 0) {
         playerDied(assaulter, victimPlayer);
     }
+    
+    GAME.state.hasChanged = true;
 }
 
 void playerDied(int killer, Player& dead) {
+    GAME.state.hasChanged = true;
     if (GAME.isClient)
         return;
     
@@ -72,6 +78,8 @@ void playerDied(int killer, Player& dead) {
     if (GAME.state.red.tickets <= 0 || GAME.state.blu.tickets <= 0) {
         gameOver();
     }
+    
+    GAME.state.hasChanged = true;
 }
 
 void gameOver() {

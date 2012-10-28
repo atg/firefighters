@@ -212,6 +212,7 @@ static void serverSendGameState() {
             
             serveru.mutable_score()->CopyFrom(score);
             modifiedSu = true;
+            GAME.state.hasChanged = false;
         }
         
         // Send the server update

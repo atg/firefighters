@@ -553,14 +553,14 @@ class Score_MetaPlayer : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 identifier() const;
   inline void set_identifier(::google::protobuf::int32 value);
   
-  // required int32 kills = 2;
+  // optional int32 kills = 2;
   inline bool has_kills() const;
   inline void clear_kills();
   static const int kKillsFieldNumber = 2;
   inline ::google::protobuf::int32 kills() const;
   inline void set_kills(::google::protobuf::int32 value);
   
-  // required int32 deaths = 3;
+  // optional int32 deaths = 3;
   inline bool has_deaths() const;
   inline void clear_deaths();
   static const int kDeathsFieldNumber = 3;
@@ -1440,7 +1440,7 @@ inline void Score_MetaPlayer::set_identifier(::google::protobuf::int32 value) {
   identifier_ = value;
 }
 
-// required int32 kills = 2;
+// optional int32 kills = 2;
 inline bool Score_MetaPlayer::has_kills() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1462,7 +1462,7 @@ inline void Score_MetaPlayer::set_kills(::google::protobuf::int32 value) {
   kills_ = value;
 }
 
-// required int32 deaths = 3;
+// optional int32 deaths = 3;
 inline bool Score_MetaPlayer::has_deaths() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }

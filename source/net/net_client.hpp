@@ -1,6 +1,7 @@
 #import "net/net.hpp"
 #import "world/map.hpp"
 #import "main/game.hpp"
+#import "main/gamemode.hpp"
 #import "wire.pb.h"
 #import <sstream>
 #import <string>
@@ -78,6 +79,43 @@ static void clientReceiveFullUpdate(const std::string& data) {
         
         worldIter->second.version = version;
         std::copy(chunku.tiles().begin(), chunku.tiles().end(), (char*)&worldIter->second.tiles[0][0]);
+    }
+    
+    // Game state
+    if (u.has_score()) {
+        
+        // Tickets
+        GAME.state.red.tickets = u.score().red().tickets();
+        GAME.state.blu.tickets = u.score().blu().tickets();
+        
+        printf("TICKETS! %d / %d", GAME.state.red.tickets, GAME.state.blu.tickets);
+        
+        // Members
+        GAME.state.red.members.clear();
+        GAME.state.blu.members.clear();
+        
+        for (int member : u.score().red().members()) {
+            GAME.state.red.members.insert(member);
+        }
+        for (int member : u.score().red().members()) {
+            GAME.state.blu.members.insert(member);
+        }
+        
+        // Player Metadata
+        for (const wire::Score_MetaPlayer& metaplayer : u.score().metaplayers()) {
+            int id = metaplayer.identifier();
+            
+            if (metaplayer.has_kills())
+                GAME.state.kills[id] = metaplayer.kills();
+            if (metaplayer.has_deaths())
+                GAME.state.deaths[id] = metaplayer.deaths();
+            
+            if (metaplayer.has_health()) {
+                if (GAME.world.players.find(id) != GAME.world.players.end()) {
+                    GAME.world.players[id].health = metaplayer.health();
+                }
+            }
+        }
     }
 }
 void game_clientQuickUpdate(InvocationMessage ctx) {
