@@ -189,6 +189,34 @@ static void drawChunks(ViewportRect vr) {
     }
 }
 
+void drawScores() {
+    // Draw two rectangles
+    double viewportWidth = GAME.viewportWidth;
+    double width = viewportWidth / 6.0;
+    double height = width * 0.35;
+    double centreMargin = viewportWidth / 100.0;
+    bool playerIsRed = true;
+    sf::Color red = sf::Color(217, 129, 128, 255);
+    sf::Color blue = sf::Color(126, 174, 217, 255);
+    
+    // static sf::Font scoreFont = sf::Font::LoadFromFile("Helvetica")
+    
+    sf::Color leftColor = playerIsRed ? red : blue;
+    sf::Shape leftbox = sf::Shape::Rectangle(0, 0, width, height, leftColor);
+    leftbox.SetPosition(viewportWidth / 2.0 - centreMargin - width, centreMargin * 2.0);
+    GAME.app->Draw(leftbox);
+
+    sf::Color rightColor = playerIsRed ? blue : red;
+    sf::Shape rightbox = sf::Shape::Rectangle(0, 0, width, height, rightColor);
+    rightbox.SetPosition(viewportWidth / 2.0 + centreMargin, centreMargin * 2.0);
+    GAME.app->Draw(rightbox);
+
+    // box.SetCenter(width / 2, height / 2);
+    // box.SetRotation(360.0 - player.angle.angle * 180.0 / M_PI + 90.0);
+    
+    
+}
+
 static void render() {
     // *** Draw Game ***
     
@@ -211,6 +239,9 @@ static void render() {
     
     // *** Draw Interface ***
     GAME.app->SetView(GAME.app->GetDefaultView());
+    
+    // Draw the scores at the top
+    drawScores();
     
     // Get the mouse position, and draw a crosshair
     drawCrosshair();

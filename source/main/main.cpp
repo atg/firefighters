@@ -85,7 +85,7 @@ static void processEvents() {
     Angle angle = playerPosition.angle();
     bool changedPosition = false;
     
-    const double walkingSpeed = 110.0; //4.59; // ft/s
+    const double walkingSpeed = 220.0; //4.59; // ft/s
     
     // We should really use some kind of clock instead of having uneven movement speeds
     double movementDistance = GAME.clock.GetElapsedTime() * walkingSpeed; // For now we just move one foot

@@ -45,10 +45,11 @@ message Score {
     required Team blu = 2;
     
     message MetaPlayer {
-        required int32 kills = 1;
-        required int32 deaths = 2;
-        optional int32 health = 3;
-        // required int32 ping = 4;
+        required int32 identifier = 1;
+        required int32 kills = 2;
+        required int32 deaths = 3;
+        optional int32 health = 4;
+        // required int32 ping = 5;
     }
     
     repeated MetaPlayer metaplayers = 3;
@@ -76,4 +77,5 @@ message Object {
 message ServerUpdate {
     repeated Chunk chunks = 1;
     repeated Object objects = 2;
+    optional Score score = 3;
 }

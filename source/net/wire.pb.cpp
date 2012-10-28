@@ -143,7 +143,8 @@ void protobuf_AssignDesc_wire_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Score));
   Score_MetaPlayer_descriptor_ = Score_descriptor_->nested_type(0);
-  static const int Score_MetaPlayer_offsets_[3] = {
+  static const int Score_MetaPlayer_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Score_MetaPlayer, identifier_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Score_MetaPlayer, kills_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Score_MetaPlayer, deaths_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Score_MetaPlayer, health_),
@@ -196,9 +197,10 @@ void protobuf_AssignDesc_wire_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Object));
   ServerUpdate_descriptor_ = file->message_type(6);
-  static const int ServerUpdate_offsets_[2] = {
+  static const int ServerUpdate_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerUpdate, chunks_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerUpdate, objects_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerUpdate, score_),
   };
   ServerUpdate_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -283,16 +285,18 @@ void protobuf_AddDesc_wire_2eproto() {
     "verQuickUpdate.PlayerUpdate\032I\n\014PlayerUpd"
     "ate\022\020\n\010playerID\030\001 \002(\r\022\'\n\006update\030\002 \002(\0132\027."
     "wire.ClientQuickUpdate\",\n\004Team\022\017\n\007ticket"
-    "s\030\001 \002(\005\022\023\n\007members\030\002 \003(\005B\002\020\001\"\243\001\n\005Score\022\027"
+    "s\030\001 \002(\005\022\023\n\007members\030\002 \003(\005B\002\020\001\"\267\001\n\005Score\022\027"
     "\n\003red\030\001 \002(\0132\n.wire.Team\022\027\n\003blu\030\002 \002(\0132\n.w"
     "ire.Team\022+\n\013metaplayers\030\003 \003(\0132\026.wire.Sco"
-    "re.MetaPlayer\032;\n\nMetaPlayer\022\r\n\005kills\030\001 \002"
-    "(\005\022\016\n\006deaths\030\002 \002(\005\022\016\n\006health\030\003 \001(\005\"O\n\005Ch"
-    "unk\022\t\n\001x\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\017\n\007version\030\003 \002"
-    "(\005\022\r\n\005tiles\030\004 \001(\014\022\020\n\010metadata\030\005 \001(\014\"-\n\006O"
-    "bject\022\t\n\001x\030\001 \002(\021\022\t\n\001y\030\002 \002(\021\022\r\n\005angle\030\003 \002"
-    "(\021\"J\n\014ServerUpdate\022\033\n\006chunks\030\001 \003(\0132\013.wir"
-    "e.Chunk\022\035\n\007objects\030\002 \003(\0132\014.wire.Object", 798);
+    "re.MetaPlayer\032O\n\nMetaPlayer\022\022\n\nidentifie"
+    "r\030\001 \002(\005\022\r\n\005kills\030\002 \002(\005\022\016\n\006deaths\030\003 \002(\005\022\016"
+    "\n\006health\030\004 \001(\005\"O\n\005Chunk\022\t\n\001x\030\001 \002(\021\022\t\n\001y\030"
+    "\002 \002(\021\022\017\n\007version\030\003 \002(\005\022\r\n\005tiles\030\004 \001(\014\022\020\n"
+    "\010metadata\030\005 \001(\014\"-\n\006Object\022\t\n\001x\030\001 \002(\021\022\t\n\001"
+    "y\030\002 \002(\021\022\r\n\005angle\030\003 \002(\021\"f\n\014ServerUpdate\022\033"
+    "\n\006chunks\030\001 \003(\0132\013.wire.Chunk\022\035\n\007objects\030\002"
+    " \003(\0132\014.wire.Object\022\032\n\005score\030\003 \001(\0132\013.wire"
+    ".Score", 846);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "wire.proto", &protobuf_RegisterTypes);
   ClientQuickUpdate::default_instance_ = new ClientQuickUpdate();
@@ -1626,6 +1630,7 @@ void Team::Swap(Team* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int Score_MetaPlayer::kIdentifierFieldNumber;
 const int Score_MetaPlayer::kKillsFieldNumber;
 const int Score_MetaPlayer::kDeathsFieldNumber;
 const int Score_MetaPlayer::kHealthFieldNumber;
@@ -1647,6 +1652,7 @@ Score_MetaPlayer::Score_MetaPlayer(const Score_MetaPlayer& from)
 
 void Score_MetaPlayer::SharedCtor() {
   _cached_size_ = 0;
+  identifier_ = 0;
   kills_ = 0;
   deaths_ = 0;
   health_ = 0;
@@ -1684,6 +1690,7 @@ Score_MetaPlayer* Score_MetaPlayer::New() const {
 
 void Score_MetaPlayer::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    identifier_ = 0;
     kills_ = 0;
     deaths_ = 0;
     health_ = 0;
@@ -1698,10 +1705,26 @@ bool Score_MetaPlayer::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required int32 kills = 1;
+      // required int32 identifier = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &identifier_)));
+          set_has_identifier();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_kills;
+        break;
+      }
+      
+      // required int32 kills = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_kills:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &kills_)));
@@ -1709,12 +1732,12 @@ bool Score_MetaPlayer::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(16)) goto parse_deaths;
+        if (input->ExpectTag(24)) goto parse_deaths;
         break;
       }
       
-      // required int32 deaths = 2;
-      case 2: {
+      // required int32 deaths = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_deaths:
@@ -1725,12 +1748,12 @@ bool Score_MetaPlayer::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(24)) goto parse_health;
+        if (input->ExpectTag(32)) goto parse_health;
         break;
       }
       
-      // optional int32 health = 3;
-      case 3: {
+      // optional int32 health = 4;
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_health:
@@ -1763,19 +1786,24 @@ bool Score_MetaPlayer::MergePartialFromCodedStream(
 
 void Score_MetaPlayer::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required int32 kills = 1;
+  // required int32 identifier = 1;
+  if (has_identifier()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->identifier(), output);
+  }
+  
+  // required int32 kills = 2;
   if (has_kills()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->kills(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->kills(), output);
   }
   
-  // required int32 deaths = 2;
+  // required int32 deaths = 3;
   if (has_deaths()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->deaths(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->deaths(), output);
   }
   
-  // optional int32 health = 3;
+  // optional int32 health = 4;
   if (has_health()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->health(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->health(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1786,19 +1814,24 @@ void Score_MetaPlayer::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* Score_MetaPlayer::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required int32 kills = 1;
+  // required int32 identifier = 1;
+  if (has_identifier()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->identifier(), target);
+  }
+  
+  // required int32 kills = 2;
   if (has_kills()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->kills(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->kills(), target);
   }
   
-  // required int32 deaths = 2;
+  // required int32 deaths = 3;
   if (has_deaths()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->deaths(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->deaths(), target);
   }
   
-  // optional int32 health = 3;
+  // optional int32 health = 4;
   if (has_health()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->health(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->health(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1812,21 +1845,28 @@ int Score_MetaPlayer::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required int32 kills = 1;
+    // required int32 identifier = 1;
+    if (has_identifier()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->identifier());
+    }
+    
+    // required int32 kills = 2;
     if (has_kills()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->kills());
     }
     
-    // required int32 deaths = 2;
+    // required int32 deaths = 3;
     if (has_deaths()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->deaths());
     }
     
-    // optional int32 health = 3;
+    // optional int32 health = 4;
     if (has_health()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -1860,6 +1900,9 @@ void Score_MetaPlayer::MergeFrom(const ::google::protobuf::Message& from) {
 void Score_MetaPlayer::MergeFrom(const Score_MetaPlayer& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_identifier()) {
+      set_identifier(from.identifier());
+    }
     if (from.has_kills()) {
       set_kills(from.kills());
     }
@@ -1886,13 +1929,14 @@ void Score_MetaPlayer::CopyFrom(const Score_MetaPlayer& from) {
 }
 
 bool Score_MetaPlayer::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
   
   return true;
 }
 
 void Score_MetaPlayer::Swap(Score_MetaPlayer* other) {
   if (other != this) {
+    std::swap(identifier_, other->identifier_);
     std::swap(kills_, other->kills_);
     std::swap(deaths_, other->deaths_);
     std::swap(health_, other->health_);
@@ -2895,6 +2939,7 @@ void Object::Swap(Object* other) {
 #ifndef _MSC_VER
 const int ServerUpdate::kChunksFieldNumber;
 const int ServerUpdate::kObjectsFieldNumber;
+const int ServerUpdate::kScoreFieldNumber;
 #endif  // !_MSC_VER
 
 ServerUpdate::ServerUpdate()
@@ -2903,6 +2948,7 @@ ServerUpdate::ServerUpdate()
 }
 
 void ServerUpdate::InitAsDefaultInstance() {
+  score_ = const_cast< ::wire::Score*>(&::wire::Score::default_instance());
 }
 
 ServerUpdate::ServerUpdate(const ServerUpdate& from)
@@ -2913,6 +2959,7 @@ ServerUpdate::ServerUpdate(const ServerUpdate& from)
 
 void ServerUpdate::SharedCtor() {
   _cached_size_ = 0;
+  score_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2922,6 +2969,7 @@ ServerUpdate::~ServerUpdate() {
 
 void ServerUpdate::SharedDtor() {
   if (this != default_instance_) {
+    delete score_;
   }
 }
 
@@ -2946,6 +2994,11 @@ ServerUpdate* ServerUpdate::New() const {
 }
 
 void ServerUpdate::Clear() {
+  if (_has_bits_[2 / 32] & (0xffu << (2 % 32))) {
+    if (has_score()) {
+      if (score_ != NULL) score_->::wire::Score::Clear();
+    }
+  }
   chunks_.Clear();
   objects_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -2984,6 +3037,20 @@ bool ServerUpdate::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(18)) goto parse_objects;
+        if (input->ExpectTag(26)) goto parse_score;
+        break;
+      }
+      
+      // optional .wire.Score score = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_score:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_score()));
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -3018,6 +3085,12 @@ void ServerUpdate::SerializeWithCachedSizes(
       2, this->objects(i), output);
   }
   
+  // optional .wire.Score score = 3;
+  if (has_score()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      3, this->score(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -3040,6 +3113,13 @@ void ServerUpdate::SerializeWithCachedSizes(
         2, this->objects(i), target);
   }
   
+  // optional .wire.Score score = 3;
+  if (has_score()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        3, this->score(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -3050,6 +3130,15 @@ void ServerUpdate::SerializeWithCachedSizes(
 int ServerUpdate::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[2 / 32] & (0xffu << (2 % 32))) {
+    // optional .wire.Score score = 3;
+    if (has_score()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->score());
+    }
+    
+  }
   // repeated .wire.Chunk chunks = 1;
   total_size += 1 * this->chunks_size();
   for (int i = 0; i < this->chunks_size(); i++) {
@@ -3093,6 +3182,11 @@ void ServerUpdate::MergeFrom(const ServerUpdate& from) {
   GOOGLE_CHECK_NE(&from, this);
   chunks_.MergeFrom(from.chunks_);
   objects_.MergeFrom(from.objects_);
+  if (from._has_bits_[2 / 32] & (0xffu << (2 % 32))) {
+    if (from.has_score()) {
+      mutable_score()->::wire::Score::MergeFrom(from.score());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -3116,6 +3210,9 @@ bool ServerUpdate::IsInitialized() const {
   for (int i = 0; i < objects_size(); i++) {
     if (!this->objects(i).IsInitialized()) return false;
   }
+  if (has_score()) {
+    if (!this->score().IsInitialized()) return false;
+  }
   return true;
 }
 
@@ -3123,6 +3220,7 @@ void ServerUpdate::Swap(ServerUpdate* other) {
   if (other != this) {
     chunks_.Swap(&other->chunks_);
     objects_.Swap(&other->objects_);
+    std::swap(score_, other->score_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

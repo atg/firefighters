@@ -54,7 +54,8 @@ static bool collides(AABB first, int x, int y, int z = 0) {
 
     // Check z index
     if (first.z != z) return false;
-
+    
+    // printf("Collides? (%d, %d) in (%d, %d; %d, %d)\n", x, y, first.x, first.y, first.maxx(), first.maxy());
     // Check coordinates
     return first.x <= x && x < first.maxx()
         && first.y <= y && y < first.maxy();

@@ -546,29 +546,38 @@ class Score_MetaPlayer : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required int32 kills = 1;
+  // required int32 identifier = 1;
+  inline bool has_identifier() const;
+  inline void clear_identifier();
+  static const int kIdentifierFieldNumber = 1;
+  inline ::google::protobuf::int32 identifier() const;
+  inline void set_identifier(::google::protobuf::int32 value);
+  
+  // required int32 kills = 2;
   inline bool has_kills() const;
   inline void clear_kills();
-  static const int kKillsFieldNumber = 1;
+  static const int kKillsFieldNumber = 2;
   inline ::google::protobuf::int32 kills() const;
   inline void set_kills(::google::protobuf::int32 value);
   
-  // required int32 deaths = 2;
+  // required int32 deaths = 3;
   inline bool has_deaths() const;
   inline void clear_deaths();
-  static const int kDeathsFieldNumber = 2;
+  static const int kDeathsFieldNumber = 3;
   inline ::google::protobuf::int32 deaths() const;
   inline void set_deaths(::google::protobuf::int32 value);
   
-  // optional int32 health = 3;
+  // optional int32 health = 4;
   inline bool has_health() const;
   inline void clear_health();
-  static const int kHealthFieldNumber = 3;
+  static const int kHealthFieldNumber = 4;
   inline ::google::protobuf::int32 health() const;
   inline void set_health(::google::protobuf::int32 value);
   
   // @@protoc_insertion_point(class_scope:wire.Score.MetaPlayer)
  private:
+  inline void set_has_identifier();
+  inline void clear_has_identifier();
   inline void set_has_kills();
   inline void clear_has_kills();
   inline void set_has_deaths();
@@ -578,12 +587,13 @@ class Score_MetaPlayer : public ::google::protobuf::Message {
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
+  ::google::protobuf::int32 identifier_;
   ::google::protobuf::int32 kills_;
   ::google::protobuf::int32 deaths_;
   ::google::protobuf::int32 health_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_wire_2eproto();
   friend void protobuf_AssignDesc_wire_2eproto();
@@ -1013,16 +1023,27 @@ class ServerUpdate : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::wire::Object >*
       mutable_objects();
   
+  // optional .wire.Score score = 3;
+  inline bool has_score() const;
+  inline void clear_score();
+  static const int kScoreFieldNumber = 3;
+  inline const ::wire::Score& score() const;
+  inline ::wire::Score* mutable_score();
+  inline ::wire::Score* release_score();
+  
   // @@protoc_insertion_point(class_scope:wire.ServerUpdate)
  private:
+  inline void set_has_score();
+  inline void clear_has_score();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::google::protobuf::RepeatedPtrField< ::wire::Chunk > chunks_;
   ::google::protobuf::RepeatedPtrField< ::wire::Object > objects_;
+  ::wire::Score* score_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   friend void  protobuf_AddDesc_wire_2eproto();
   friend void protobuf_AssignDesc_wire_2eproto();
@@ -1397,15 +1418,37 @@ Team::mutable_members() {
 
 // Score_MetaPlayer
 
-// required int32 kills = 1;
-inline bool Score_MetaPlayer::has_kills() const {
+// required int32 identifier = 1;
+inline bool Score_MetaPlayer::has_identifier() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void Score_MetaPlayer::set_has_kills() {
+inline void Score_MetaPlayer::set_has_identifier() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void Score_MetaPlayer::clear_has_kills() {
+inline void Score_MetaPlayer::clear_has_identifier() {
   _has_bits_[0] &= ~0x00000001u;
+}
+inline void Score_MetaPlayer::clear_identifier() {
+  identifier_ = 0;
+  clear_has_identifier();
+}
+inline ::google::protobuf::int32 Score_MetaPlayer::identifier() const {
+  return identifier_;
+}
+inline void Score_MetaPlayer::set_identifier(::google::protobuf::int32 value) {
+  set_has_identifier();
+  identifier_ = value;
+}
+
+// required int32 kills = 2;
+inline bool Score_MetaPlayer::has_kills() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Score_MetaPlayer::set_has_kills() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Score_MetaPlayer::clear_has_kills() {
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline void Score_MetaPlayer::clear_kills() {
   kills_ = 0;
@@ -1419,15 +1462,15 @@ inline void Score_MetaPlayer::set_kills(::google::protobuf::int32 value) {
   kills_ = value;
 }
 
-// required int32 deaths = 2;
+// required int32 deaths = 3;
 inline bool Score_MetaPlayer::has_deaths() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 inline void Score_MetaPlayer::set_has_deaths() {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
 }
 inline void Score_MetaPlayer::clear_has_deaths() {
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void Score_MetaPlayer::clear_deaths() {
   deaths_ = 0;
@@ -1441,15 +1484,15 @@ inline void Score_MetaPlayer::set_deaths(::google::protobuf::int32 value) {
   deaths_ = value;
 }
 
-// optional int32 health = 3;
+// optional int32 health = 4;
 inline bool Score_MetaPlayer::has_health() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void Score_MetaPlayer::set_has_health() {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
 }
 inline void Score_MetaPlayer::clear_has_health() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void Score_MetaPlayer::clear_health() {
   health_ = 0;
@@ -1858,6 +1901,35 @@ ServerUpdate::objects() const {
 inline ::google::protobuf::RepeatedPtrField< ::wire::Object >*
 ServerUpdate::mutable_objects() {
   return &objects_;
+}
+
+// optional .wire.Score score = 3;
+inline bool ServerUpdate::has_score() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void ServerUpdate::set_has_score() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void ServerUpdate::clear_has_score() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void ServerUpdate::clear_score() {
+  if (score_ != NULL) score_->::wire::Score::Clear();
+  clear_has_score();
+}
+inline const ::wire::Score& ServerUpdate::score() const {
+  return score_ != NULL ? *score_ : *default_instance_->score_;
+}
+inline ::wire::Score* ServerUpdate::mutable_score() {
+  set_has_score();
+  if (score_ == NULL) score_ = new ::wire::Score;
+  return score_;
+}
+inline ::wire::Score* ServerUpdate::release_score() {
+  clear_has_score();
+  ::wire::Score* temp = score_;
+  score_ = NULL;
+  return temp;
 }
 
 

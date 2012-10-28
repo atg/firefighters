@@ -1,6 +1,7 @@
 #import <SFML/Graphics.hpp>
 #import <set>
 #import "world/map.hpp"
+#import "gamemode.hpp"
 
 // Global game state
 struct Game {
@@ -26,6 +27,9 @@ struct Game {
     int viewportY;
     int viewportWidth;
     int viewportHeight;
+    
+    // Game state
+    GameState state;
     
     // Server state
     // ...

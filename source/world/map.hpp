@@ -55,8 +55,8 @@ struct Player {
     CharacterClass cclass;
     
     // Health
-    uint32_t health; // Use use a big fat int for health. Flamethrowers do little bits of damage, slowly.
-    static const uint32_t MaxHealth = (uint32_t)-1;
+    uint16_t health; // Use use a big fat int for health. Flamethrowers do little bits of damage, slowly.
+    static const uint16_t MaxHealth = (uint16_t)-1;
     bool isAlive() { return health > 0; }
     
     // Weapons

@@ -30,7 +30,7 @@ void Emitter::update(Player& owner) {
         if (kvpair.second.identifier == owner.identifier)
             continue; // Ignore collisions with the player since they happen all the time
         
-        playerBoundingAreas.push_back(AABB(kvpair.second.position.x - 32, kvpair.second.position.y - 32, kvpair.second.position.x + 32, kvpair.second.position.y + 32));
+        playerBoundingAreas.push_back(AABB(kvpair.second.position.x - playerRadius, kvpair.second.position.y - playerRadius, playerRadius * 2, playerRadius * 2));
         playerIDs.push_back(kvpair.second.identifier);
     }
     

@@ -2,6 +2,7 @@
 #import "net/net_client.hpp"
 #import "world/map.hpp"
 #import "main/game.hpp"
+#import "main/gamemode.hpp"
 #import "wire.pb.h"
 #import <sstream>
 #import <string>
@@ -72,6 +73,13 @@ static sf::Packet messageToPacket(const google::protobuf::Message* msg) {
     sf::Packet packet;
     packet.Append(&s[0], s.size());
     return packet;
+}
+
+static void serializeTeam(wire::Team& out, Team& in) {
+    out.set_tickets(in.tickets);
+    for (int member : in.members) {
+        out.add_members(member);
+    }
 }
 static void serverSendGameState() {
     
@@ -168,6 +176,42 @@ static void serverSendGameState() {
                         player.visitedChunks[std::make_pair(vc_x, vc_y)] = Player::VisitedChunk::Make(vc_x, vc_y, worldIter->second.version);
                 }
             }
+        }
+        
+        // Send game state
+        if (GAME.state.hasChanged) {
+            wire::Score score;
+            wire::Team red;
+            wire::Team blu;
+            
+            serializeTeam(red, GAME.state.red);
+            serializeTeam(blu, GAME.state.blu);
+            
+            score.mutable_red()->CopyFrom(red);
+            score.mutable_blu()->CopyFrom(blu);
+            
+            std::map<int, wire::Score_MetaPlayer> metaplayers;
+            
+            for (auto pair : GAME.state.kills) {
+                metaplayers[pair.first].set_kills(pair.second);
+            }
+            
+            for (auto pair : GAME.state.deaths) {
+                metaplayers[pair.first].set_deaths(pair.second);
+            }
+            
+            for (auto& pair : GAME.world.players) {
+                metaplayers[pair.first].set_health(pair.second.health);
+                // This is where you would set other information such as weapon
+            }
+            
+            for (auto& pair : metaplayers) {
+                pair.second.set_identifier(pair.first);
+                score.add_metaplayers()->CopyFrom(pair.second);
+            }
+            
+            serveru.mutable_score()->CopyFrom(score);
+            modifiedSu = true;
         }
         
         // Send the server update
