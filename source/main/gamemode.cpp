@@ -19,12 +19,23 @@ static void setOrAdd(T& mapping, int key, int val) {
         mapping[key] += val;
 }
 
+void playerJoined(int id) {
+    if (GAME.state.red.members.size() <= GAME.state.blu.members.size()) {
+        GAME.state.red.members.insert(id);
+        printf("Assigning %d to RED\n", id);
+    }
+    else if (GAME.state.blu.members.size() < GAME.state.red.members.size()) {
+        GAME.state.blu.members.insert(id);
+        printf("Assigning %d to BLU\n", id);
+    }
+}
+
 void playerDamaged(int assaulter, int victim, int amount) {
     GAME.state.hasChanged = true;
     if (GAME.isClient)
         return;
     
-    amount = 11;
+    amount = 12;
     printf("Player %d damaged player %d! It was %d effective.\n", assaulter, victim, amount);
     auto& players = GAME.world.players;
     if (assaulter < 1)
@@ -74,7 +85,10 @@ void playerDied(int killer, Player& dead) {
         GAME.state.red.tickets -= 1;
     else if (isBluPlayer(dead.identifier))
         GAME.state.blu.tickets -= 1;
+    else
+        die("Player is not on red or blue.\n");
     
+    printf("Tickets either side = %d / %d\n", GAME.state.red.tickets, GAME.state.blu.tickets);
     if (GAME.state.red.tickets <= 0 || GAME.state.blu.tickets <= 0) {
         gameOver();
     }

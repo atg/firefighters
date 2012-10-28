@@ -51,6 +51,7 @@ enum class CauseOfDeath {
 bool isRedPlayer(int id);
 bool isBluPlayer(int id);
 
+void playerJoined(int id);
 void playerDamaged(int assaulter, int victim, int amount);
 void playerDied(int killer, Player& dead);
 

@@ -82,13 +82,14 @@ static void clientReceiveFullUpdate(const std::string& data) {
     }
     
     // Game state
+    printf("HASSCORE? %d\n", u.has_score());
     if (u.has_score()) {
         
         // Tickets
         GAME.state.red.tickets = u.score().red().tickets();
         GAME.state.blu.tickets = u.score().blu().tickets();
         
-        printf("TICKETS! %d / %d", GAME.state.red.tickets, GAME.state.blu.tickets);
+        printf("TICKETS! %d / %d\n", GAME.state.red.tickets, GAME.state.blu.tickets);
         
         // Members
         GAME.state.red.members.clear();

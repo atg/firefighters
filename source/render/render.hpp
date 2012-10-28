@@ -199,7 +199,14 @@ void drawScores() {
     sf::Color red = sf::Color(217, 129, 128, 255);
     sf::Color blue = sf::Color(126, 174, 217, 255);
     
-    // static sf::Font scoreFont = sf::Font::LoadFromFile("Helvetica")
+    // TODO: Abstract resource path
+    static bool hasLoadedScoreFont;
+    static sf::Font scoreFont;
+    if (!hasLoadedScoreFont) {
+        if (!scoreFont.LoadFromFile(std::string("/Users/alexgordon/Temporary/firefighters/build/Firefighters.app/Contents/Resources/") + "nexa.otf"))
+            die("Could not load score font.");
+        hasLoadedScoreFont = true;
+    }
     
     sf::Color leftColor = playerIsRed ? red : blue;
     sf::Shape leftbox = sf::Shape::Rectangle(0, 0, width, height, leftColor);
@@ -210,11 +217,22 @@ void drawScores() {
     sf::Shape rightbox = sf::Shape::Rectangle(0, 0, width, height, rightColor);
     rightbox.SetPosition(viewportWidth / 2.0 + centreMargin, centreMargin * 2.0);
     GAME.app->Draw(rightbox);
-
+    
     // box.SetCenter(width / 2, height / 2);
     // box.SetRotation(360.0 - player.angle.angle * 180.0 / M_PI + 90.0);
     
+    std::string leftText = playerIsRed ? to_string(GAME.state.red.tickets) : to_string(GAME.state.blu.tickets);
+    std::string rightText = playerIsRed ? to_string(GAME.state.blu.tickets) : to_string(GAME.state.red.tickets);
     
+    sf::String leftScore = sf::String(leftText, scoreFont, 64);
+    leftScore.SetColor(sf::Color(255, 255, 255, 255));
+    leftScore.SetPosition(leftbox.GetPosition());
+    GAME.app->Draw(leftScore);
+    
+    sf::String rightScore = sf::String(rightText, scoreFont, 64);
+    rightScore.SetColor(sf::Color(255, 255, 255, 255));
+    rightScore.SetPosition(rightbox.GetPosition());
+    GAME.app->Draw(rightScore);
 }
 
 static void render() {

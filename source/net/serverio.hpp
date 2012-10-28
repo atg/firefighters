@@ -220,6 +220,8 @@ struct NetServer {
                     nextClientPlayerID++;
                     printf("Sending player id packet to %d\n", clientPtr->clientID);
                     clientSocket.Send(playerIDPacket);
+                    
+                    playerJoined(clientPtr->clientID);
                 }
                 else {
                     // It wants us to read from the given socket

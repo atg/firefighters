@@ -1,4 +1,8 @@
 #import <cmath>
+#import <string>
+
+#import <stdio.h>
+#import <stdlib.h>
 
 template<class T>
 static T propermod(T a, T n) {
@@ -137,3 +141,10 @@ static void die(const char* str) {
 static void coma(const char* str) {
     fprintf(stderr, "%s\n", str);
 }
+
+static std::string to_string(int x) {
+    char buffer[100] = {0};
+    sprintf(buffer, "%d", x);
+    return std::string((const char*)buffer);
+}
+
