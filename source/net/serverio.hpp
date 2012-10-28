@@ -70,6 +70,12 @@ struct NetServer {
             std::string data = std::string(dataptr, dataptr + packet.GetDataSize());
             mainQueue().push(game_serverQuickUpdate, InvocationMessage(clientID, data));
         }
+        
+        if (isTCP && clientID > 0) {
+            const char* dataptr = packet.GetData();
+            std::string data = std::string(dataptr, dataptr + packet.GetDataSize());
+            mainQueue().push(game_serverFullUpdate, InvocationMessage(clientID, data));
+        }
     }
 
     // ------ Main ------

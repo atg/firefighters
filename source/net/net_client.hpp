@@ -118,6 +118,11 @@ static void clientReceiveFullUpdate(const std::string& data) {
             }
         }
     }
+    
+    // Tell the server that we've respawned
+    if (GAME.world.me && u.needsrespawn()) {
+        GAME.world.me->requiresRespawnConfirmation = true;
+    }
 }
 void game_clientQuickUpdate(InvocationMessage ctx) {
     clientReceiveGameState(ctx.data);
@@ -169,4 +174,14 @@ static void clientSendGameState() {
     packet.Append(&s[0], s.size());
     
     udpQueue().push(packet, GAME.clientID);
+    
+    
+    // Respawn confirmation
+    if (GAME.world.me && GAME.world.me->hasRespawned) {
+        wire::ClientUpdate cu;
+        cu.set_confirmrespawned(true);
+        GAME.world.me->hasRespawned = false;
+        
+        tcpQueue().push(messageToPacket(&cu), GAME.clientID);
+    }
 }

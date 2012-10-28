@@ -25,6 +25,10 @@ static void serverReceiveGameState(std::string data, int clientID) {
         player = &(GAME.world.players[clientID]);
     }
     
+    if (player->isRespawning) {
+        return; // Ignore this update if we're respawning but the client hasn't realized yet
+    }
+    
     if (!u.has_viewportx() || !u.has_viewporty() || !u.has_viewportwidth() || !u.has_viewportheight())
         die("Player did not send viewport information"); // Should probably kick the player instead of crashing the server
     
@@ -54,25 +58,31 @@ static void serverReceiveGameState(std::string data, int clientID) {
         player->flamethrower.stop();
     // player->activeWeapon = &(player->flamethrower);
 }
+static void serverReceiveFullUpdate(std::string data, int clientID) {
+    wire::ClientUpdate u;
+    std::istringstream iss(std::string(&data[0], data.size()));
+    u.ParseFromIstream(&iss);
+
+    // Find a player with this ID
+    Player* player = NULL;
+    if (GAME.world.players.count(clientID)) {
+        player = &(GAME.world.players[clientID]);
+    }
+    else {
+        return;
+    }
+    
+    if (u.has_confirmrespawned() && u.confirmrespawned()) {
+        player->isRespawning = false;
+    }
+}
+
 void game_serverQuickUpdate(InvocationMessage ctx) {
     // printf("Receive game state from %d\n", ctx.sender);
     serverReceiveGameState(ctx.data, ctx.sender);
 }
-static sf::Packet messageToPacket(const google::protobuf::Message* msg) {
-    
-    // Write to a std::string
-    std::ostringstream oss;
-    if (!msg->SerializeToOstream(&oss))
-        die("Could not serialize quick update to ostream");
-    
-    std::string s = oss.str();
-    if (!s.size())
-        die("No data when serializing quick update to string");
-    
-    // printf("Sending %d bytes\n", (int)(s.size()));
-    sf::Packet packet;
-    packet.Append(&s[0], s.size());
-    return packet;
+void game_serverFullUpdate(InvocationMessage ctx) {
+    serverReceiveFullUpdate(ctx.data, ctx.sender);
 }
 
 static void serializeTeam(wire::Team& out, Team& in) {
@@ -113,7 +123,7 @@ static void serverSendGameState() {
         // Split the update into bitesized packets under 500 bytes
         std::vector<wire::ServerQuickUpdate> sus;
         for (int i = 0; i < playerUpdates.size(); i++) {
-            if (sus.empty() || sus.back().ByteSize() > 500) {
+            if (sus.empty() || sus.back().ByteSize() > 490) {
                 sus.push_back(wire::ServerQuickUpdate());
             }
             
@@ -123,6 +133,8 @@ static void serverSendGameState() {
         for (const wire::ServerQuickUpdate& su : sus) {
             udpQueue().push(messageToPacket(&su), kv.first);
         }
+        
+        
         
         bool modifiedSu = false;
         wire::ServerUpdate serveru;
@@ -219,6 +231,15 @@ static void serverSendGameState() {
             // printf("serveru [state] %d? = %d; %d\n", serveru.has_score(), serveru.score().red().tickets(), serveru.score().blu().tickets());
             modifiedSu = true;
             // GAME.state.hasChanged = false;
+        }
+        
+        if (player.requiresNeedsRespawnNotification) {
+            serveru.set_needsrespawn(true);
+            player.requiresNeedsRespawnNotification = false;
+            modifiedSu = true;
+        }
+        else {
+            serveru.set_needsrespawn(false);
         }
         
         // Send the server update

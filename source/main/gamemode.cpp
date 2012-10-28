@@ -92,9 +92,24 @@ void playerDied(int killer, Player& dead) {
         gameOver();
     }
     
+    // Set their state to "respawning". The will need to confirm with an explicit hasRespawned = true
+    dead.isRespawning = true;
+    dead.requiresNeedsRespawnNotification = true;
+    
     GAME.state.hasChanged = true;
 }
 
 void gameOver() {
     printf("GAME OVER!\n");
 }
+
+
+
+
+
+
+
+
+
+
+

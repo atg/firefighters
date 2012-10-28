@@ -43,4 +43,22 @@ static void startNetworking() {
     thread.Launch();
 }
 
+#import "wire.pb.h"
+#import <sstream>
+#import <string>
+static sf::Packet messageToPacket(const google::protobuf::Message* msg) {
 
+    // Write to a std::string
+    std::ostringstream oss;
+    if (!msg->SerializeToOstream(&oss))
+        die("Could not serialize quick update to ostream");
+
+    std::string s = oss.str();
+    if (!s.size())
+        die("No data when serializing quick update to string");
+
+    // printf("Sending %d bytes\n", (int)(s.size()));
+    sf::Packet packet;
+    packet.Append(&s[0], s.size());
+    return packet;
+}

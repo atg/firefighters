@@ -41,6 +41,7 @@ class Score_MetaPlayer;
 class Chunk;
 class Object;
 class ServerUpdate;
+class ClientUpdate;
 
 // ===================================================================
 
@@ -1031,19 +1032,29 @@ class ServerUpdate : public ::google::protobuf::Message {
   inline ::wire::Score* mutable_score();
   inline ::wire::Score* release_score();
   
+  // required bool needsRespawn = 4;
+  inline bool has_needsrespawn() const;
+  inline void clear_needsrespawn();
+  static const int kNeedsRespawnFieldNumber = 4;
+  inline bool needsrespawn() const;
+  inline void set_needsrespawn(bool value);
+  
   // @@protoc_insertion_point(class_scope:wire.ServerUpdate)
  private:
   inline void set_has_score();
   inline void clear_has_score();
+  inline void set_has_needsrespawn();
+  inline void clear_has_needsrespawn();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::google::protobuf::RepeatedPtrField< ::wire::Chunk > chunks_;
   ::google::protobuf::RepeatedPtrField< ::wire::Object > objects_;
   ::wire::Score* score_;
+  bool needsrespawn_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_wire_2eproto();
   friend void protobuf_AssignDesc_wire_2eproto();
@@ -1051,6 +1062,88 @@ class ServerUpdate : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static ServerUpdate* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ClientUpdate : public ::google::protobuf::Message {
+ public:
+  ClientUpdate();
+  virtual ~ClientUpdate();
+  
+  ClientUpdate(const ClientUpdate& from);
+  
+  inline ClientUpdate& operator=(const ClientUpdate& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ClientUpdate& default_instance();
+  
+  void Swap(ClientUpdate* other);
+  
+  // implements Message ----------------------------------------------
+  
+  ClientUpdate* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ClientUpdate& from);
+  void MergeFrom(const ClientUpdate& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required bool confirmRespawned = 1;
+  inline bool has_confirmrespawned() const;
+  inline void clear_confirmrespawned();
+  static const int kConfirmRespawnedFieldNumber = 1;
+  inline bool confirmrespawned() const;
+  inline void set_confirmrespawned(bool value);
+  
+  // @@protoc_insertion_point(class_scope:wire.ClientUpdate)
+ private:
+  inline void set_has_confirmrespawned();
+  inline void clear_has_confirmrespawned();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  bool confirmrespawned_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_wire_2eproto();
+  friend void protobuf_AssignDesc_wire_2eproto();
+  friend void protobuf_ShutdownFile_wire_2eproto();
+  
+  void InitAsDefaultInstance();
+  static ClientUpdate* default_instance_;
 };
 // ===================================================================
 
@@ -1930,6 +2023,54 @@ inline ::wire::Score* ServerUpdate::release_score() {
   ::wire::Score* temp = score_;
   score_ = NULL;
   return temp;
+}
+
+// required bool needsRespawn = 4;
+inline bool ServerUpdate::has_needsrespawn() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void ServerUpdate::set_has_needsrespawn() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void ServerUpdate::clear_has_needsrespawn() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void ServerUpdate::clear_needsrespawn() {
+  needsrespawn_ = false;
+  clear_has_needsrespawn();
+}
+inline bool ServerUpdate::needsrespawn() const {
+  return needsrespawn_;
+}
+inline void ServerUpdate::set_needsrespawn(bool value) {
+  set_has_needsrespawn();
+  needsrespawn_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// ClientUpdate
+
+// required bool confirmRespawned = 1;
+inline bool ClientUpdate::has_confirmrespawned() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ClientUpdate::set_has_confirmrespawned() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ClientUpdate::clear_has_confirmrespawned() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void ClientUpdate::clear_confirmrespawned() {
+  confirmrespawned_ = false;
+  clear_has_confirmrespawned();
+}
+inline bool ClientUpdate::confirmrespawned() const {
+  return confirmrespawned_;
+}
+inline void ClientUpdate::set_confirmrespawned(bool value) {
+  set_has_confirmrespawned();
+  confirmrespawned_ = value;
 }
 
 

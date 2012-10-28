@@ -82,6 +82,19 @@ struct Player {
     int viewportWidth;
     int viewportHeight;
     
+    // Respawn handshake
+    // Server sets isRespawning
+    // > Server ignores any client updates while isRespawning is set
+    // Server sets requiresNeedsRespawnNotification and sends "needs respawn" over wire.
+    // Client receives "needs respawn", and sets requiresRespawnConfirmation
+    // Client gets everything ready for the respawn, then sets hasRespawned when done
+    // Client sends "has respawned" over wire to server
+    // Server unsets isRespawning
+    bool isRespawning;                     // Server only
+    bool requiresNeedsRespawnNotification; // Server only
+    bool requiresRespawnConfirmation;      // Client only
+    bool hasRespawned;                     // Client only
+    
     Player(Player::ID _identifier=0)
         : identifier(_identifier),
           position(),
@@ -90,7 +103,8 @@ struct Player {
           cclass(CharacterClass::Flamethrower),
           health(Player::MaxHealth),
           viewportX(0), viewportY(0), viewportWidth(0), viewportHeight(0),
-          flamethrower() { }
+          flamethrower(),
+          isRespawning(false), requiresNeedsRespawnNotification(false), requiresRespawnConfirmation(false), hasRespawned(false) { }
 };
 
 #ifdef MAIN_UNIT

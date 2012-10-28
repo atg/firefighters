@@ -57,6 +57,7 @@ struct Invocation {
 void game_clientQuickUpdate(InvocationMessage ctx);
 void game_clientFullUpdate(InvocationMessage ctx);
 void game_serverQuickUpdate(InvocationMessage ctx);
+void game_serverFullUpdate(InvocationMessage ctx);
 
 struct InvocationQueue {
     sf::Mutex mutex;

@@ -44,6 +44,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* ServerUpdate_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ServerUpdate_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ClientUpdate_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ClientUpdate_reflection_ = NULL;
 
 }  // namespace
 
@@ -197,10 +200,11 @@ void protobuf_AssignDesc_wire_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Object));
   ServerUpdate_descriptor_ = file->message_type(6);
-  static const int ServerUpdate_offsets_[3] = {
+  static const int ServerUpdate_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerUpdate, chunks_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerUpdate, objects_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerUpdate, score_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerUpdate, needsrespawn_),
   };
   ServerUpdate_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -213,6 +217,21 @@ void protobuf_AssignDesc_wire_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ServerUpdate));
+  ClientUpdate_descriptor_ = file->message_type(7);
+  static const int ClientUpdate_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientUpdate, confirmrespawned_),
+  };
+  ClientUpdate_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      ClientUpdate_descriptor_,
+      ClientUpdate::default_instance_,
+      ClientUpdate_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientUpdate, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientUpdate, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(ClientUpdate));
 }
 
 namespace {
@@ -243,6 +262,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     Object_descriptor_, &Object::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ServerUpdate_descriptor_, &ServerUpdate::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    ClientUpdate_descriptor_, &ClientUpdate::default_instance());
 }
 
 }  // namespace
@@ -266,6 +287,8 @@ void protobuf_ShutdownFile_wire_2eproto() {
   delete Object_reflection_;
   delete ServerUpdate::default_instance_;
   delete ServerUpdate_reflection_;
+  delete ClientUpdate::default_instance_;
+  delete ClientUpdate_reflection_;
 }
 
 void protobuf_AddDesc_wire_2eproto() {
@@ -293,10 +316,11 @@ void protobuf_AddDesc_wire_2eproto() {
     "\n\006health\030\004 \001(\005\"O\n\005Chunk\022\t\n\001x\030\001 \002(\021\022\t\n\001y\030"
     "\002 \002(\021\022\017\n\007version\030\003 \002(\005\022\r\n\005tiles\030\004 \001(\014\022\020\n"
     "\010metadata\030\005 \001(\014\"-\n\006Object\022\t\n\001x\030\001 \002(\021\022\t\n\001"
-    "y\030\002 \002(\021\022\r\n\005angle\030\003 \002(\021\"f\n\014ServerUpdate\022\033"
+    "y\030\002 \002(\021\022\r\n\005angle\030\003 \002(\021\"|\n\014ServerUpdate\022\033"
     "\n\006chunks\030\001 \003(\0132\013.wire.Chunk\022\035\n\007objects\030\002"
     " \003(\0132\014.wire.Object\022\032\n\005score\030\003 \001(\0132\013.wire"
-    ".Score", 846);
+    ".Score\022\024\n\014needsRespawn\030\004 \002(\010\"(\n\014ClientUp"
+    "date\022\030\n\020confirmRespawned\030\001 \002(\010", 910);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "wire.proto", &protobuf_RegisterTypes);
   ClientQuickUpdate::default_instance_ = new ClientQuickUpdate();
@@ -308,6 +332,7 @@ void protobuf_AddDesc_wire_2eproto() {
   Chunk::default_instance_ = new Chunk();
   Object::default_instance_ = new Object();
   ServerUpdate::default_instance_ = new ServerUpdate();
+  ClientUpdate::default_instance_ = new ClientUpdate();
   ClientQuickUpdate::default_instance_->InitAsDefaultInstance();
   ServerQuickUpdate::default_instance_->InitAsDefaultInstance();
   ServerQuickUpdate_PlayerUpdate::default_instance_->InitAsDefaultInstance();
@@ -317,6 +342,7 @@ void protobuf_AddDesc_wire_2eproto() {
   Chunk::default_instance_->InitAsDefaultInstance();
   Object::default_instance_->InitAsDefaultInstance();
   ServerUpdate::default_instance_->InitAsDefaultInstance();
+  ClientUpdate::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_wire_2eproto);
 }
 
@@ -2940,6 +2966,7 @@ void Object::Swap(Object* other) {
 const int ServerUpdate::kChunksFieldNumber;
 const int ServerUpdate::kObjectsFieldNumber;
 const int ServerUpdate::kScoreFieldNumber;
+const int ServerUpdate::kNeedsRespawnFieldNumber;
 #endif  // !_MSC_VER
 
 ServerUpdate::ServerUpdate()
@@ -2960,6 +2987,7 @@ ServerUpdate::ServerUpdate(const ServerUpdate& from)
 void ServerUpdate::SharedCtor() {
   _cached_size_ = 0;
   score_ = NULL;
+  needsrespawn_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2998,6 +3026,7 @@ void ServerUpdate::Clear() {
     if (has_score()) {
       if (score_ != NULL) score_->::wire::Score::Clear();
     }
+    needsrespawn_ = false;
   }
   chunks_.Clear();
   objects_.Clear();
@@ -3051,6 +3080,22 @@ bool ServerUpdate::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(32)) goto parse_needsRespawn;
+        break;
+      }
+      
+      // required bool needsRespawn = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_needsRespawn:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &needsrespawn_)));
+          set_has_needsrespawn();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -3091,6 +3136,11 @@ void ServerUpdate::SerializeWithCachedSizes(
       3, this->score(), output);
   }
   
+  // required bool needsRespawn = 4;
+  if (has_needsrespawn()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->needsrespawn(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -3120,6 +3170,11 @@ void ServerUpdate::SerializeWithCachedSizes(
         3, this->score(), target);
   }
   
+  // required bool needsRespawn = 4;
+  if (has_needsrespawn()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->needsrespawn(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -3136,6 +3191,11 @@ int ServerUpdate::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->score());
+    }
+    
+    // required bool needsRespawn = 4;
+    if (has_needsrespawn()) {
+      total_size += 1 + 1;
     }
     
   }
@@ -3186,6 +3246,9 @@ void ServerUpdate::MergeFrom(const ServerUpdate& from) {
     if (from.has_score()) {
       mutable_score()->::wire::Score::MergeFrom(from.score());
     }
+    if (from.has_needsrespawn()) {
+      set_needsrespawn(from.needsrespawn());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -3203,6 +3266,7 @@ void ServerUpdate::CopyFrom(const ServerUpdate& from) {
 }
 
 bool ServerUpdate::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000008) != 0x00000008) return false;
   
   for (int i = 0; i < chunks_size(); i++) {
     if (!this->chunks(i).IsInitialized()) return false;
@@ -3221,6 +3285,7 @@ void ServerUpdate::Swap(ServerUpdate* other) {
     chunks_.Swap(&other->chunks_);
     objects_.Swap(&other->objects_);
     std::swap(score_, other->score_);
+    std::swap(needsrespawn_, other->needsrespawn_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -3232,6 +3297,212 @@ void ServerUpdate::Swap(ServerUpdate* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = ServerUpdate_descriptor_;
   metadata.reflection = ServerUpdate_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int ClientUpdate::kConfirmRespawnedFieldNumber;
+#endif  // !_MSC_VER
+
+ClientUpdate::ClientUpdate()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void ClientUpdate::InitAsDefaultInstance() {
+}
+
+ClientUpdate::ClientUpdate(const ClientUpdate& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void ClientUpdate::SharedCtor() {
+  _cached_size_ = 0;
+  confirmrespawned_ = false;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+ClientUpdate::~ClientUpdate() {
+  SharedDtor();
+}
+
+void ClientUpdate::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void ClientUpdate::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ClientUpdate::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ClientUpdate_descriptor_;
+}
+
+const ClientUpdate& ClientUpdate::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_wire_2eproto();  return *default_instance_;
+}
+
+ClientUpdate* ClientUpdate::default_instance_ = NULL;
+
+ClientUpdate* ClientUpdate::New() const {
+  return new ClientUpdate;
+}
+
+void ClientUpdate::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    confirmrespawned_ = false;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool ClientUpdate::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required bool confirmRespawned = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &confirmrespawned_)));
+          set_has_confirmrespawned();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void ClientUpdate::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required bool confirmRespawned = 1;
+  if (has_confirmrespawned()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->confirmrespawned(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* ClientUpdate::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required bool confirmRespawned = 1;
+  if (has_confirmrespawned()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->confirmrespawned(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int ClientUpdate::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required bool confirmRespawned = 1;
+    if (has_confirmrespawned()) {
+      total_size += 1 + 1;
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ClientUpdate::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const ClientUpdate* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const ClientUpdate*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void ClientUpdate::MergeFrom(const ClientUpdate& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_confirmrespawned()) {
+      set_confirmrespawned(from.confirmrespawned());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void ClientUpdate::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ClientUpdate::CopyFrom(const ClientUpdate& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ClientUpdate::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  
+  return true;
+}
+
+void ClientUpdate::Swap(ClientUpdate* other) {
+  if (other != this) {
+    std::swap(confirmrespawned_, other->confirmrespawned_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata ClientUpdate::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ClientUpdate_descriptor_;
+  metadata.reflection = ClientUpdate_reflection_;
   return metadata;
 }
 
