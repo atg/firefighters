@@ -7,7 +7,7 @@ bool isRedPlayer(int id) {
     return members.find(id) != members.end();
 }
 bool isBluPlayer(int id) {
-    auto& members = GAME.state.red.members;
+    auto& members = GAME.state.blu.members;
     return members.find(id) != members.end();
 }
 
@@ -43,7 +43,6 @@ void playerDamaged(int assaulter, int victim, int amount) {
     
     if (players.find(victim) == players.end())
         return; // ???
-    printf("Found victim\n");
     if (players.find(assaulter) == players.end())
         assaulter = (int)CauseOfDeath::PastPlayer;
     
@@ -54,7 +53,7 @@ void playerDamaged(int assaulter, int victim, int amount) {
     else
         victimPlayer.health -= amount;
     
-    printf("New health = %d\n", victimPlayer.health);
+    printf("  health = %d\n", victimPlayer.health);
     
     if (victimPlayer.health == 0) {
         playerDied(assaulter, victimPlayer);

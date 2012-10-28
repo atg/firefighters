@@ -52,7 +52,7 @@ static void clientReceiveGameState(const std::string& data) {
 }
 static void clientReceiveFullUpdate(const std::string& data) {
     wire::ServerUpdate u;
-    printf("Message is: %s\n", data.c_str());
+    // printf("Message is: %s\n", data.c_str());
     std::istringstream iss(data);
     if (!u.ParseFromIstream(&iss)) {
         coma("Could not read quick update.");
@@ -60,12 +60,12 @@ static void clientReceiveFullUpdate(const std::string& data) {
     }
 
     // For each chunk
-    printf("Receiving update where chunks would be set theoretically\n");
+    // printf("Receiving update where chunks would be set theoretically\n");
     for (const wire::Chunk& chunku : u.chunks()) {
         int x = chunku.x();
         int y = chunku.y();
         int version = chunku.version();
-        printf("\t Receiving chunks: %d / %d / %d\n", x, y, version);
+        // printf("\t Receiving chunks: %d / %d / %d\n", x, y, version);
         
         // Find a player with this ID
         Player* player = NULL;
@@ -82,14 +82,14 @@ static void clientReceiveFullUpdate(const std::string& data) {
     }
     
     // Game state
-    printf("HASSCORE? %d\n", u.has_score());
+    // printf("HASSCORE? %d\n", u.has_score());
     if (u.has_score()) {
         
         // Tickets
         GAME.state.red.tickets = u.score().red().tickets();
         GAME.state.blu.tickets = u.score().blu().tickets();
         
-        printf("TICKETS! %d / %d\n", GAME.state.red.tickets, GAME.state.blu.tickets);
+        // printf("TICKETS! %d / %d\n", GAME.state.red.tickets, GAME.state.blu.tickets);
         
         // Members
         GAME.state.red.members.clear();
@@ -123,7 +123,6 @@ void game_clientQuickUpdate(InvocationMessage ctx) {
     clientReceiveGameState(ctx.data);
 }
 void game_clientFullUpdate(InvocationMessage ctx) {
-    printf("#### FULL UPDATE #### \n");
     clientReceiveFullUpdate(ctx.data);
 }
 

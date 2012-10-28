@@ -179,21 +179,21 @@ static void serverSendGameState() {
         }
         
         // Send game state
-        printf("NETSERV WILL SEND STATE? %d\n", GAME.state.hasChanged);
+        // printf("NETSERV WILL SEND STATE? %d\n", GAME.state.hasChanged);
         // Keep a record of when we last sent this to this particular player
-        // if (GAME.state.hasChanged) {
+        if (GAME.state.hasChanged) {
             wire::Score score;
             wire::Team red;
             wire::Team blu;
             
-            printf("red state = %d %d\n", GAME.state.red.tickets, GAME.state.blu.tickets);
+            // printf("red state = %d %d\n", GAME.state.red.tickets, GAME.state.blu.tickets);
             serializeTeam(red, GAME.state.red);
             serializeTeam(blu, GAME.state.blu);
-            printf("team [state] = %d; %d\n", red.tickets(), blu.tickets());
+            // printf("team [state] = %d; %d\n", red.tickets(), blu.tickets());
             
             score.mutable_red()->CopyFrom(red);
             score.mutable_blu()->CopyFrom(blu);
-            printf("score [state] = %d; %d\n", score.red().tickets(), score.blu().tickets());
+            // printf("score [state] = %d; %d\n", score.red().tickets(), score.blu().tickets());
             
             std::map<int, wire::Score_MetaPlayer> metaplayers;
             
@@ -216,14 +216,14 @@ static void serverSendGameState() {
             }
             
             serveru.mutable_score()->CopyFrom(score);
-            printf("serveru [state] %d? = %d; %d\n", serveru.has_score(), serveru.score().red().tickets(), serveru.score().blu().tickets());
+            // printf("serveru [state] %d? = %d; %d\n", serveru.has_score(), serveru.score().red().tickets(), serveru.score().blu().tickets());
             modifiedSu = true;
             // GAME.state.hasChanged = false;
-        // }
+        }
         
         // Send the server update
         if (modifiedSu) {
-            printf("  PUSHING\n");
+            // printf("  PUSHING\n");
             tcpQueue().push(messageToPacket(&serveru), kv.first);
         }
     }
